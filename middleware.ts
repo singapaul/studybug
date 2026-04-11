@@ -4,7 +4,26 @@ import type { auth } from "@/lib/auth";
 
 type Session = typeof auth.$Infer.Session;
 
-const publicRoutes = ["/", "/sign-in", "/sign-up", "/reset-password", "/verify-email"];
+const publicRoutes = [
+  "/",
+  "/sign-in",
+  "/sign-up",
+  "/reset-password",
+  "/verify-email",
+  "/features",
+  "/pricing",
+  "/how-it-works",
+  "/resources",
+  "/help",
+  "/contact",
+  "/blog",
+  "/schools",
+  "/schools/demo",
+  "/schools/demo/success",
+  "/privacy",
+  "/terms",
+  "/cookies",
+];
 
 const publicApiPrefixes = ["/api/auth", "/api/stripe/webhook"];
 

@@ -1,25 +1,35 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Quicksand, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/providers/session-provider";
 
-const inter = Inter({ subsets: ["latin"] });
+const quicksand = Quicksand({
+  subsets: ["latin"],
+  variable: "--font-quicksand",
+  display: "swap",
+});
+
+const plusJakartaSans = Plus_Jakarta_Sans({
+  subsets: ["latin"],
+  variable: "--font-plus-jakarta",
+  display: "swap",
+});
 
 export const metadata: Metadata = {
   title: {
-    default: "StudyBug — Build your SaaS faster",
-    template: "%s | StudyBug",
+    default: "Studybug — Make Revision Fun",
+    template: "%s | Studybug",
   },
   description:
-    "The production-ready Next.js starter with auth, billing, and error monitoring pre-wired.",
-  keywords: ["SaaS", "Next.js", "starter", "template"],
-  authors: [{ name: "StudyBug" }],
+    "Join thousands of students and teachers using Studybug to master any subject through engaging game-based learning.",
+  keywords: ["revision", "flashcards", "education", "learning games", "students", "teachers"],
+  authors: [{ name: "Studybug" }],
   openGraph: {
     type: "website",
     locale: "en_US",
-    title: "StudyBug — Build your SaaS faster",
+    title: "Studybug — Make Revision Fun",
     description:
-      "The production-ready Next.js starter with auth, billing, and error monitoring pre-wired.",
+      "Join thousands of students and teachers using Studybug to master any subject through engaging game-based learning.",
   },
 };
 
@@ -29,8 +39,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang="en" suppressHydrationWarning className={`${quicksand.variable} ${plusJakartaSans.variable}`}>
+      <body>
         <SessionProvider>{children}</SessionProvider>
       </body>
     </html>

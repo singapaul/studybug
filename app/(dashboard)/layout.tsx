@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { Sidebar } from "@/components/layout/sidebar";
+import { GamesStoreProvider } from "@/context/games-store";
 
 export default async function DashboardLayout({
   children,
@@ -25,11 +26,13 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
-      <Sidebar user={user} />
-      <main className="flex-1 overflow-y-auto">
-        <div className="h-full">{children}</div>
-      </main>
-    </div>
+    <GamesStoreProvider>
+      <div className="flex h-screen overflow-hidden bg-background">
+        <Sidebar user={user} />
+        <main className="flex-1 overflow-y-auto">
+          <div className="h-full">{children}</div>
+        </main>
+      </div>
+    </GamesStoreProvider>
   );
 }

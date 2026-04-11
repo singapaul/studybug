@@ -2,50 +2,102 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
-    --radius: 0.5rem;
+/* Studybug Design System - Fresh, modern, education-focused */
+
+@layer utilities {
+  @keyframes shake {
+    0%,
+    100% {
+      transform: translateX(0);
+    }
+    10%,
+    30%,
+    50%,
+    70%,
+    90% {
+      transform: translateX(-10px);
+    }
+    20%,
+    40%,
+    60%,
+    80% {
+      transform: translateX(10px);
+    }
   }
 
-  .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
+  .animate-shake {
+    animation: shake 0.5s ease-in-out;
+  }
+}
+
+@layer base {
+  :root {
+    /* Background & Foreground - Clean white with dark readable text */
+    --background: 0 0% 100%;
+    --foreground: 0 0% 13%; /* #212121 - darker for better readability */
+
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 13%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 13%;
+
+    /* Primary Green - #8FD462 (main CTA color - positive, action-oriented) */
+    --primary: 96 58% 61%;
+    --primary-foreground: 0 0% 100%;
+
+    /* Secondary Blue - #2AA0FF */
+    --secondary: 207 100% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    /* Muted - Cream #F6F1E5 for subtle backgrounds */
+    --muted: 47 50% 93%;
+    --muted-foreground: 0 0% 40%; /* Darker muted text for readability */
+
+    /* Accent Pink/Lavender - #ECC1FF - use white text for better contrast */
+    --accent: 284 100% 88%;
+    --accent-foreground: 0 0% 100%;
+
+    /* Success/Primary Green */
+    --success: 96 58% 61%;
+    --success-foreground: 0 0% 100%;
+
+    /* Yellow - #F5E211 - use white text for better contrast */
+    --warning: 54 93% 51%;
+    --warning-foreground: 0 0% 100%;
+
+    /* Coral - #FF705D */
+    --destructive: 7 100% 68%;
+    --destructive-foreground: 0 0% 100%;
+
+    /* Coral as a feature color */
+    --coral: 7 100% 68%;
+    --coral-foreground: 0 0% 100%;
+
+    /* Cream for feature sections */
+    --cream: 47 50% 93%;
+    --cream-foreground: 72 7% 17%;
+
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 96 58% 61%;
+
+    --radius: 1rem;
+
+    /* Shadow tokens */
+    --shadow-sm: 0 1px 2px 0 hsl(72 7% 17% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(72 7% 17% / 0.08), 0 2px 4px -2px hsl(72 7% 17% / 0.06);
+    --shadow-lg: 0 10px 25px -3px hsl(72 7% 17% / 0.1), 0 4px 10px -4px hsl(72 7% 17% / 0.06);
+    --shadow-xl: 0 20px 40px -5px hsl(72 7% 17% / 0.12), 0 8px 16px -6px hsl(72 7% 17% / 0.08);
+
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 72 7% 17%;
+    --sidebar-primary: 96 58% 61%;
+    --sidebar-primary-foreground: 72 7% 17%;
+    --sidebar-accent: 284 100% 88%;
+    --sidebar-accent-foreground: 72 7% 17%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 96 58% 61%;
   }
 }
 
@@ -53,7 +105,64 @@
   * {
     @apply border-border;
   }
+
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+  }
+
+  /* Display font only for large headings - Quicksand is friendly, rounded, modern */
+  h1,
+  h2 {
+    font-family: var(--font-quicksand), system-ui, sans-serif;
+    font-weight: 700;
+  }
+
+  /* Ensure any usage of Tailwind's `font-display` class also renders in Quicksand */
+  .font-display {
+    font-family: var(--font-quicksand), system-ui, sans-serif;
+  }
+
+  /* UI-optimized font for smaller headings */
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: var(--font-plus-jakarta), system-ui, sans-serif;
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  /* Playful hover animations */
+  .hover-lift {
+    @apply transition-all duration-300 ease-out;
+  }
+
+  .hover-lift:hover {
+    @apply -translate-y-1 shadow-lg;
+  }
+
+  .hover-grow {
+    @apply transition-transform duration-300 ease-out;
+  }
+
+  .hover-grow:hover {
+    @apply scale-105;
+  }
+
+  /* Button glow effect */
+  .btn-glow {
+    @apply relative overflow-hidden;
+  }
+
+  .btn-glow::after {
+    content: '';
+    @apply absolute inset-0 opacity-0 transition-opacity duration-300;
+    background: radial-gradient(circle at center, rgba(255, 255, 255, 0.3) 0%, transparent 70%);
+  }
+
+  .btn-glow:hover::after {
+    @apply opacity-100;
   }
 }
