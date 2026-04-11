@@ -1,0 +1,179 @@
+"use client";
+
+import {
+  useQuery,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { Game, CreateGameInput } from "@/types/game";
+
+interface ProgressData {
+  personalBests: {
+    gameId: string;
+    gameName: string;
+    bestScore: number;
+    achievedAt: string;
+  }[];
+  trend: { date: string; scorePercentage: number; gameName: string }[];
+  summary: {
+    totalAttempts: number;
+    averageScore: number;
+    gamesPlayed: number;
+  };
+}
+
+async function apiFetch<T>(
+  url: string,
+  options?: RequestInit
+): Promise<T> {
+  const res = await fetch(url, {
+    ...options,
+    headers: { "Content-Type": "application/json", ...options?.headers },
+  });
+  if (!res.ok) {
+    const body = await res.json().catch(() => ({}));
+    const error = Object.assign(new Error(body.error ?? "Request failed"), {
+      status: res.status,
+      code: body.code,
+    });
+    throw error;
+  }
+  return res.json();
+}
+
+// ─── Queries ─────────────────────────────────────────────────────────────────
+
+export function useGames() {
+  return useQuery<Game[]>({
+    queryKey: ["games"],
+    queryFn: async () => {
+      const data = await apiFetch<{ games: Game[] }>("/api/games");
+      return data.games;
+    },
+  });
+}
+
+export function useGame(id: string) {
+  return useQuery<Game>({
+    queryKey: ["games", id],
+    queryFn: async () => {
+      const data = await apiFetch<{ game: Game }>(`/api/games/${id}`);
+      return data.game;
+    },
+    enabled: !!id,
+  });
+}
+
+export function useGameAttempts(id: string) {
+  return useQuery({
+    queryKey: ["games", id, "attempts"],
+    queryFn: async () => {
+      const data = await apiFetch<{ attempts: unknown[] }>(
+        `/api/games/${id}/attempts`
+      );
+      return data.attempts;
+    },
+    enabled: !!id,
+  });
+}
+
+export function useProgress() {
+  return useQuery<ProgressData>({
+    queryKey: ["progress"],
+    queryFn: async () => {
+      return apiFetch<ProgressData>("/api/progress");
+    },
+  });
+}
+
+// ─── Mutations ────────────────────────────────────────────────────────────────
+
+export function useCreateGame() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (input: CreateGameInput) => {
+      const data = await apiFetch<{ game: Game }>("/api/games", {
+        method: "POST",
+        body: JSON.stringify(input),
+      });
+      return data.game;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["games"] });
+    },
+  });
+}
+
+export function useUpdateGame() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async ({
+      id,
+      ...input
+    }: { id: string; name?: string; gameData?: unknown }) => {
+      const data = await apiFetch<{ game: Game }>(`/api/games/${id}`, {
+        method: "PATCH",
+        body: JSON.stringify(input),
+      });
+      return data.game;
+    },
+    onSuccess: (game) => {
+      queryClient.invalidateQueries({ queryKey: ["games"] });
+      queryClient.invalidateQueries({ queryKey: ["games", game.id] });
+    },
+  });
+}
+
+export function useDeleteGame() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiFetch(`/api/games/${id}`, { method: "DELETE" });
+      return id;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["games"] });
+    },
+  });
+}
+
+export function useDuplicateGame() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const data = await apiFetch<{ game: Game }>(
+        `/api/games/${id}/duplicate`,
+        { method: "POST" }
+      );
+      return data.game;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["games"] });
+    },
+  });
+}
+
+export function useSubmitAttempt() {
+  return useMutation({
+    mutationFn: async ({
+      gameId,
+      scorePercentage,
+      timeTaken,
+      attemptData,
+    }: {
+      gameId: string;
+      scorePercentage: number;
+      timeTaken: number;
+      attemptData?: unknown;
+    }) => {
+      const data = await apiFetch<{ attempt: unknown }>(
+        `/api/games/${gameId}/attempts`,
+        {
+          method: "POST",
+          body: JSON.stringify({ scorePercentage, timeTaken, attemptData }),
+        }
+      );
+      return data.attempt;
+    },
+  });
+}

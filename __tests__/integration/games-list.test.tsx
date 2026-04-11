@@ -1,8 +1,8 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, vi, beforeEach } from 'vitest'
 import { render, screen } from '@testing-library/react'
 import React from 'react'
 import GamesPage from '@/app/(dashboard)/games/page'
-import { GamesStoreProvider } from '@/context/games-store'
+import { GameType } from '@/types/game'
 
 // next/navigation mock
 vi.mock('next/navigation', () => ({
@@ -16,37 +16,90 @@ vi.mock('next/link', () => ({
     React.createElement('a', { href, ...props }, children),
 }))
 
-function renderWithStore(ui: React.ReactElement) {
-  return render(React.createElement(GamesStoreProvider, null, ui))
-}
+// sonner mock
+vi.mock('sonner', () => ({ toast: { success: vi.fn(), error: vi.fn() } }))
+
+// Mock TanStack Query hooks
+vi.mock('@/hooks/use-games', () => ({
+  useGames: vi.fn(),
+  useDeleteGame: vi.fn(),
+  useDuplicateGame: vi.fn(),
+}))
+
+import { useGames, useDeleteGame, useDuplicateGame } from '@/hooks/use-games'
+
+const mockUseGames = useGames as ReturnType<typeof vi.fn>
+const mockUseDeleteGame = useDeleteGame as ReturnType<typeof vi.fn>
+const mockUseDuplicateGame = useDuplicateGame as ReturnType<typeof vi.fn>
+
+const MOCK_GAMES = [
+  {
+    id: 'game-1',
+    userId: 'user-1',
+    name: 'Times Tables',
+    gameType: GameType.FLASHCARDS,
+    gameData: JSON.stringify({ cards: [{ id: '1', front: 'Q', back: 'A' }] }),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+  {
+    id: 'game-2',
+    userId: 'user-1',
+    name: 'French Vocabulary',
+    gameType: GameType.PAIRS,
+    gameData: JSON.stringify({ items: [{ id: '1', leftText: 'bonjour', rightText: 'hello' }] }),
+    createdAt: new Date(),
+    updatedAt: new Date(),
+  },
+]
+
+beforeEach(() => {
+  vi.clearAllMocks()
+  mockUseDeleteGame.mockReturnValue({ mutate: vi.fn() })
+  mockUseDuplicateGame.mockReturnValue({ mutate: vi.fn() })
+})
 
 describe('Games list page', () => {
   it('renders the page heading', () => {
-    renderWithStore(React.createElement(GamesPage))
+    mockUseGames.mockReturnValue({ data: [], isLoading: false, isError: false })
+    render(React.createElement(GamesPage))
     expect(screen.getByRole('heading', { name: /my games/i })).toBeInTheDocument()
   })
 
   it('renders a Create Game link', () => {
-    renderWithStore(React.createElement(GamesPage))
-    const link = screen.getByRole('link', { name: /create game/i })
-    expect(link).toHaveAttribute('href', '/games/create')
+    mockUseGames.mockReturnValue({ data: [], isLoading: false, isError: false })
+    render(React.createElement(GamesPage))
+    const links = screen.getAllByRole('link', { name: /create game/i })
+    expect(links.length).toBeGreaterThanOrEqual(1)
+    expect(links[0]).toHaveAttribute('href', '/games/create')
   })
 
-  it('renders a card for each seed game', () => {
-    renderWithStore(React.createElement(GamesPage))
-    // Seed data has 5 games
+  it('shows empty state when there are no games', () => {
+    mockUseGames.mockReturnValue({ data: [], isLoading: false, isError: false })
+    render(React.createElement(GamesPage))
+    expect(screen.getByText(/no games yet/i)).toBeInTheDocument()
+  })
+
+  it('renders a card for each game', () => {
+    mockUseGames.mockReturnValue({ data: MOCK_GAMES, isLoading: false, isError: false })
+    render(React.createElement(GamesPage))
     expect(screen.getByText('Times Tables')).toBeInTheDocument()
     expect(screen.getByText('French Vocabulary')).toBeInTheDocument()
-    expect(screen.getByText('Capital Cities')).toBeInTheDocument()
-    expect(screen.getByText('Algebra Basics')).toBeInTheDocument()
-    expect(screen.getByText('World Capitals Quiz')).toBeInTheDocument()
+  })
+
+  it('shows loading spinner while fetching', () => {
+    mockUseGames.mockReturnValue({ data: undefined, isLoading: true, isError: false })
+    render(React.createElement(GamesPage))
+    // Loading state renders a spinner, no heading visible
+    expect(screen.queryByText('Times Tables')).not.toBeInTheDocument()
   })
 
   it('each game card links to /games/[id]', () => {
-    renderWithStore(React.createElement(GamesPage))
+    mockUseGames.mockReturnValue({ data: MOCK_GAMES, isLoading: false, isError: false })
+    render(React.createElement(GamesPage))
     const links = screen.getAllByRole('link').filter((l) =>
       (l as HTMLAnchorElement).href.includes('/games/game-')
     )
-    expect(links.length).toBeGreaterThanOrEqual(5)
+    expect(links.length).toBeGreaterThanOrEqual(2)
   })
 })

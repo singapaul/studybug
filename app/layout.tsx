@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Quicksand, Plus_Jakarta_Sans } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from "@/components/providers/session-provider";
+import { QueryProvider } from "@/components/providers/query-provider";
 
 const quicksand = Quicksand({
   subsets: ["latin"],
@@ -41,7 +42,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning className={`${quicksand.variable} ${plusJakartaSans.variable}`}>
       <body>
-        <SessionProvider>{children}</SessionProvider>
+        <SessionProvider>
+          <QueryProvider>{children}</QueryProvider>
+        </SessionProvider>
       </body>
     </html>
   );

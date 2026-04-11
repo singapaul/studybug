@@ -12,9 +12,13 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import Link from "next/link";
-import { CreditCard, Users, Activity, ArrowUpRight } from "lucide-react";
+import { CreditCard, Activity, ArrowUpRight, Gamepad2, TrendingUp } from "lucide-react";
 import { Suspense } from "react";
 import { UpgradeBanner } from "./upgrade-banner";
+import { getDashboardStats } from "@/lib/dashboard-stats";
+import { getTemplateName } from "@/lib/game-templates";
+import { GameType } from "@prisma/client";
+import { FREE_GAME_LIMIT } from "@/lib/api-helpers";
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -23,7 +27,7 @@ export const metadata: Metadata = {
 export default async function DashboardPage({
   searchParams,
 }: {
-  searchParams: { upgrade?: string };
+  searchParams: Promise<{ upgrade?: string }>;
 }) {
   const session = await auth.api.getSession({ headers: await headers() });
 
@@ -34,6 +38,10 @@ export default async function DashboardPage({
   const plan = (session.user as { plan?: string }).plan ?? "free";
   const isPro = plan === "pro";
   const firstName = session.user.name?.split(" ")[0] ?? "there";
+  const resolvedParams = await searchParams;
+
+  const stats = await getDashboardStats(session.user.id);
+  const nearLimit = !isPro && stats.totalGames >= FREE_GAME_LIMIT - 1;
 
   return (
     <div className="p-8">
@@ -46,10 +54,9 @@ export default async function DashboardPage({
           <Badge variant={isPro ? "default" : "secondary"} className="capitalize">
             {plan} plan
           </Badge>
-
         </div>
         <p className="text-muted-foreground">
-          Here&apos;s an overview of your account.
+          Here&apos;s an overview of your games and progress.
         </p>
       </div>
 
@@ -64,19 +71,38 @@ export default async function DashboardPage({
       )}
 
       {/* Post-upgrade success banner */}
-      {searchParams.upgrade === "success" && (
+      {resolvedParams.upgrade === "success" && (
         <Suspense>
           <UpgradeBanner currentPlan={plan} />
         </Suspense>
       )}
 
-      {/* Upgrade banner for free users */}
-      {!isPro && (
+      {/* Contextual upgrade banner for free users at/near game limit */}
+      {nearLimit && (
+        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-center justify-between">
+          <div>
+            <p className="font-medium text-amber-900">
+              {stats.totalGames >= FREE_GAME_LIMIT
+                ? "You've reached the free plan game limit"
+                : "You're almost at the free plan game limit"}
+            </p>
+            <p className="text-sm text-amber-700">
+              Upgrade to Pro for unlimited games and all game types.
+            </p>
+          </div>
+          <Button asChild size="sm" variant="default">
+            <Link href="/#pricing">Upgrade</Link>
+          </Button>
+        </div>
+      )}
+
+      {/* General upgrade banner for free users (only when not near limit) */}
+      {!isPro && !nearLimit && (
         <div className="mb-8 rounded-lg border border-primary/20 bg-primary/5 p-4 flex items-center justify-between">
           <div>
             <p className="font-medium text-foreground">Upgrade to Pro</p>
             <p className="text-sm text-muted-foreground">
-              Unlock unlimited projects, priority support, and more.
+              Unlock all game types, unlimited games, and progress tracking.
             </p>
           </div>
           <Button asChild size="sm">
@@ -90,14 +116,14 @@ export default async function DashboardPage({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Projects
+              Games
             </CardTitle>
-            <Activity className="h-4 w-4 text-muted-foreground" />
+            <Gamepad2 className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">0</div>
+            <div className="text-2xl font-bold">{stats.totalGames}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {isPro ? "Unlimited" : "Up to 3 on free plan"}
+              {isPro ? "Unlimited" : `${stats.totalGames} / ${FREE_GAME_LIMIT} on free plan`}
             </p>
           </CardContent>
         </Card>
@@ -105,14 +131,16 @@ export default async function DashboardPage({
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
-              Team Members
+              Attempts
             </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
+            <Activity className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">1</div>
+            <div className="text-2xl font-bold">{stats.totalAttempts}</div>
             <p className="text-xs text-muted-foreground mt-1">
-              {isPro ? "Invite your team" : "Upgrade for team access"}
+              {stats.totalAttempts > 0
+                ? `Avg score: ${stats.averageScore}%`
+                : "Play a game to start tracking"}
             </p>
           </CardContent>
         </Card>
@@ -133,19 +161,74 @@ export default async function DashboardPage({
         </Card>
       </div>
 
-      {/* Quick actions */}
+      {/* Recent Games + Quick actions */}
       <div className="grid gap-4 md:grid-cols-2">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Get started</CardTitle>
-            <CardDescription>Quick links to help you get started.</CardDescription>
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-base">Recent Games</CardTitle>
+              <Button asChild variant="ghost" size="sm" className="text-xs">
+                <Link href="/games">View all</Link>
+              </Button>
+            </div>
+            <CardDescription>Your most recently updated games.</CardDescription>
+          </CardHeader>
+          <CardContent>
+            {stats.recentGames.length === 0 ? (
+              <div className="flex flex-col items-center justify-center py-6 text-center">
+                <Gamepad2 className="h-8 w-8 text-muted-foreground/40 mb-3" />
+                <p className="text-sm text-muted-foreground">No games yet.</p>
+                <Button asChild size="sm" variant="outline" className="mt-3">
+                  <Link href="/games/create">Create your first game</Link>
+                </Button>
+              </div>
+            ) : (
+              <div className="space-y-2">
+                {stats.recentGames.map((game) => (
+                  <Link
+                    key={game.id}
+                    href={`/games/${game.id}`}
+                    className="flex items-center justify-between rounded-md border p-3 hover:bg-accent transition-colors"
+                  >
+                    <div>
+                      <p className="text-sm font-medium">{game.name}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {getTemplateName(game.gameType as unknown as GameType)} ·{" "}
+                        {new Date(game.updatedAt).toLocaleDateString()}
+                      </p>
+                    </div>
+                    <ArrowUpRight className="h-4 w-4 text-muted-foreground shrink-0" />
+                  </Link>
+                ))}
+              </div>
+            )}
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle className="text-base">Quick Actions</CardTitle>
+            <CardDescription>Jump to key areas of your account.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-3">
             <Link
-              href="/settings"
+              href="/games/create"
               className="flex items-center justify-between rounded-md border p-3 hover:bg-accent transition-colors"
             >
-              <span className="text-sm font-medium">Complete your profile</span>
+              <span className="text-sm font-medium">Create a new game</span>
+              <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
+            </Link>
+            <Link
+              href="/progress"
+              className="flex items-center justify-between rounded-md border p-3 hover:bg-accent transition-colors"
+            >
+              <span className="text-sm font-medium flex items-center gap-2">
+                <TrendingUp className="h-4 w-4" />
+                View progress
+                {!isPro && (
+                  <Badge variant="secondary" className="text-xs">Pro</Badge>
+                )}
+              </span>
               <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
             </Link>
             {!isPro && (
@@ -166,22 +249,6 @@ export default async function DashboardPage({
                 <ArrowUpRight className="h-4 w-4 text-muted-foreground" />
               </Link>
             )}
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Recent activity</CardTitle>
-            <CardDescription>Your recent account activity.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <Activity className="h-8 w-8 text-muted-foreground/40 mb-3" />
-              <p className="text-sm text-muted-foreground">No activity yet.</p>
-              <p className="text-xs text-muted-foreground mt-1">
-                Actions you take will appear here.
-              </p>
-            </div>
           </CardContent>
         </Card>
       </div>

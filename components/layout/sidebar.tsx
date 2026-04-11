@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2 } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -31,16 +31,25 @@ const navItems = [
     label: "Dashboard",
     href: "/dashboard",
     icon: LayoutDashboard,
+    proOnly: false,
   },
   {
     label: "Games",
     href: "/games",
     icon: Gamepad2,
+    proOnly: false,
+  },
+  {
+    label: "Progress",
+    href: "/progress",
+    icon: TrendingUp,
+    proOnly: true,
   },
   {
     label: "Settings",
     href: "/settings",
     icon: Settings,
+    proOnly: false,
   },
 ];
 
@@ -71,6 +80,7 @@ export function Sidebar({ user }: SidebarProps) {
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+          const isLocked = item.proOnly && user.plan !== "pro";
           return (
             <Link
               key={item.href}
@@ -83,7 +93,10 @@ export function Sidebar({ user }: SidebarProps) {
               )}
             >
               <Icon className="h-4 w-4 shrink-0" aria-hidden="true" />
-              {item.label}
+              <span className="flex-1">{item.label}</span>
+              {isLocked && (
+                <Lock className="h-3.5 w-3.5 shrink-0 opacity-50" aria-label="Pro feature" />
+              )}
             </Link>
           );
         })}

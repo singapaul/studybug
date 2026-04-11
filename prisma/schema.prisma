@@ -7,18 +7,57 @@ generator client {
   provider = "prisma-client-js"
 }
 
+enum GameType {
+  PAIRS
+  FLASHCARDS
+  MULTIPLE_CHOICE
+  SPLAT
+  SWIPE
+}
+
 model user {
-  id               String    @id
+  id               String        @id
   name             String
-  email            String    @unique
+  email            String        @unique
   emailVerified    Boolean
   image            String?
   createdAt        DateTime
   updatedAt        DateTime
   stripeCustomerId String?
-  plan             String    @default("free")
+  plan             String        @default("free")
   sessions         session[]
   accounts         account[]
+  games            Game[]
+  gameAttempts     GameAttempt[]
+}
+
+model Game {
+  id        String        @id @default(cuid())
+  userId    String
+  user      user          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name      String
+  gameType  GameType
+  gameData  Json
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  attempts  GameAttempt[]
+
+  @@index([userId])
+}
+
+model GameAttempt {
+  id              String   @id @default(cuid())
+  userId          String
+  user            user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  gameId          String
+  game            Game     @relation(fields: [gameId], references: [id], onDelete: Cascade)
+  scorePercentage Int
+  timeTaken       Int
+  attemptData     Json?
+  createdAt       DateTime @default(now())
+
+  @@index([userId])
+  @@index([gameId])
 }
 
 model session {

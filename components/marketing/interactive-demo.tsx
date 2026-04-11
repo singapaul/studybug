@@ -1,5 +1,5 @@
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '@/components/ui/button';
 import { Check, X, RotateCcw, Sparkles, Trophy } from 'lucide-react';
@@ -44,7 +44,10 @@ function getRandomQuestions(count: number): FlashCard[] {
 }
 
 export function InteractiveDemo() {
-  const [demoCards, setDemoCards] = useState<FlashCard[]>(() => getRandomQuestions(3));
+  const [demoCards, setDemoCards] = useState<FlashCard[]>(() => questionBank.slice(0, 3));
+  useEffect(() => {
+    setDemoCards(getRandomQuestions(3));
+  }, []);
   const [currentCard, setCurrentCard] = useState(0);
   const [isFlipped, setIsFlipped] = useState(false);
   const [score, setScore] = useState(0);
