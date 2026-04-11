@@ -1,0 +1,66 @@
+import { NextRequest, NextResponse } from "next/server";
+import { auth } from "@/lib/auth";
+import { db } from "@/lib/db";
+
+export async function PATCH(req: NextRequest) {
+  try {
+    const session = await auth.api.getSession({ headers: req.headers });
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const body = await req.json();
+    const { name, email } = body;
+
+    if (!name && !email) {
+      return NextResponse.json(
+        { error: "At least one field (name or email) is required" },
+        { status: 400 }
+      );
+    }
+
+    if (email) {
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(email)) {
+        return NextResponse.json(
+          { error: "Invalid email format" },
+          { status: 400 }
+        );
+      }
+
+      if (email !== session.user.email) {
+        const existingUser = await db.user.findUnique({ where: { email } });
+        if (existingUser && existingUser.id !== session.user.id) {
+          return NextResponse.json(
+            { error: "Email is already in use" },
+            { status: 409 }
+          );
+        }
+      }
+    }
+
+    const updatedUser = await db.user.update({
+      where: { id: session.user.id },
+      data: {
+        ...(name !== undefined && { name }),
+        ...(email !== undefined && { email }),
+      },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        image: true,
+        plan: true,
+      },
+    });
+
+    return NextResponse.json({ user: updatedUser });
+  } catch (error) {
+    console.error("Error updating user:", error);
+    return NextResponse.json(
+      { error: "Failed to update profile" },
+      { status: 500 }
+    );
+  }
+}
