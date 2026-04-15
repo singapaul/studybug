@@ -1,0 +1,26 @@
+{
+  "subject": "english-literature",
+  "topic": "macbeth",
+  "items": [
+    { "term": "ambition", "definition": "A strong desire for power or success; Macbeth's 'vaulting ambition' drives the tragedy.", "sentence": "Macbeth's [blank] to become king leads him to murder Duncan and all who threaten his power." },
+    { "term": "supernatural", "definition": "Things beyond the natural world; in Macbeth, the witches represent supernatural forces.", "sentence": "The [blank] element of the play is shown through the witches, the ghost, and the floating dagger." },
+    { "term": "prophecy", "definition": "A prediction about the future, supposedly from a divine or supernatural source; the witches deliver three prophecies.", "sentence": "The witches' [blank] that Macbeth will be king plants the idea of murder in his mind." },
+    { "term": "soliloquy", "definition": "A speech delivered alone on stage, revealing a character's inner thoughts to the audience.", "sentence": "In his 'Is this a dagger' [blank], Macbeth reveals his guilty conscience before murdering Duncan." },
+    { "term": "guilt", "definition": "A feeling of having done wrong; shown through Macbeth's hallucinations and Lady Macbeth's sleepwalking.", "sentence": "Lady Macbeth's sleepwalking shows that [blank] has destroyed her mental state." },
+    { "term": "masculinity", "definition": "The qualities associated with being a man; Lady Macbeth and Macbeth debate what it means to be a man throughout the play.", "sentence": "Lady Macbeth questions Macbeth's [blank] by saying he is 'too full of the milk of human kindness'." },
+    { "term": "imagery", "definition": "Descriptive language that creates a vivid mental picture; Shakespeare uses blood and darkness imagery throughout Macbeth.", "sentence": "Shakespeare uses blood [blank] throughout the play to represent guilt and violence." },
+    { "term": "tyranny", "definition": "Cruel and oppressive government; Macbeth becomes a tyrant after killing Duncan.", "sentence": "Macbeth's [blank] is shown when he orders the murder of Macduff's innocent family." },
+    { "term": "fate", "definition": "The idea that events are predetermined; Macbeth struggles with whether the witches control his future.", "sentence": "The play raises the question of whether [blank] or free will is responsible for Macbeth's actions." },
+    { "term": "equivocation", "definition": "Deliberately misleading speech that is technically true but designed to deceive; used by the witches.", "sentence": "The witches' use of [blank] tricks Macbeth — 'no man of woman born' seems absolute but refers to a caesarean birth." },
+    { "term": "hubris", "definition": "Excessive pride or confidence that leads to downfall; Macbeth's belief he cannot be defeated leads to his death.", "sentence": "Macbeth's [blank] grows as he believes himself invincible, which blinds him to the threat Macduff poses." },
+    { "term": "corruption", "definition": "The process of becoming morally depraved; Macbeth transforms from a loyal soldier to a murderous tyrant.", "sentence": "The [blank] of Macbeth is charted through his increasing willingness to commit violence." },
+    { "term": "Lady Macbeth", "definition": "Macbeth's wife, who encourages him to murder Duncan and appears to be the stronger character initially but is consumed by guilt.", "sentence": "[Blank] manipulates Macbeth into killing Duncan but is ultimately destroyed by her own guilt." },
+    { "term": "Duncan", "definition": "The King of Scotland murdered by Macbeth; his goodness and trust make his murder seem especially terrible.", "sentence": "[Blank]'s virtues as a king make Macbeth's murder of him more shocking and morally reprehensible." },
+    { "term": "Banquo", "definition": "Macbeth's loyal general, whose descendants are prophesied to become kings; Macbeth orders his murder.", "sentence": "[Blank]'s ghost haunts Macbeth at the banquet, showing his guilt over his friend's murder." },
+    { "term": "Macduff", "definition": "The Scottish noble who kills Macbeth; his grief at the murder of his family motivates his revenge.", "sentence": "[Blank] was 'from his mother's womb untimely ripped', meaning the witches' prophecy was technically fulfilled." },
+    { "term": "dramatic irony", "definition": "When the audience knows something a character does not, creating tension; often used when characters misjudge Macbeth.", "sentence": "[Blank] is used when Duncan praises Macbeth as a loyal thane, not knowing Macbeth plans to kill him." },
+    { "term": "power", "definition": "The central theme of Macbeth; the desire for and corrupting effects of political power.", "sentence": "The play explores how the desire for [blank] can destroy a person's moral character." },
+    { "term": "hallucination", "definition": "Seeing something that is not there; Macbeth's visions of the dagger and Banquo's ghost reveal his mental deterioration.", "sentence": "Macbeth's [blank] of Banquo's ghost at the banquet shows that his guilt is destroying his sanity." },
+    { "term": "Jacobean", "definition": "Relating to the reign of King James I of England (1603–1625); Macbeth was written for a Jacobean audience.", "sentence": "Shakespeare's [blank] audience would have been particularly interested in the themes of kingship and witchcraft." }
+  ]
+}

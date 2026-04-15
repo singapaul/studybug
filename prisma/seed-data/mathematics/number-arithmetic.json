@@ -1,0 +1,26 @@
+{
+  "subject": "mathematics",
+  "topic": "number-arithmetic",
+  "items": [
+    { "term": "integer", "definition": "Any whole number, positive, negative, or zero; e.g. −3, 0, 7.", "sentence": "−5, 0, and 12 are all examples of [blank]s." },
+    { "term": "fraction", "definition": "A number representing part of a whole, written as numerator over denominator.", "sentence": "¾ is a [blank] where 3 is the numerator and 4 is the denominator." },
+    { "term": "decimal", "definition": "A number that includes a decimal point, representing a fraction in base 10.", "sentence": "The [blank] 0.25 is equivalent to the fraction ¼." },
+    { "term": "percentage", "definition": "A proportion expressed as a fraction of 100; symbol %.", "sentence": "A score of 18 out of 20 is equivalent to a [blank] of 90%." },
+    { "term": "factor", "definition": "A number that divides exactly into another number without leaving a remainder.", "sentence": "The [blank]s of 12 are 1, 2, 3, 4, 6, and 12." },
+    { "term": "multiple", "definition": "The result of multiplying a number by a positive integer; e.g. multiples of 3 are 3, 6, 9, 12…", "sentence": "The first five [blank]s of 7 are 7, 14, 21, 28, and 35." },
+    { "term": "prime", "definition": "A number that has exactly two factors: 1 and itself.", "sentence": "7 is a [blank] number because its only factors are 1 and 7." },
+    { "term": "square", "definition": "The result of multiplying a number by itself; e.g. 5 squared = 25.", "sentence": "The [blank] of 9 is 81, because 9 × 9 = 81." },
+    { "term": "cube", "definition": "The result of multiplying a number by itself three times; e.g. 2 cubed = 8.", "sentence": "The [blank] of 3 is 27, because 3 × 3 × 3 = 27." },
+    { "term": "root", "definition": "The inverse of a power; square root of 25 is 5, cube root of 27 is 3.", "sentence": "The square [blank] of 144 is 12 because 12 × 12 = 144." },
+    { "term": "HCF", "definition": "Highest Common Factor; the largest number that divides exactly into two or more numbers.", "sentence": "The [blank] of 12 and 18 is 6 because 6 is the largest number that divides into both." },
+    { "term": "LCM", "definition": "Lowest Common Multiple; the smallest number that is a multiple of two or more numbers.", "sentence": "The [blank] of 4 and 6 is 12 because 12 is the smallest number in both times tables." },
+    { "term": "ratio", "definition": "A comparison of two or more quantities, written using a colon e.g. 3:2.", "sentence": "If orange juice and water are mixed in the [blank] 2:3, for every 2 parts juice there are 3 parts water." },
+    { "term": "proportion", "definition": "A statement that two ratios are equal; also used to describe the relative size of parts of a whole.", "sentence": "If 3 items cost £12, you can use [blank] to find that 5 items cost £20." },
+    { "term": "rounding", "definition": "Expressing a number to a given number of decimal places or significant figures.", "sentence": "[Blank] 4.768 to one decimal place gives 4.8." },
+    { "term": "estimate", "definition": "An approximate answer to a calculation, often found by rounding numbers to convenient values.", "sentence": "You can [blank] the answer to 298 × 51 by calculating 300 × 50 = 15,000." },
+    { "term": "reciprocal", "definition": "The result of dividing 1 by a number; the reciprocal of 4 is ¼, and multiplying a number by its reciprocal gives 1.", "sentence": "The [blank] of 5 is 1/5, and 5 × 1/5 = 1." },
+    { "term": "standard form", "definition": "A way of writing very large or very small numbers as a × 10ⁿ, where 1 ≤ a < 10.", "sentence": "The speed of light, 300,000,000 m/s, can be written in [blank] as 3 × 10⁸ m/s." },
+    { "term": "negative", "definition": "Describes a number less than zero; on a number line it is to the left of zero.", "sentence": "A temperature of −5°C is a [blank] number because it is below zero." },
+    { "term": "BIDMAS", "definition": "The order of operations: Brackets, Indices, Division, Multiplication, Addition, Subtraction.", "sentence": "Using [blank], in the expression 3 + 4 × 2, you do the multiplication first to get 11." }
+  ]
+}

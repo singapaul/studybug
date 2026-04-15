@@ -12,11 +12,13 @@ import { toast } from 'sonner'
 interface PairsBuilderProps {
   onSave: (name: string, gameData: PairsGameData) => void
   onCancel: () => void
+  initialName?: string
+  initialData?: PairsGameData
 }
 
-export function PairsBuilder({ onSave, onCancel }: PairsBuilderProps) {
-  const [gameName, setGameName] = useState('')
-  const [pairs, setPairs] = useState<PairsItem[]>([])
+export function PairsBuilder({ onSave, onCancel, initialName = '', initialData }: PairsBuilderProps) {
+  const [gameName, setGameName] = useState(initialName)
+  const [pairs, setPairs] = useState<PairsItem[]>(initialData?.items ?? [])
   const [isSaving, setIsSaving] = useState(false)
 
   const addPair = () => {

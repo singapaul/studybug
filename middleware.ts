@@ -25,7 +25,9 @@ const publicRoutes = [
   "/cookies",
 ];
 
-const publicApiPrefixes = ["/api/auth", "/api/stripe/webhook"];
+const publicApiPrefixes = ["/api/auth", "/api/stripe/webhook", "/api/games/share", "/api/library"];
+
+const publicPagePrefixes = ["/games/share", "/library"];
 
 export async function middleware(request: NextRequest) {
   const { nextUrl } = request;
@@ -40,7 +42,8 @@ export async function middleware(request: NextRequest) {
 
   const isPublicRoute =
     publicRoutes.includes(nextUrl.pathname) ||
-    publicRoutes.some((r) => nextUrl.pathname.startsWith(r + "?"));
+    publicRoutes.some((r) => nextUrl.pathname.startsWith(r + "?")) ||
+    publicPagePrefixes.some((prefix) => nextUrl.pathname.startsWith(prefix));
 
   const { data: session } = await betterFetch<Session>(
     "/api/auth/get-session",

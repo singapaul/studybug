@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "health-body",
+  "items": [
+    { "term": "santé", "definition": "health", "sentence": "Il est important de prendre soin de sa [blank]." },
+    { "term": "malade", "definition": "ill / sick", "sentence": "Je suis [blank] aujourd'hui — j'ai mal à la gorge." },
+    { "term": "médecin", "definition": "doctor", "sentence": "J'ai rendez-vous chez le [blank] demain matin." },
+    { "term": "hôpital", "definition": "hospital", "sentence": "On l'a emmené à l'[blank] après l'accident." },
+    { "term": "médicament", "definition": "medicine / medication", "sentence": "Le [blank] que le médecin m'a prescrit est très efficace." },
+    { "term": "mal", "definition": "pain / ache (avoir mal à = to have pain in)", "sentence": "J'ai [blank] à la tête depuis ce matin." },
+    { "term": "tête", "definition": "head", "sentence": "J'ai mal à la [blank] — je vais prendre de l'aspirine." },
+    { "term": "gorge", "definition": "throat", "sentence": "J'ai très mal à la [blank] depuis hier." },
+    { "term": "ventre", "definition": "stomach / belly", "sentence": "Il a mal au [blank] après avoir trop mangé." },
+    { "term": "dos", "definition": "back", "sentence": "Mon père a souvent mal au [blank] à cause de son travail." },
+    { "term": "bras", "definition": "arm", "sentence": "Il s'est cassé le [blank] en jouant au rugby." },
+    { "term": "jambe", "definition": "leg", "sentence": "Elle s'est blessé la [blank] lors du match." },
+    { "term": "rhume", "definition": "cold (illness)", "sentence": "J'ai attrapé un [blank] en restant sous la pluie." },
+    { "term": "fièvre", "definition": "fever / temperature", "sentence": "Il a de la [blank] depuis hier soir." },
+    { "term": "allergie", "definition": "allergy", "sentence": "Il a une [blank] aux arachides, donc il ne peut pas manger de cacahuètes." },
+    { "term": "blessure", "definition": "injury / wound", "sentence": "La [blank] au genou n'est pas grave." },
+    { "term": "se reposer", "definition": "to rest", "sentence": "Le médecin lui a conseillé de [blank] pendant une semaine." },
+    { "term": "guérir", "definition": "to recover / to get better", "sentence": "J'espère que tu vas vite [blank]." },
+    { "term": "exercice", "definition": "exercise", "sentence": "Faire de l'[blank] régulièrement est bon pour la santé." },
+    { "term": "ordonnance", "definition": "prescription", "sentence": "Le médecin m'a donné une [blank] pour acheter des médicaments à la pharmacie." }
+  ]
+}

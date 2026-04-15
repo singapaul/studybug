@@ -1,0 +1,26 @@
+{
+  "subject": "physics",
+  "topic": "electricity",
+  "items": [
+    { "term": "current", "definition": "The rate of flow of electric charge; measured in amperes (A). I = Q/t.", "sentence": "A larger [blank] means more charge is flowing through a circuit per second." },
+    { "term": "voltage", "definition": "The potential difference (energy per unit charge) between two points in a circuit; measured in volts (V).", "sentence": "The [blank] across a component tells you how much energy is transferred per unit of charge." },
+    { "term": "resistance", "definition": "A measure of how much a component opposes the flow of current; measured in ohms (Ω). R = V/I.", "sentence": "A longer wire has greater [blank] because there are more collisions between electrons and ions." },
+    { "term": "conductor", "definition": "A material that allows electric current to flow through it easily, such as copper or silver.", "sentence": "Copper wire is used in circuits because it is a good [blank] of electricity." },
+    { "term": "insulator", "definition": "A material that does not allow electric current to flow, such as rubber or plastic.", "sentence": "The plastic coating on a wire is an [blank] that prevents electric shocks." },
+    { "term": "circuit", "definition": "A closed loop through which electric current can flow, containing a power source and components.", "sentence": "A switch opens or closes a [blank] to control whether current can flow." },
+    { "term": "series", "definition": "Describes a circuit in which components are connected in a single loop so the same current flows through all.", "sentence": "In a [blank] circuit, if one bulb breaks, all the other bulbs go out." },
+    { "term": "parallel", "definition": "Describes a circuit in which components are connected in separate branches so each receives the full voltage.", "sentence": "Household appliances are connected in [blank] so each works independently." },
+    { "term": "ohm", "definition": "The SI unit of resistance; symbol Ω.", "sentence": "A resistor with a resistance of 5 [blank]s has a current of 2 A when 10 V is applied." },
+    { "term": "ammeter", "definition": "A device used to measure the current through a component; connected in series in a circuit.", "sentence": "An [blank] must be connected in series in a circuit to measure the current flowing through it." },
+    { "term": "voltmeter", "definition": "A device used to measure the potential difference (voltage) across a component; connected in parallel.", "sentence": "A [blank] is connected in parallel across a component to measure the voltage across it." },
+    { "term": "power", "definition": "The rate at which a circuit component transfers energy; P = IV or P = I²R, measured in watts.", "sentence": "The [blank] of a kettle is 2000 W because it transfers 2000 J of energy every second." },
+    { "term": "charge", "definition": "A fundamental property of matter; measured in coulombs (C). Q = It.", "sentence": "A current of 3 A flowing for 10 seconds transfers a total [blank] of 30 coulombs." },
+    { "term": "direct current", "definition": "Electric current that flows in one direction only, as produced by a battery.", "sentence": "A battery produces [blank], which flows in one direction only." },
+    { "term": "alternating current", "definition": "Electric current that periodically changes direction; the type supplied to homes from the mains.", "sentence": "The UK mains supply provides [blank] at 230 V and 50 Hz." },
+    { "term": "earth wire", "definition": "A safety wire in mains circuits, coloured green and yellow, that provides a low-resistance path to earth if a fault occurs.", "sentence": "The [blank] in a plug provides a safe path for electricity if the live wire touches the metal casing." },
+    { "term": "fuse", "definition": "A safety device containing a thin wire that melts if too much current flows, breaking the circuit.", "sentence": "A [blank] protects a circuit by melting and breaking the current if it becomes too large." },
+    { "term": "transformer", "definition": "A device that changes the voltage of alternating current; used to step voltage up or down.", "sentence": "A [blank] is used in the National Grid to step up voltage for efficient transmission over long distances." },
+    { "term": "semiconductor", "definition": "A material with electrical conductivity between that of a conductor and an insulator; used in diodes and transistors.", "sentence": "Silicon is a [blank] used to make computer chips and solar cells." },
+    { "term": "diode", "definition": "A component that allows current to flow in only one direction; used to convert AC to DC.", "sentence": "A [blank] only allows current to flow in one direction through a circuit." }
+  ]
+}

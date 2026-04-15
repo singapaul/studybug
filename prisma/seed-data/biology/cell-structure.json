@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "cell-structure",
+  "items": [
+    { "term": "nucleus", "definition": "The control centre of the cell, containing DNA and directing the cell's activities.", "sentence": "The [blank] contains the cell's genetic information and controls its activities." },
+    { "term": "mitochondria", "definition": "Organelles where aerobic respiration takes place, releasing energy as ATP.", "sentence": "Energy is released through aerobic respiration in the [blank]." },
+    { "term": "ribosome", "definition": "Tiny organelles found in the cytoplasm where proteins are made.", "sentence": "Proteins are assembled at the [blank]." },
+    { "term": "chloroplast", "definition": "Organelle found only in plant cells that contains chlorophyll and is the site of photosynthesis.", "sentence": "The [blank] is the site of photosynthesis in plant cells." },
+    { "term": "vacuole", "definition": "A fluid-filled sac found in plant cells that maintains turgor pressure and stores cell sap.", "sentence": "The large central [blank] in plant cells helps keep the cell firm." },
+    { "term": "cytoplasm", "definition": "The jelly-like fluid that fills the cell and in which chemical reactions take place.", "sentence": "Most of the cell's chemical reactions take place in the [blank]." },
+    { "term": "diffusion", "definition": "The net movement of particles from a region of high concentration to a region of low concentration.", "sentence": "Oxygen moves from the lungs into the blood by [blank]." },
+    { "term": "osmosis", "definition": "The movement of water molecules through a partially permeable membrane from a dilute to a concentrated solution.", "sentence": "[Blank] causes plant cells to swell when placed in pure water." },
+    { "term": "prokaryote", "definition": "A simple cell type with no membrane-bound nucleus, such as bacteria.", "sentence": "A bacterium is an example of a [blank] because it has no true nucleus." },
+    { "term": "eukaryote", "definition": "A complex cell type with a membrane-bound nucleus, found in plants, animals, fungi, and protists.", "sentence": "An animal cell is a [blank] because its DNA is enclosed within a nucleus." },
+    { "term": "organelle", "definition": "A specialised structure within a cell that carries out a specific function.", "sentence": "The mitochondria is an [blank] that is responsible for producing energy." },
+    { "term": "cellulose", "definition": "A tough carbohydrate polymer that forms the cell walls of plant cells, providing structural support.", "sentence": "Plant cell walls are made of [blank], giving them rigidity." },
+    { "term": "chromosome", "definition": "A thread-like structure made of DNA, found in the nucleus, that carries genetic information.", "sentence": "Humans have 46 [blank] arranged in 23 pairs in each body cell." },
+    { "term": "differentiation", "definition": "The process by which unspecialised cells develop into cells with a specific structure and function.", "sentence": "[Blank] allows stem cells to become specialised cells such as nerve or muscle cells." },
+    { "term": "turgid", "definition": "Describes a plant cell that is swollen and firm due to water entering by osmosis.", "sentence": "A plant cell in a dilute solution becomes [blank] as water enters by osmosis." },
+    { "term": "plasmid", "definition": "A small circular loop of DNA found in bacterial cells, separate from the main chromosome.", "sentence": "Scientists insert genes into a bacterial [blank] during genetic engineering." },
+    { "term": "membrane", "definition": "The thin, flexible boundary surrounding all cells that controls what enters and leaves.", "sentence": "The cell [blank] is selectively permeable, controlling the movement of substances in and out." },
+    { "term": "DNA", "definition": "The molecule that carries genetic information, made of two strands twisted into a double helix.", "sentence": "[Blank] contains the coded instructions for making proteins and is passed from parent to offspring." },
+    { "term": "specialised", "definition": "Describes a cell that has a particular shape or structure adapted for its specific function.", "sentence": "Red blood cells are [blank] to carry oxygen efficiently around the body." },
+    { "term": "stem cell", "definition": "An undifferentiated cell that can divide and develop into many different types of specialised cell.", "sentence": "A [blank] can develop into many different types of cell in the body." }
+  ]
+}

@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "family",
+  "items": [
+    { "term": "famille", "definition": "family", "sentence": "Ma [blank] est très importante pour moi." },
+    { "term": "père", "definition": "father", "sentence": "Mon [blank] travaille comme ingénieur." },
+    { "term": "mère", "definition": "mother", "sentence": "Ma [blank] est médecin." },
+    { "term": "frère", "definition": "brother", "sentence": "Mon [blank] s'appelle Lucas et il a quinze ans." },
+    { "term": "sœur", "definition": "sister", "sentence": "Ma [blank] est plus jeune que moi." },
+    { "term": "grand-père", "definition": "grandfather", "sentence": "Mon [blank] habite à la campagne." },
+    { "term": "grand-mère", "definition": "grandmother", "sentence": "Ma [blank] fait de très bons gâteaux." },
+    { "term": "oncle", "definition": "uncle", "sentence": "Mon [blank] vit en Espagne." },
+    { "term": "tante", "definition": "aunt", "sentence": "Ma [blank] m'achète souvent des cadeaux." },
+    { "term": "cousin", "definition": "male cousin", "sentence": "Mon [blank] joue dans une équipe de rugby." },
+    { "term": "cousine", "definition": "female cousin", "sentence": "Ma [blank] étudie la médecine à l'université." },
+    { "term": "fils", "definition": "son", "sentence": "Leur [blank] aîné s'appelle Thomas." },
+    { "term": "fille", "definition": "daughter", "sentence": "Leur [blank] est très douée en musique." },
+    { "term": "mari", "definition": "husband", "sentence": "Le [blank] de ma sœur est très sympa." },
+    { "term": "femme", "definition": "wife / woman", "sentence": "Sa [blank] est professeure de maths." },
+    { "term": "enfant", "definition": "child", "sentence": "Ils ont un [blank] de cinq ans." },
+    { "term": "beau-père", "definition": "stepfather / father-in-law", "sentence": "Mon [blank] est très gentil et il nous aide beaucoup." },
+    { "term": "belle-mère", "definition": "stepmother / mother-in-law", "sentence": "Sa [blank] cuisine très bien." },
+    { "term": "célibataire", "definition": "single / unmarried", "sentence": "Ma sœur est [blank] et elle vit seule." },
+    { "term": "divorcer", "definition": "to divorce / to get divorced", "sentence": "Ses parents ont décidé de [blank] l'année dernière." }
+  ]
+}

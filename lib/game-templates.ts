@@ -71,6 +71,48 @@ export const GAME_TEMPLATES: GameTemplate[] = [
     ],
     minItems: 10,
   },
+  {
+    type: GameType.FILL_IN_THE_BLANK,
+    name: 'Fill in the Blank',
+    description: 'Complete sentences by filling in the missing word - great for language and grammar',
+    icon: 'PenLine',
+    color: 'bg-teal-500',
+    features: [
+      'Type the missing word',
+      'Case-insensitive matching',
+      'Instant feedback',
+      'Perfect for language learning',
+    ],
+    minItems: 5,
+  },
+  {
+    type: GameType.SPEED_ROUND,
+    name: 'Speed Round',
+    description: 'Race against the clock - answer as many questions as possible before time runs out',
+    icon: 'Timer',
+    color: 'bg-red-500',
+    features: [
+      'Configurable timer (30-120s)',
+      '4 answer options per question',
+      'Score based on correct answers',
+      'High-pressure challenge',
+    ],
+    minItems: 10,
+  },
+  {
+    type: GameType.ANAGRAM,
+    name: 'Anagram Solver',
+    description: 'Unscramble letters to form the correct word - tests spelling and vocabulary',
+    icon: 'Shuffle',
+    color: 'bg-violet-500',
+    features: [
+      'Click letters to build answer',
+      'Optional hints per word',
+      'Reveal button available',
+      'Great for spelling practice',
+    ],
+    minItems: 5,
+  },
 ]
 
 export function getTemplateByType(type: GameType): GameTemplate | undefined {

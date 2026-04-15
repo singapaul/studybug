@@ -1,0 +1,26 @@
+{
+  "subject": "spanish",
+  "topic": "town-environment",
+  "items": [
+    { "term": "ciudad", "definition": "city / large town", "sentence": "Vivo en una [blank] grande con mucho tráfico." },
+    { "term": "pueblo", "definition": "small town / village", "sentence": "Mi abuelo vive en un [blank] tranquilo en el campo." },
+    { "term": "calle", "definition": "street", "sentence": "Hay muchas tiendas en esta [blank] del centro." },
+    { "term": "mercado", "definition": "market", "sentence": "Mi madre compra fruta fresca en el [blank] los sábados." },
+    { "term": "ayuntamiento", "definition": "town hall", "sentence": "El [blank] organiza actividades para los ciudadanos." },
+    { "term": "correos", "definition": "post office", "sentence": "Tengo que ir a [blank] para enviar este paquete." },
+    { "term": "banco", "definition": "bank", "sentence": "Necesito ir al [blank] para sacar dinero." },
+    { "term": "farmacia", "definition": "pharmacy / chemist", "sentence": "Voy a la [blank] a comprar medicamentos para el resfriado." },
+    { "term": "biblioteca", "definition": "library", "sentence": "Voy a la [blank] para estudiar y tomar libros prestados." },
+    { "term": "piscina", "definition": "swimming pool", "sentence": "Los miércoles voy a la [blank] municipal con mis amigos." },
+    { "term": "parque", "definition": "park", "sentence": "Los niños juegan en el [blank] después del colegio." },
+    { "term": "contaminación", "definition": "pollution", "sentence": "La [blank] del aire es un problema grave en las grandes ciudades." },
+    { "term": "medioambiente", "definition": "environment", "sentence": "Debemos proteger el [blank] para las generaciones futuras." },
+    { "term": "reciclar", "definition": "to recycle", "sentence": "En mi ciudad podemos [blank] el plástico, el vidrio y el papel." },
+    { "term": "transporte", "definition": "transport", "sentence": "El [blank] público ayuda a reducir la contaminación en la ciudad." },
+    { "term": "bicicleta", "definition": "bicycle", "sentence": "Voy al instituto en [blank] todos los días." },
+    { "term": "atasco", "definition": "traffic jam", "sentence": "Hay muchos [blank]s en las horas punta en el centro." },
+    { "term": "limpio", "definition": "clean", "sentence": "Gracias al reciclaje, nuestro barrio está más [blank] que antes." },
+    { "term": "campo", "definition": "countryside", "sentence": "Mi abuelo prefiere vivir en el [blank] por la tranquilidad." },
+    { "term": "barrio", "definition": "neighbourhood / district", "sentence": "Vivo en un [blank] tranquilo con muchas zonas verdes." }
+  ]
+}

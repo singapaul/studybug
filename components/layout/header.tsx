@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Bug, Menu, X, ChevronDown } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useState } from 'react';
+import { useSession } from '@/lib/auth-client';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -17,6 +18,7 @@ export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [mobileResourcesOpen, setMobileResourcesOpen] = useState(false);
   const pathname = usePathname();
+  const { data: session } = useSession();
 
   const isActive = (path: string) => pathname === path;
 
@@ -87,16 +89,28 @@ export function Header() {
 
         {/* Desktop CTA */}
         <div className="hidden md:flex items-center gap-3">
-          <Button variant="ghost" size="sm" asChild className="rounded-full">
-            <Link href="/sign-in">Log In</Link>
-          </Button>
-          <Button
-            size="sm"
-            className="bg-primary text-white hover:bg-primary/90 font-semibold rounded-full shadow-md"
-            asChild
-          >
-            <Link href="/sign-up">Start Free Trial</Link>
-          </Button>
+          {session ? (
+            <Button
+              size="sm"
+              className="bg-primary text-white hover:bg-primary/90 font-semibold rounded-full shadow-md"
+              asChild
+            >
+              <Link href="/games">View Dashboard</Link>
+            </Button>
+          ) : (
+            <>
+              <Button variant="ghost" size="sm" asChild className="rounded-full">
+                <Link href="/sign-in">Log In</Link>
+              </Button>
+              <Button
+                size="sm"
+                className="bg-primary text-white hover:bg-primary/90 font-semibold rounded-full shadow-md"
+                asChild
+              >
+                <Link href="/sign-up">Start Free Trial</Link>
+              </Button>
+            </>
+          )}
         </div>
 
         {/* Mobile Menu Button */}
@@ -161,16 +175,26 @@ export function Header() {
             )}
 
             <div className="flex flex-col gap-3 pt-4 mt-2 border-t border-border">
-              <Button variant="outline" asChild className="rounded-full">
-                <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
-                  Log In
-                </Link>
-              </Button>
-              <Button className="bg-primary text-white font-semibold rounded-full" asChild>
-                <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
-                  Start Free Trial
-                </Link>
-              </Button>
+              {session ? (
+                <Button className="bg-primary text-white font-semibold rounded-full" asChild>
+                  <Link href="/games" onClick={() => setMobileMenuOpen(false)}>
+                    View Dashboard
+                  </Link>
+                </Button>
+              ) : (
+                <>
+                  <Button variant="outline" asChild className="rounded-full">
+                    <Link href="/sign-in" onClick={() => setMobileMenuOpen(false)}>
+                      Log In
+                    </Link>
+                  </Button>
+                  <Button className="bg-primary text-white font-semibold rounded-full" asChild>
+                    <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
+                      Start Free Trial
+                    </Link>
+                  </Button>
+                </>
+              )}
             </div>
           </nav>
         </motion.div>

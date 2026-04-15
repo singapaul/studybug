@@ -10,7 +10,6 @@ import { CheckCircle, Home, CheckCircle2, XCircle } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import { shuffleArray } from '@/lib/game-logic/flashcards'
-import MultipleChoiceResult from './MultipleChoiceResult'
 
 interface MultipleChoiceGameProps {
   gameData: MultipleChoiceGameData
@@ -53,14 +52,7 @@ export default function MultipleChoiceGame({ gameData, gameName, onComplete, onE
   }, [hasAnswered, correctCount, currentIndex, questions.length, startTime, onComplete])
 
   if (isComplete) {
-    return (
-      <MultipleChoiceResult
-        totalQuestions={questions.length}
-        correctAnswers={correctCount}
-        onPlayAgain={() => window.location.reload()}
-        onExit={onExit}
-      />
-    )
+    return null
   }
 
   const progressPct = (currentIndex / questions.length) * 100

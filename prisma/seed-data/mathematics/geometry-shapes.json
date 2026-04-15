@@ -1,0 +1,26 @@
+{
+  "subject": "mathematics",
+  "topic": "geometry-shapes",
+  "items": [
+    { "term": "perimeter", "definition": "The total distance around the outside of a 2D shape.", "sentence": "The [blank] of a rectangle with sides 5 cm and 3 cm is 16 cm." },
+    { "term": "area", "definition": "The amount of 2D space enclosed inside a shape, measured in square units.", "sentence": "The [blank] of a rectangle is found by multiplying its length by its width." },
+    { "term": "volume", "definition": "The amount of 3D space occupied by a solid object, measured in cubic units.", "sentence": "The [blank] of a cuboid is calculated by multiplying length × width × height." },
+    { "term": "radius", "definition": "The distance from the centre of a circle to any point on its circumference.", "sentence": "The [blank] of a circle with diameter 10 cm is 5 cm." },
+    { "term": "diameter", "definition": "A straight line passing through the centre of a circle, equal to twice the radius.", "sentence": "The [blank] of a circle is twice the length of its radius." },
+    { "term": "circumference", "definition": "The perimeter of a circle; calculated as π × diameter or 2πr.", "sentence": "The [blank] of a circle with diameter 7 cm is approximately 22 cm." },
+    { "term": "Pythagoras", "definition": "The theorem stating that in a right-angled triangle, a² + b² = c², where c is the hypotenuse.", "sentence": "[Blank]' theorem states that the square of the hypotenuse equals the sum of the squares of the other two sides." },
+    { "term": "hypotenuse", "definition": "The longest side of a right-angled triangle, opposite the right angle.", "sentence": "The [blank] is always the longest side of a right-angled triangle." },
+    { "term": "parallel", "definition": "Describes lines that are always the same distance apart and never meet.", "sentence": "The opposite sides of a rectangle are always [blank] to each other." },
+    { "term": "perpendicular", "definition": "Describes lines that meet at exactly 90 degrees.", "sentence": "The diagonals of a rhombus are [blank], crossing at right angles." },
+    { "term": "congruent", "definition": "Describes shapes that are identical in size and shape, even if rotated or reflected.", "sentence": "Two triangles are [blank] if they have exactly the same side lengths and angles." },
+    { "term": "similar", "definition": "Describes shapes that have the same angles but different sizes; one is an enlargement of the other.", "sentence": "Two shapes are [blank] if they have the same angles and corresponding sides in the same ratio." },
+    { "term": "translation", "definition": "A transformation that slides a shape to a new position without rotating or reflecting it.", "sentence": "A [blank] moves every point of a shape by the same distance in the same direction." },
+    { "term": "rotation", "definition": "A transformation that turns a shape around a fixed point by a given angle.", "sentence": "A [blank] of 90° clockwise turns a shape a quarter-turn to the right." },
+    { "term": "reflection", "definition": "A transformation that flips a shape about a line of symmetry (mirror line).", "sentence": "A [blank] produces a mirror image of a shape on the other side of a given line." },
+    { "term": "enlargement", "definition": "A transformation that changes the size of a shape by a scale factor, from a centre of enlargement.", "sentence": "An [blank] with scale factor 2 doubles the length of every side of the shape." },
+    { "term": "bisector", "definition": "A line that divides an angle or line segment exactly in half.", "sentence": "The perpendicular [blank] of a line segment crosses it at its midpoint at a right angle." },
+    { "term": "locus", "definition": "The set of all points satisfying a given condition, forming a path or region.", "sentence": "The [blank] of points equidistant from two fixed points is the perpendicular bisector of the line between them." },
+    { "term": "arc", "definition": "A part of the circumference of a circle.", "sentence": "A sector is a 'pie slice' of a circle bounded by two radii and an [blank]." },
+    { "term": "tangent", "definition": "A straight line that touches a circle at exactly one point, perpendicular to the radius at that point.", "sentence": "A [blank] to a circle meets the circle at exactly one point and is perpendicular to the radius there." }
+  ]
+}

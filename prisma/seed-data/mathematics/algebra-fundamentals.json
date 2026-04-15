@@ -1,0 +1,26 @@
+{
+  "subject": "mathematics",
+  "topic": "algebra-fundamentals",
+  "items": [
+    { "term": "variable", "definition": "A letter used to represent an unknown or changing quantity in an algebraic expression.", "sentence": "In the expression 3x + 5, x is the [blank] that can take different values." },
+    { "term": "expression", "definition": "A mathematical phrase containing numbers, variables, and operations, but no equals sign.", "sentence": "3x + 7 is an algebraic [blank] that does not have a specific value." },
+    { "term": "equation", "definition": "A mathematical statement showing two expressions are equal, using an equals sign.", "sentence": "2x + 3 = 11 is an [blank] that can be solved to find x = 4." },
+    { "term": "formula", "definition": "A rule or relationship written in algebraic symbols, such as A = lw for the area of a rectangle.", "sentence": "The [blank] for the area of a triangle is A = ½bh." },
+    { "term": "substitution", "definition": "Replacing a variable in an expression with a numerical value to calculate the result.", "sentence": "[Blank] means replacing letters with numbers to work out the value of an expression." },
+    { "term": "expand", "definition": "To remove brackets in an expression by multiplying each term inside by the term outside.", "sentence": "To [blank] 3(x + 4), you multiply both x and 4 by 3 to get 3x + 12." },
+    { "term": "factorise", "definition": "To write an expression as a product of its factors, the reverse of expanding brackets.", "sentence": "To [blank] 6x + 9, you take out the common factor of 3 to get 3(2x + 3)." },
+    { "term": "simplify", "definition": "To write an expression in its simplest form by collecting like terms or cancelling.", "sentence": "You can [blank] 3x + 2x + 5 to 5x + 5 by collecting like terms." },
+    { "term": "solve", "definition": "To find the value of the unknown that makes an equation true.", "sentence": "To [blank] 2x − 5 = 9, you add 5 to both sides and then divide by 2." },
+    { "term": "inequality", "definition": "A mathematical statement showing that one expression is greater than or less than another.", "sentence": "The [blank] 3x + 1 > 10 means the expression 3x + 1 is greater than 10." },
+    { "term": "sequence", "definition": "An ordered list of numbers following a rule, such as 2, 4, 6, 8 (add 2 each time).", "sentence": "The [blank] 3, 6, 9, 12 is the three times table — each term increases by 3." },
+    { "term": "nth term", "definition": "A formula that gives the value of any term in a sequence based on its position n.", "sentence": "The [blank] formula for 5, 8, 11, 14 is 3n + 2." },
+    { "term": "coefficient", "definition": "The number multiplied by the variable in an algebraic term, e.g. in 4x the coefficient is 4.", "sentence": "In the term 7x, the [blank] is 7." },
+    { "term": "constant", "definition": "A term in an expression or equation with a fixed numerical value, not a variable.", "sentence": "In the expression 2x + 5, the number 5 is a [blank] because it does not change." },
+    { "term": "gradient", "definition": "The steepness of a line on a graph; calculated as rise ÷ run (change in y ÷ change in x).", "sentence": "A line with a [blank] of 3 rises 3 units for every 1 unit it moves to the right." },
+    { "term": "quadratic", "definition": "A polynomial expression or equation where the highest power of the variable is 2.", "sentence": "x² + 5x + 6 = 0 is a [blank] equation that can be solved by factorising." },
+    { "term": "simultaneous", "definition": "Describes two or more equations that must be satisfied at the same time.", "sentence": "[Blank] equations have a solution that satisfies both equations at the same time." },
+    { "term": "index", "definition": "The power to which a number or variable is raised, also called an exponent.", "sentence": "In the expression x³, the [blank] is 3, meaning x multiplied by itself three times." },
+    { "term": "rearrange", "definition": "To manipulate a formula or equation to make a different variable the subject.", "sentence": "You can [blank] the formula v = u + at to make t the subject: t = (v − u)/a." },
+    { "term": "subject", "definition": "The variable that a formula is expressed in terms of; in y = mx + c, y is the subject.", "sentence": "In the formula A = πr², A is the [blank] of the formula." }
+  ]
+}

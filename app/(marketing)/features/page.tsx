@@ -3,111 +3,94 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import {
-  Gamepad2,
   Zap,
   BookOpen,
   Timer,
-  Brain,
   CheckCircle,
   Pencil,
   BarChart3,
-  Trophy,
-  WifiOff,
-  Users,
-  School,
-  FileDown,
+  Shuffle,
+  LayoutGrid,
+  Share2,
+  Download,
   Sparkles,
-  GraduationCap,
   ArrowRight,
+  Lock,
 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 const gameModes = [
   {
-    icon: Gamepad2,
-    name: 'Flip & Match',
-    description: 'Classic memory matching game',
-    color: 'bg-primary',
+    icon: BookOpen,
+    name: 'Flashcards',
+    description: 'Flip cards to memorise terms and definitions',
+    color: 'bg-purple-500',
+    free: true,
   },
-  { icon: Zap, name: 'Splat!', description: 'Fast-paced card reactions', color: 'bg-secondary' },
+  {
+    icon: LayoutGrid,
+    name: 'Pairs',
+    description: 'Match terms to their definitions side by side',
+    color: 'bg-blue-500',
+    free: true,
+  },
   {
     icon: CheckCircle,
     name: 'Multiple Choice',
-    description: 'Quiz-style assessments',
-    color: 'bg-coral',
+    description: 'Four-option quizzes with instant feedback',
+    color: 'bg-green-500',
+    free: true,
   },
   {
-    icon: BookOpen,
-    name: 'Flashcards',
-    description: 'Traditional revision cards',
-    color: 'bg-warning',
+    icon: Zap,
+    name: 'Splat',
+    description: 'Tap the correct answer before time runs out',
+    color: 'bg-orange-500',
+    free: false,
+  },
+  {
+    icon: ArrowRight,
+    name: 'Swipe',
+    description: 'Swipe right for true, left for false',
+    color: 'bg-pink-500',
+    free: false,
+  },
+  {
+    icon: Pencil,
+    name: 'Fill in the Blank',
+    description: 'Type the missing word to complete a sentence',
+    color: 'bg-teal-500',
+    free: false,
   },
   {
     icon: Timer,
     name: 'Speed Round',
-    description: 'Beat the clock challenges',
-    color: 'bg-accent',
+    description: 'Answer as many questions as possible against the clock',
+    color: 'bg-red-500',
+    free: false,
   },
   {
-    icon: Brain,
-    name: 'Memory Challenge',
-    description: 'Test your retention',
-    color: 'bg-primary',
-  },
-  {
-    icon: CheckCircle,
-    name: 'True/False',
-    description: 'Quick decision games',
-    color: 'bg-secondary',
-  },
-  {
-    icon: Pencil,
-    name: 'Fill in the Blanks',
-    description: 'Complete the sentence',
-    color: 'bg-coral',
+    icon: Shuffle,
+    name: 'Anagram Solver',
+    description: 'Unscramble letters to spell the correct word',
+    color: 'bg-violet-500',
+    free: false,
   },
 ];
 
-const studentFeatures = [
-  {
-    icon: Pencil,
-    title: 'Custom deck creation',
-    description: 'Build your own revision materials tailored to your needs',
-  },
-  {
-    icon: BarChart3,
-    title: 'Progress tracking',
-    description: 'See your improvement over time with detailed analytics',
-  },
-  {
-    icon: Trophy,
-    title: 'Achievement system',
-    description: 'Earn badges and rewards as you progress',
-  },
-  {
-    icon: WifiOff,
-    title: 'Offline mode',
-    description: 'Download decks and study without internet',
-  },
+const freeFeatures = [
+  'Up to 3 custom games',
+  'Flashcards, Pairs, and Multiple Choice game types',
+  'Play any game as many times as you like',
 ];
 
-const teacherFeatures = [
-  {
-    icon: Users,
-    title: 'Classroom management',
-    description: 'Organize students into classes and groups',
-  },
-  {
-    icon: BarChart3,
-    title: 'Student tracking',
-    description: 'Monitor individual and class progress',
-  },
-  {
-    icon: BookOpen,
-    title: 'Pre-built curriculum decks',
-    description: '400+ ready-to-use subject decks',
-  },
-  { icon: FileDown, title: 'Export/import tools', description: 'Share and backup your materials' },
+const proFeatures = [
+  { icon: Sparkles, label: 'AI generation from PDFs or text files (10 per day)' },
+  { icon: BookOpen, label: 'All 8 game types — including Splat, Swipe, Fill in the Blank, Speed Round, and Anagram' },
+  { icon: LayoutGrid, label: 'Unlimited games' },
+  { icon: BarChart3, label: 'Progress tracking and personal best scores' },
+  { icon: Share2, label: 'Shareable links — anyone can play, Pro users can clone' },
+  { icon: Download, label: 'CSV export for all game types' },
 ];
 
 export default function Features() {
@@ -115,10 +98,8 @@ export default function Features() {
     <>
       {/* Hero */}
       <section className="relative py-20 md:py-28 overflow-hidden bg-cream">
-        {/* Decorative shapes */}
         <div className="absolute top-20 left-[5%] w-32 h-32 rounded-full bg-secondary/10 blur-2xl" />
         <div className="absolute bottom-20 right-[10%] w-48 h-48 rounded-full bg-accent/15 blur-3xl" />
-        <div className="absolute top-1/2 right-[20%] w-24 h-24 rounded-full bg-coral/10 blur-xl" />
 
         <div className="container relative">
           <div className="max-w-3xl mx-auto text-center">
@@ -129,7 +110,7 @@ export default function Features() {
               transition={{ duration: 0.4, delay: 0.2 }}
             >
               <Sparkles className="w-4 h-4 text-primary" />
-              <span>20+ game modes to explore</span>
+              <span>8 game modes · AI generation · Real progress tracking</span>
             </motion.div>
 
             <motion.h1
@@ -138,8 +119,8 @@ export default function Features() {
               transition={{ duration: 0.6, delay: 0.3 }}
               className="text-4xl md:text-5xl lg:text-6xl font-bold text-foreground mb-6 leading-tight"
             >
-              Everything You Need to Make{' '}
-              <span className="text-secondary">Learning Engaging</span>
+              Study tools that actually{' '}
+              <span className="text-secondary">work for you</span>
             </motion.h1>
 
             <motion.p
@@ -148,8 +129,8 @@ export default function Features() {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-lg md:text-xl text-muted-foreground mb-8 max-w-2xl mx-auto"
             >
-              Discover all the features that make Studybug the most engaging revision platform for
-              students and teachers.
+              Build games from your own notes, upload a document and let AI do the work,
+              or pick from 8 game formats to study in the way that suits you best.
             </motion.p>
 
             <motion.div
@@ -164,7 +145,7 @@ export default function Features() {
                 asChild
               >
                 <Link href="/sign-up">
-                  Start Free Trial
+                  Get started free
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -174,147 +155,149 @@ export default function Features() {
                 className="border-2 border-foreground/20 text-foreground bg-white hover:bg-muted rounded-full"
                 asChild
               >
-                <Link href="/pricing">View Pricing</Link>
+                <Link href="/pricing">View pricing</Link>
               </Button>
             </motion.div>
+          </div>
+        </div>
+      </section>
 
-            <motion.p
-              className="text-sm text-muted-foreground mt-4"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-            >
-              14-day free trial • Cancel anytime
-            </motion.p>
+      {/* AI Generation — Pro centrepiece */}
+      <section className="py-24 bg-white">
+        <div className="container">
+          <div className="max-w-4xl mx-auto">
+            <div className="rounded-3xl bg-gradient-to-br from-primary/10 via-primary/5 to-transparent border border-primary/20 p-8 md:p-12">
+              <div className="flex items-center gap-3 mb-4">
+                <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/10">
+                  <Sparkles className="w-5 h-5 text-primary" />
+                </div>
+                <span className="text-sm font-semibold text-primary uppercase tracking-wide">Pro feature</span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+                Generate games from any document
+              </h2>
+              <p className="text-lg text-muted-foreground mb-6 max-w-2xl">
+                Upload a PDF or text file and AI creates flashcards, pairs, multiple choice, fill-in-the-blank,
+                and speed round questions in seconds. Review everything before saving — edit, remove, or add your own.
+              </p>
+              <ul className="space-y-2 mb-8">
+                {[
+                  'PDF and plain-text file support',
+                  'Optional topic focus to guide the AI',
+                  'All 5 supported game types generated in one go',
+                  '10 generations per day',
+                ].map((item) => (
+                  <li key={item} className="flex items-center gap-2 text-sm text-muted-foreground">
+                    <CheckCircle className="h-4 w-4 text-primary shrink-0" />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+              <Button asChild className="rounded-full">
+                <Link href="/pricing">Upgrade to Pro</Link>
+              </Button>
+            </div>
           </div>
         </div>
       </section>
 
       {/* Game Modes */}
-      <section className="py-24 bg-white">
+      <section className="py-24 bg-cream">
         <div className="container">
           <div className="text-center mb-12">
             <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-              <Gamepad2 className="w-4 h-4" />
-              20+ Game Modes
+              <BookOpen className="w-4 h-4" />
+              8 game modes
             </div>
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Interactive Game Modes
+              Find the format that clicks
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Choose from a variety of game types to keep learning fresh and engaging.
+              Three game types are free. All eight are available on Pro.
             </p>
           </div>
 
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-4xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 max-w-4xl mx-auto">
             {gameModes.map((mode, index) => (
               <motion.div
                 key={index}
-                whileHover={{ y: -6 }}
-                className="p-6 rounded-3xl bg-white border border-border hover:shadow-xl transition-all group"
+                whileHover={{ y: -4 }}
+                className="relative p-5 rounded-2xl bg-white border border-border hover:shadow-md transition-all"
               >
-                <motion.div
-                  whileHover={{ scale: 1.1, rotate: [0, -5, 5, 0] }}
-                  className={`w-12 h-12 rounded-xl ${mode.color} flex items-center justify-center mb-4 shadow-md`}
+                {!mode.free && (
+                  <div className="absolute top-3 right-3">
+                    <Lock className="h-3.5 w-3.5 text-muted-foreground" />
+                  </div>
+                )}
+                <div
+                  className={`w-10 h-10 rounded-xl ${mode.color} flex items-center justify-center mb-3 shadow-sm`}
                 >
-                  <mode.icon className="w-6 h-6 text-white" />
-                </motion.div>
-                <h3 className="font-semibold text-foreground mb-1">{mode.name}</h3>
-                <p className="text-sm text-muted-foreground">{mode.description}</p>
+                  <mode.icon className="w-5 h-5 text-white" />
+                </div>
+                <h3 className="font-semibold text-foreground text-sm mb-1">{mode.name}</h3>
+                <p className="text-xs text-muted-foreground leading-relaxed">{mode.description}</p>
+                {mode.free && (
+                  <span className="mt-2 inline-block text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full">
+                    Free
+                  </span>
+                )}
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* For Students */}
-      <section className="py-24 bg-cream">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-secondary/10 text-secondary text-sm font-medium mb-4">
-                <GraduationCap className="w-4 h-4" />
-                For Students
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Master Any Subject Your Way
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Create custom decks, track your progress, and earn achievements as you learn.
-              </p>
-              <div className="space-y-4">
-                {studentFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ x: 4 }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-secondary flex items-center justify-center flex-shrink-0 shadow-md">
-                      <feature.icon className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">{feature.title}</h4>
-                      <p className="text-sm text-muted-foreground">{feature.description}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-            <div className="relative">
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity }}
-                className="aspect-square max-w-md mx-auto rounded-3xl bg-secondary flex items-center justify-center shadow-2xl"
-              >
-                <GraduationCap className="w-32 h-32 text-white/40" />
-              </motion.div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* For Teachers */}
+      {/* Free vs Pro */}
       <section className="py-24 bg-white">
-        <div className="container">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{ duration: 4, repeat: Infinity, delay: 0.5 }}
-                className="aspect-square max-w-md mx-auto rounded-3xl bg-primary flex items-center justify-center shadow-2xl"
-              >
-                <School className="w-32 h-32 text-white/40" />
-              </motion.div>
-            </div>
-            <div className="order-1 lg:order-2">
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4">
-                <School className="w-4 h-4" />
-                For Teachers
-              </div>
-              <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-                Powerful Classroom Tools
-              </h2>
-              <p className="text-lg text-muted-foreground mb-8">
-                Manage your classes, track student progress, and access hundreds of
-                curriculum-aligned decks.
-              </p>
-              <div className="space-y-4">
-                {teacherFeatures.map((feature, index) => (
-                  <motion.div
-                    key={index}
-                    whileHover={{ x: 4 }}
-                    className="flex items-start gap-4"
-                  >
-                    <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center flex-shrink-0 shadow-md">
-                      <feature.icon className="w-5 h-5 text-white" />
-                    </div>
-                    <div>
-                      <h4 className="font-semibold text-foreground">{feature.title}</h4>
-                      <p className="text-sm text-muted-foreground">{feature.description}</p>
-                    </div>
-                  </motion.div>
+        <div className="container max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Free vs Pro</h2>
+            <p className="text-lg text-muted-foreground">
+              Start free. Upgrade when you want more.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-2 gap-6">
+            {/* Free */}
+            <div className="rounded-2xl border border-border p-8">
+              <h3 className="text-xl font-bold mb-2">Free</h3>
+              <p className="text-muted-foreground text-sm mb-6">Everything you need to get started.</p>
+              <ul className="space-y-3">
+                {freeFeatures.map((f) => (
+                  <li key={f} className="flex items-start gap-2 text-sm">
+                    <CheckCircle className="h-4 w-4 text-green-600 shrink-0 mt-0.5" />
+                    {f}
+                  </li>
                 ))}
+              </ul>
+              <Button variant="outline" className="w-full mt-6 rounded-full" asChild>
+                <Link href="/sign-up">Get started free</Link>
+              </Button>
+            </div>
+
+            {/* Pro */}
+            <div className="rounded-2xl border-2 border-primary bg-primary/5 p-8">
+              <div className="flex items-center gap-2 mb-2">
+                <h3 className="text-xl font-bold">Pro</h3>
+                <span className="text-xs font-semibold text-primary bg-primary/10 px-2 py-0.5 rounded-full">
+                  Recommended
+                </span>
               </div>
+              <p className="text-muted-foreground text-sm mb-6">The full StudyBug experience.</p>
+              <ul className="space-y-3">
+                {proFeatures.map(({ icon: Icon, label }) => (
+                  <li key={label} className="flex items-start gap-2 text-sm">
+                    <Icon className="h-4 w-4 text-primary shrink-0 mt-0.5" />
+                    {label}
+                  </li>
+                ))}
+              </ul>
+              <Button className="w-full mt-6 rounded-full" asChild>
+                <Link href="/pricing">
+                  Upgrade to Pro
+                  <ArrowRight className="w-4 h-4 ml-2" />
+                </Link>
+              </Button>
             </div>
           </div>
         </div>
@@ -327,9 +310,11 @@ export default function Features() {
 
         <div className="container text-center relative">
           <Sparkles className="w-12 h-12 text-white/60 mx-auto mb-6" />
-          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Try It?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">
+            Ready to study smarter?
+          </h2>
           <p className="text-lg text-white/80 max-w-xl mx-auto mb-8">
-            Start your 14-day free trial and experience all features.
+            Create your first game for free — no card required.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Button
@@ -338,7 +323,7 @@ export default function Features() {
               asChild
             >
               <Link href="/sign-up">
-                Start Free Trial
+                Get started free
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Link>
             </Button>
@@ -348,7 +333,7 @@ export default function Features() {
               className="border-2 border-white text-white hover:bg-white/10 rounded-full"
               asChild
             >
-              <Link href="/pricing">View Pricing</Link>
+              <Link href="/pricing">View pricing</Link>
             </Button>
           </div>
         </div>

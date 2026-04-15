@@ -12,12 +12,14 @@ import { toast } from 'sonner'
 interface SplatBuilderProps {
   onSave: (name: string, gameData: SplatGameData) => void
   onCancel: () => void
+  initialName?: string
+  initialData?: SplatGameData
 }
 
-export function SplatBuilder({ onSave, onCancel }: SplatBuilderProps) {
-  const [gameName, setGameName] = useState('')
-  const [timeLimit, setTimeLimit] = useState(10)
-  const [items, setItems] = useState<SplatItem[]>([])
+export function SplatBuilder({ onSave, onCancel, initialName = '', initialData }: SplatBuilderProps) {
+  const [gameName, setGameName] = useState(initialName)
+  const [timeLimit, setTimeLimit] = useState(initialData?.timeLimit ?? 10)
+  const [items, setItems] = useState<SplatItem[]>(initialData?.items ?? [])
   const [isSaving, setIsSaving] = useState(false)
 
   const addItem = () => {

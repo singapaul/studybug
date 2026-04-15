@@ -13,6 +13,9 @@ enum GameType {
   MULTIPLE_CHOICE
   SPLAT
   SWIPE
+  FILL_IN_THE_BLANK
+  SPEED_ROUND
+  ANAGRAM
 }
 
 model user {
@@ -29,6 +32,7 @@ model user {
   accounts         account[]
   games            Game[]
   gameAttempts     GameAttempt[]
+  generationLogs   GenerationLog[]
 }
 
 model Game {
@@ -37,12 +41,62 @@ model Game {
   user      user          @relation(fields: [userId], references: [id], onDelete: Cascade)
   name      String
   gameType  GameType
-  gameData  Json
-  createdAt DateTime      @default(now())
-  updatedAt DateTime      @updatedAt
-  attempts  GameAttempt[]
+  gameData   Json
+  shareToken          String?       @unique
+  sourceLibraryDeckId String?
+  createdAt           DateTime      @default(now())
+  updatedAt  DateTime      @updatedAt
+  attempts   GameAttempt[]
 
   @@index([userId])
+}
+
+model GenerationLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model LibrarySubject {
+  id        String         @id @default(cuid())
+  name      String         @unique
+  slug      String         @unique
+  icon      String         @default("BookOpen")
+  color     String         @default("bg-green-500")
+  isFree    Boolean        @default(false)
+  sortOrder Int            @default(0)
+  topics    LibraryTopic[]
+  createdAt DateTime       @default(now())
+}
+
+model LibraryTopic {
+  id          String         @id @default(cuid())
+  subjectId   String
+  subject     LibrarySubject @relation(fields: [subjectId], references: [id], onDelete: Cascade)
+  name        String
+  slug        String
+  description String?
+  sortOrder   Int            @default(0)
+  decks       LibraryDeck[]
+  createdAt   DateTime       @default(now())
+
+  @@unique([subjectId, slug])
+  @@index([subjectId])
+}
+
+model LibraryDeck {
+  id          String       @id @default(cuid())
+  topicId     String       @unique
+  topic       LibraryTopic @relation(fields: [topicId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  items       Json
+  tags        String[]
+  itemCount   Int
+  createdAt   DateTime     @default(now())
 }
 
 model GameAttempt {

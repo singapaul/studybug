@@ -9,8 +9,6 @@ import { Clock, Trophy, Home, RotateCcw } from 'lucide-react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import PairsCard from './PairsCard'
-import PairsResultScreen from './PairsResultScreen'
-import { computePairsStars } from '@/lib/game-logic/pairs'
 import { shuffleArray } from '@/lib/game-logic/flashcards'
 
 interface PairsGameProps {
@@ -109,16 +107,7 @@ export default function PairsGame({ gameData, gameName, onComplete, onExit }: Pa
     : 'grid-cols-4 sm:grid-cols-6'
 
   if (isComplete) {
-    return (
-      <PairsResultScreen
-        moves={moves}
-        time={time}
-        totalPairs={totalPairs}
-        starRating={computePairsStars(moves, totalPairs)}
-        onPlayAgain={initializeGame}
-        onExit={onExit}
-      />
-    )
+    return null
   }
 
   return (

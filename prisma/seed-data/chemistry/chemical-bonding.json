@@ -1,0 +1,26 @@
+{
+  "subject": "chemistry",
+  "topic": "chemical-bonding",
+  "items": [
+    { "term": "ionic bond", "definition": "A strong electrostatic attraction between oppositely charged ions, formed when a metal transfers electrons to a non-metal.", "sentence": "Sodium chloride is held together by [blank] bonds between Na⁺ and Cl⁻ ions." },
+    { "term": "covalent bond", "definition": "A bond formed by the sharing of a pair of electrons between two non-metal atoms.", "sentence": "Water molecules are held together by [blank] bonds between hydrogen and oxygen atoms." },
+    { "term": "metallic bond", "definition": "The electrostatic attraction between a lattice of positive metal ions and a sea of delocalised electrons.", "sentence": "The high melting point of iron is due to strong [blank] bonds." },
+    { "term": "ion", "definition": "A charged particle formed when an atom gains or loses one or more electrons.", "sentence": "A chlorine atom becomes a Cl⁻ [blank] when it gains one electron." },
+    { "term": "lattice", "definition": "A regular, repeating 3D arrangement of atoms or ions held together by chemical bonds.", "sentence": "Sodium chloride forms a giant ionic [blank] with alternating positive and negative ions." },
+    { "term": "delocalised", "definition": "Describes electrons that are not associated with a single atom or bond and are free to move through a structure.", "sentence": "Metals conduct electricity because they have [blank] electrons that can carry charge." },
+    { "term": "molecule", "definition": "A particle made of two or more atoms joined by covalent bonds.", "sentence": "Water is a [blank] made of two hydrogen atoms and one oxygen atom." },
+    { "term": "intermolecular", "definition": "Describes forces between molecules (as opposed to forces within molecules); generally weak in simple molecular substances.", "sentence": "Simple molecular substances have low melting points because [blank] forces are weak." },
+    { "term": "giant covalent", "definition": "Describes a structure made of a large number of atoms covalently bonded in a network, like diamond or graphite.", "sentence": "Diamond has a [blank] structure, making it extremely hard and with a very high melting point." },
+    { "term": "diamond", "definition": "A form of carbon with a giant covalent structure where each carbon is bonded to four others in a tetrahedral arrangement.", "sentence": "[Blank] is the hardest natural substance because each carbon atom forms four strong covalent bonds." },
+    { "term": "graphite", "definition": "A form of carbon where atoms are bonded in flat layers with delocalised electrons; a conductor of electricity.", "sentence": "[Blank] can conduct electricity because it has delocalised electrons between its layers." },
+    { "term": "electron pair", "definition": "Two electrons shared between two atoms in a covalent bond.", "sentence": "A covalent bond consists of a shared [blank] of electrons between two non-metal atoms." },
+    { "term": "electronegativity", "definition": "The tendency of an atom to attract electrons in a covalent bond towards itself.", "sentence": "Oxygen has high [blank], so it pulls shared electrons towards itself in a bond." },
+    { "term": "dot-and-cross", "definition": "A diagram used to show how electrons are arranged in atoms and how they are shared or transferred in bonding.", "sentence": "A [blank] diagram shows the outer electrons of each atom and how they are arranged in a bond." },
+    { "term": "transfer", "definition": "The movement of electrons from a metal to a non-metal during the formation of an ionic bond.", "sentence": "Ionic bonds form when an electron is [blank]red from a metal atom to a non-metal atom." },
+    { "term": "sharing", "definition": "The equal or unequal distribution of electrons between two atoms in a covalent bond.", "sentence": "Covalent bonds involve [blank] a pair of electrons between two non-metal atoms." },
+    { "term": "conductivity", "definition": "The ability of a substance to allow the flow of electrical charge or heat; related to the type of bonding.", "sentence": "Ionic compounds have low electrical [blank] when solid but conduct when dissolved or melted." },
+    { "term": "alloy", "definition": "A mixture of a metal with one or more other elements (usually metals), designed to improve its properties.", "sentence": "Steel is an [blank] of iron and carbon that is stronger than pure iron." },
+    { "term": "fullerene", "definition": "A molecular form of carbon with a hollow cage-like structure, such as C₆₀ (Buckminsterfullerene).", "sentence": "A [blank] is a form of carbon in which atoms are arranged in a hollow sphere or tube." },
+    { "term": "polymer", "definition": "A large molecule made from many small repeat units (monomers) joined by covalent bonds.", "sentence": "Poly(ethene) is a [blank] made from thousands of ethene monomers joined together." }
+  ]
+}

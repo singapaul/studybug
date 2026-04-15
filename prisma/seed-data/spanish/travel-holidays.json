@@ -1,0 +1,26 @@
+{
+  "subject": "spanish",
+  "topic": "travel-holidays",
+  "items": [
+    { "term": "viajar", "definition": "to travel", "sentence": "Me encanta [blank] a otros países durante las vacaciones." },
+    { "term": "avión", "definition": "plane / aeroplane", "sentence": "Tomamos el [blank] para ir a las Islas Canarias." },
+    { "term": "tren", "definition": "train", "sentence": "El AVE es un [blank] de alta velocidad muy rápido en España." },
+    { "term": "coche", "definition": "car", "sentence": "Mis padres siempre viajan en [blank] cuando vamos de vacaciones." },
+    { "term": "aeropuerto", "definition": "airport", "sentence": "Hay que llegar al [blank] con dos horas de antelación." },
+    { "term": "estación", "definition": "station (train/bus)", "sentence": "La [blank] de tren está en el centro de la ciudad." },
+    { "term": "pasaporte", "definition": "passport", "sentence": "No olvides tu [blank] cuando viajes al extranjero." },
+    { "term": "hotel", "definition": "hotel", "sentence": "Nos alojamos en un [blank] de cuatro estrellas cerca de la playa." },
+    { "term": "habitación", "definition": "room / bedroom", "sentence": "Quisiera reservar una [blank] doble para dos noches." },
+    { "term": "billete", "definition": "ticket", "sentence": "Compré el [blank] de tren por internet." },
+    { "term": "maleta", "definition": "suitcase", "sentence": "Mi [blank] pesa demasiado — tengo que quitar ropa." },
+    { "term": "vacaciones", "definition": "holidays", "sentence": "Durante las [blank] de verano, fuimos a la Costa del Sol." },
+    { "term": "playa", "definition": "beach", "sentence": "Me gusta pasar las vacaciones en la [blank] nadando y tomando el sol." },
+    { "term": "montaña", "definition": "mountain", "sentence": "En invierno, esquiamos en la [blank]." },
+    { "term": "extranjero", "definition": "abroad / foreign", "sentence": "Cada verano, mi familia viaja al [blank] para conocer otras culturas." },
+    { "term": "reservar", "definition": "to book / to reserve", "sentence": "Es importante [blank] el hotel con antelación en verano." },
+    { "term": "turista", "definition": "tourist", "sentence": "Barcelona recibe millones de [blank]s cada año." },
+    { "term": "mapa", "definition": "map", "sentence": "Necesitamos un [blank] para encontrar el camino al museo." },
+    { "term": "ida y vuelta", "definition": "return (ticket) / round trip", "sentence": "Quiero un billete de [blank] para Madrid." },
+    { "term": "retraso", "definition": "delay", "sentence": "El vuelo tiene un [blank] de dos horas por el mal tiempo." }
+  ]
+}

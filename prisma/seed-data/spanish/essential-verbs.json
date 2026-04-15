@@ -1,0 +1,26 @@
+{
+  "subject": "spanish",
+  "topic": "essential-verbs",
+  "items": [
+    { "term": "ser", "definition": "to be (permanent characteristics)", "sentence": "Quiero [blank] médico cuando sea mayor." },
+    { "term": "estar", "definition": "to be (temporary states or locations)", "sentence": "Hoy no puedo salir porque [blank] muy cansado." },
+    { "term": "tener", "definition": "to have", "sentence": "Mi hermana [blank] un perro muy simpático." },
+    { "term": "ir", "definition": "to go", "sentence": "Los fines de semana me gusta [blank] al cine." },
+    { "term": "hacer", "definition": "to do / to make", "sentence": "¿Qué vas a [blank] el próximo fin de semana?" },
+    { "term": "querer", "definition": "to want / to love (a person)", "sentence": "Yo [blank] ser actriz cuando sea mayor." },
+    { "term": "poder", "definition": "to be able to / can", "sentence": "¿[Blank] ayudarme con los deberes, por favor?" },
+    { "term": "deber", "definition": "to have to / should / must", "sentence": "Yo [blank] terminar los deberes antes de ver la tele." },
+    { "term": "saber", "definition": "to know (a fact or how to do something)", "sentence": "¿[Blank] hablar inglés?" },
+    { "term": "venir", "definition": "to come", "sentence": "Mis amigos van a [blank] a mi casa esta tarde." },
+    { "term": "hablar", "definition": "to speak / to talk", "sentence": "En España, la gente [blank] español." },
+    { "term": "gustar", "definition": "to like (literally: to be pleasing to)", "sentence": "Me [blank] mucho la música pop." },
+    { "term": "vivir", "definition": "to live", "sentence": "Mi familia [blank] en una ciudad grande." },
+    { "term": "trabajar", "definition": "to work", "sentence": "Mi padre [blank] en una oficina en el centro de la ciudad." },
+    { "term": "comer", "definition": "to eat", "sentence": "Normalmente [blank]mos juntos a las dos de la tarde." },
+    { "term": "beber", "definition": "to drink", "sentence": "Por las mañanas [blank] zumo de naranja." },
+    { "term": "salir", "definition": "to go out / to leave", "sentence": "Me gusta [blank] con mis amigos los viernes por la noche." },
+    { "term": "ver", "definition": "to see / to watch", "sentence": "Por las noches me gusta [blank] la televisión." },
+    { "term": "escuchar", "definition": "to listen to", "sentence": "Me encanta [blank] música mientras estudio." },
+    { "term": "jugar", "definition": "to play (a sport or game)", "sentence": "Mi hermano [blank] al fútbol todos los sábados." }
+  ]
+}

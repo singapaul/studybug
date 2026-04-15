@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "numbers-time",
+  "items": [
+    { "term": "heure", "definition": "hour / o'clock", "sentence": "Il est trois [blank]s de l'après-midi." },
+    { "term": "minute", "definition": "minute", "sentence": "Le film dure cent vingt [blank]s." },
+    { "term": "aujourd'hui", "definition": "today", "sentence": "[Blank], nous avons un contrôle de maths." },
+    { "term": "demain", "definition": "tomorrow", "sentence": "[Blank] matin, je dois me lever tôt." },
+    { "term": "hier", "definition": "yesterday", "sentence": "[Blank], j'ai regardé un très bon film à la télé." },
+    { "term": "semaine", "definition": "week", "sentence": "Je vais chez mes grands-parents une fois par [blank]." },
+    { "term": "mois", "definition": "month", "sentence": "Décembre est mon [blank] préféré à cause de Noël." },
+    { "term": "année", "definition": "year", "sentence": "Je fête mon anniversaire chaque [blank] en juillet." },
+    { "term": "matin", "definition": "morning", "sentence": "Je me lève à sept heures le [blank]." },
+    { "term": "soir", "definition": "evening", "sentence": "Le [blank], je fais mes devoirs avant de regarder la télé." },
+    { "term": "nuit", "definition": "night", "sentence": "Bonne [blank] ! À demain !" },
+    { "term": "maintenant", "definition": "now", "sentence": "Je dois [blank] finir mon travail." },
+    { "term": "souvent", "definition": "often", "sentence": "Je vais [blank] au parc avec mes amis." },
+    { "term": "toujours", "definition": "always", "sentence": "Il est [blank] en retard à l'école." },
+    { "term": "jamais", "definition": "never", "sentence": "Je ne mange [blank] de fast-food." },
+    { "term": "parfois", "definition": "sometimes", "sentence": "[Blank], je vais au cinéma le samedi soir." },
+    { "term": "tard", "definition": "late", "sentence": "Elle est rentrée très [blank] hier soir." },
+    { "term": "tôt", "definition": "early", "sentence": "Il faut se lever [blank] demain pour prendre le train." },
+    { "term": "pendant", "definition": "during / for (a period of time)", "sentence": "[Blank] les vacances, nous allons en France." },
+    { "term": "depuis", "definition": "since / for (a duration up to now)", "sentence": "J'apprends le français [blank] trois ans." }
+  ]
+}

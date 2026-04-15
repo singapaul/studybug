@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "town-environment",
+  "items": [
+    { "term": "ville", "definition": "town / city", "sentence": "Je vis dans une grande [blank] en banlieue de Paris." },
+    { "term": "quartier", "definition": "neighbourhood / district", "sentence": "Mon [blank] est calme et il y a beaucoup d'espaces verts." },
+    { "term": "rue", "definition": "street", "sentence": "Il y a beaucoup de boutiques dans cette [blank]." },
+    { "term": "marché", "definition": "market", "sentence": "Ma mère achète des légumes frais au [blank] le dimanche." },
+    { "term": "mairie", "definition": "town hall", "sentence": "Le maire de la ville travaille à la [blank]." },
+    { "term": "poste", "definition": "post office", "sentence": "Je dois aller à la [blank] pour envoyer ce colis." },
+    { "term": "banque", "definition": "bank", "sentence": "Je dois retirer de l'argent à la [blank]." },
+    { "term": "pharmacie", "definition": "pharmacy / chemist", "sentence": "Je vais à la [blank] acheter des médicaments contre le rhume." },
+    { "term": "bibliothèque", "definition": "library", "sentence": "Je vais à la [blank] pour emprunter des livres." },
+    { "term": "piscine", "definition": "swimming pool", "sentence": "Nous allons à la [blank] le mercredi après-midi." },
+    { "term": "parc", "definition": "park", "sentence": "Les enfants jouent dans le [blank] après l'école." },
+    { "term": "pollution", "definition": "pollution", "sentence": "La [blank] de l'air est un grand problème dans les villes." },
+    { "term": "environnement", "definition": "environment", "sentence": "Il faut protéger l'[blank] pour les générations futures." },
+    { "term": "recycler", "definition": "to recycle", "sentence": "Dans notre ville, on peut [blank] le plastique, le verre et le papier." },
+    { "term": "transport", "definition": "transport", "sentence": "Les [blank]s en commun permettent de réduire la pollution." },
+    { "term": "vélo", "definition": "bicycle", "sentence": "Je prends mon [blank] pour aller au collège chaque matin." },
+    { "term": "embouteillage", "definition": "traffic jam", "sentence": "Il y a souvent des [blank]s aux heures de pointe." },
+    { "term": "propre", "definition": "clean", "sentence": "Grâce au recyclage, notre ville est plus [blank] qu'avant." },
+    { "term": "campagne", "definition": "countryside", "sentence": "Ma grand-mère préfère vivre à la [blank] pour le calme." },
+    { "term": "banlieue", "definition": "suburb / outskirts", "sentence": "Nous habitons en [blank] de Lyon, à vingt minutes du centre." }
+  ]
+}

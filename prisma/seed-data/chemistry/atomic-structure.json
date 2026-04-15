@@ -1,0 +1,26 @@
+{
+  "subject": "chemistry",
+  "topic": "atomic-structure",
+  "items": [
+    { "term": "atom", "definition": "The smallest particle of an element that still has the chemical properties of that element.", "sentence": "All matter is made up of tiny [blank]s." },
+    { "term": "proton", "definition": "A positively charged subatomic particle found in the nucleus of an atom.", "sentence": "The number of [blank]s in the nucleus determines which element an atom is." },
+    { "term": "neutron", "definition": "A subatomic particle with no charge found in the nucleus of an atom.", "sentence": "Isotopes are atoms of the same element with different numbers of [blank]s." },
+    { "term": "electron", "definition": "A negatively charged subatomic particle that orbits the nucleus in shells.", "sentence": "An [blank] has a relative mass of almost zero and a charge of -1." },
+    { "term": "nucleus", "definition": "The dense, positively charged centre of an atom, containing protons and neutrons.", "sentence": "The [blank] of an atom contains protons and neutrons and is very small compared to the atom." },
+    { "term": "atomic number", "definition": "The number of protons in the nucleus of an atom; also called the proton number.", "sentence": "Carbon has an [blank] of 6, meaning it has 6 protons." },
+    { "term": "mass number", "definition": "The total number of protons and neutrons in the nucleus of an atom.", "sentence": "An atom with 6 protons and 6 neutrons has a [blank] of 12." },
+    { "term": "isotope", "definition": "Atoms of the same element with the same number of protons but different numbers of neutrons.", "sentence": "Carbon-12 and Carbon-14 are [blank]s of carbon." },
+    { "term": "shell", "definition": "An energy level around the nucleus where electrons are found; the first shell holds 2, subsequent ones hold up to 8.", "sentence": "Electrons occupy [blank]s around the nucleus, filling the innermost ones first." },
+    { "term": "ion", "definition": "A charged particle formed when an atom gains or loses one or more electrons.", "sentence": "A sodium atom becomes a positive [blank] when it loses one electron." },
+    { "term": "element", "definition": "A substance made of only one type of atom, which cannot be broken down into simpler substances.", "sentence": "Oxygen is an [blank] because it contains only oxygen atoms." },
+    { "term": "compound", "definition": "A substance formed when two or more different elements are chemically bonded together.", "sentence": "Water is a [blank] because it contains hydrogen and oxygen atoms chemically bonded." },
+    { "term": "mixture", "definition": "Two or more substances that are not chemically combined and can be separated by physical means.", "sentence": "Air is a [blank] of gases including nitrogen, oxygen, and carbon dioxide." },
+    { "term": "relative charge", "definition": "The charge of a subatomic particle compared to a proton; proton = +1, electron = −1, neutron = 0.", "sentence": "The [blank] of an electron is −1, equal in magnitude but opposite to that of a proton." },
+    { "term": "electronic configuration", "definition": "The arrangement of electrons in the shells of an atom, written as a series of numbers.", "sentence": "The [blank] of sodium is 2,8,1 because it has 11 electrons." },
+    { "term": "Rutherford", "definition": "Ernest Rutherford, the scientist whose gold foil experiment led to the nuclear model of the atom.", "sentence": "[Blank]'s gold foil experiment showed that the atom has a small, dense, positively charged nucleus." },
+    { "term": "Bohr", "definition": "Niels Bohr, who refined the atomic model by proposing that electrons orbit the nucleus in fixed energy levels.", "sentence": "[Blank] proposed that electrons occupy fixed shells or energy levels around the nucleus." },
+    { "term": "neutral", "definition": "Describes an atom with equal numbers of protons and electrons, giving it no overall charge.", "sentence": "A [blank] atom has the same number of protons and electrons." },
+    { "term": "subatomic", "definition": "Describing particles that are smaller than an atom, such as protons, neutrons, and electrons.", "sentence": "Protons, neutrons, and electrons are the three main [blank] particles." },
+    { "term": "relative atomic mass", "definition": "The average mass of an atom of an element compared to 1/12 the mass of a carbon-12 atom.", "sentence": "Chlorine has a [blank] of 35.5 due to the mixture of its two isotopes." }
+  ]
+}

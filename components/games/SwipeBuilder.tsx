@@ -14,11 +14,13 @@ import { toast } from 'sonner'
 interface SwipeBuilderProps {
   onSave: (name: string, gameData: SwipeGameData) => void
   onCancel: () => void
+  initialName?: string
+  initialData?: SwipeGameData
 }
 
-export function SwipeBuilder({ onSave, onCancel }: SwipeBuilderProps) {
-  const [gameName, setGameName] = useState('')
-  const [items, setItems] = useState<SwipeItem[]>([])
+export function SwipeBuilder({ onSave, onCancel, initialName = '', initialData }: SwipeBuilderProps) {
+  const [gameName, setGameName] = useState(initialName)
+  const [items, setItems] = useState<SwipeItem[]>(initialData?.items ?? [])
   const [isSaving, setIsSaving] = useState(false)
 
   const addItem = () => {

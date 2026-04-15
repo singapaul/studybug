@@ -24,13 +24,23 @@ vi.mock('@/hooks/use-games', () => ({
   useGames: vi.fn(),
   useDeleteGame: vi.fn(),
   useDuplicateGame: vi.fn(),
+  useShareGame: vi.fn(),
+  useUnshareGame: vi.fn(),
 }))
 
-import { useGames, useDeleteGame, useDuplicateGame } from '@/hooks/use-games'
+vi.mock('@/hooks/use-plan', () => ({
+  usePlan: vi.fn(),
+}))
+
+import { useGames, useDeleteGame, useDuplicateGame, useShareGame, useUnshareGame } from '@/hooks/use-games'
+import { usePlan } from '@/hooks/use-plan'
 
 const mockUseGames = useGames as ReturnType<typeof vi.fn>
 const mockUseDeleteGame = useDeleteGame as ReturnType<typeof vi.fn>
 const mockUseDuplicateGame = useDuplicateGame as ReturnType<typeof vi.fn>
+const mockUseShareGame = useShareGame as ReturnType<typeof vi.fn>
+const mockUseUnshareGame = useUnshareGame as ReturnType<typeof vi.fn>
+const mockUsePlan = usePlan as ReturnType<typeof vi.fn>
 
 const MOCK_GAMES = [
   {
@@ -57,6 +67,9 @@ beforeEach(() => {
   vi.clearAllMocks()
   mockUseDeleteGame.mockReturnValue({ mutate: vi.fn() })
   mockUseDuplicateGame.mockReturnValue({ mutate: vi.fn() })
+  mockUseShareGame.mockReturnValue({ mutateAsync: vi.fn(), isPending: false })
+  mockUseUnshareGame.mockReturnValue({ mutateAsync: vi.fn(), isPending: false })
+  mockUsePlan.mockReturnValue({ isPro: false, plan: 'free' })
 })
 
 describe('Games list page', () => {

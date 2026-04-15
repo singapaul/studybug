@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "evolution",
+  "items": [
+    { "term": "evolution", "definition": "The gradual change in the inherited characteristics of a population over many generations.", "sentence": "[Blank] explains how all life on Earth developed from simple common ancestors over billions of years." },
+    { "term": "natural selection", "definition": "The process by which organisms with advantageous characteristics are more likely to survive and reproduce.", "sentence": "[Blank] means that individuals best adapted to their environment survive to pass on their genes." },
+    { "term": "adaptation", "definition": "An inherited feature that makes an organism well-suited to surviving and reproducing in its environment.", "sentence": "The giraffe's long neck is an [blank] that allows it to reach leaves high in trees." },
+    { "term": "mutation", "definition": "A random change in the DNA sequence of an organism that may produce a new characteristic.", "sentence": "A [blank] in a bacterium's DNA can cause antibiotic resistance." },
+    { "term": "variation", "definition": "Differences in characteristics between individuals of the same species, caused by genes, environment, or both.", "sentence": "Genetic [blank] within a population means some individuals may be better suited to survive a disease." },
+    { "term": "Darwin", "definition": "Charles Darwin (1809–1882), the scientist who proposed the theory of evolution by natural selection.", "sentence": "[Blank] published 'On the Origin of Species' in 1859, proposing the theory of natural selection." },
+    { "term": "fossil", "definition": "The preserved remains or traces of organisms that lived in the past, providing evidence for evolution.", "sentence": "[Blank] records show gradual changes in species over millions of years." },
+    { "term": "extinction", "definition": "The permanent disappearance of all members of a species from Earth.", "sentence": "The dodo is an example of a species that was hunted to [blank]." },
+    { "term": "speciation", "definition": "The formation of a new species when populations become reproductively isolated and evolve separately.", "sentence": "[Blank] can occur when a geographical barrier separates a population, preventing interbreeding." },
+    { "term": "species", "definition": "A group of organisms that share similar characteristics and can interbreed to produce fertile offspring.", "sentence": "Members of the same [blank] can reproduce with each other to produce fertile young." },
+    { "term": "selective breeding", "definition": "The process by which humans breed plants or animals to enhance desired characteristics.", "sentence": "[Blank] has been used to produce cows that give more milk by choosing the best producers as parents." },
+    { "term": "inheritance", "definition": "The passing of genetic information (traits) from parents to offspring.", "sentence": "Darwin didn't know the mechanism of [blank], but he observed that traits are passed to offspring." },
+    { "term": "antibiotic resistance", "definition": "The ability of bacteria to survive exposure to antibiotics, caused by natural selection of resistant mutations.", "sentence": "[Blank] develops when bacteria with random mutations survive antibiotic treatment and reproduce." },
+    { "term": "survival", "definition": "The ability of an organism to stay alive long enough to reproduce and pass on its genes.", "sentence": "In natural selection, organisms best adapted to their environment have the greatest chance of [blank]." },
+    { "term": "Lamarck", "definition": "Jean-Baptiste Lamarck, a scientist who proposed an early theory of evolution based on acquired characteristics.", "sentence": "[Blank] suggested that a giraffe stretched its neck during its lifetime and passed this on to its offspring, but this was incorrect." },
+    { "term": "classification", "definition": "The organisation of living things into groups based on their shared characteristics.", "sentence": "Taxonomy is the system of [blank] that groups organisms into kingdoms, phyla, classes, and so on." },
+    { "term": "gene pool", "definition": "All the alleles present in a population; a larger gene pool means greater variation.", "sentence": "Isolated populations have a smaller [blank], which reduces variation and adaptability." },
+    { "term": "common ancestor", "definition": "An organism from which two or more different species are believed to have evolved.", "sentence": "Humans and chimpanzees share a [blank], which is supported by similarities in their DNA." },
+    { "term": "reproduce", "definition": "To produce offspring; in natural selection, organisms that survive long enough to do this pass on their genes.", "sentence": "Organisms with beneficial mutations are more likely to [blank] and pass those genes to the next generation." },
+    { "term": "competition", "definition": "The struggle between organisms for limited resources such as food, water, or mates, driving natural selection.", "sentence": "[Blank] for food means only the best-adapted individuals survive in a population." }
+  ]
+}

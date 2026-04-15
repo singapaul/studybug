@@ -1,0 +1,26 @@
+{
+  "subject": "history",
+  "topic": "world-war-two",
+  "items": [
+    { "term": "Blitzkrieg", "definition": "German for 'lightning war'; a fast, overwhelming military tactic using tanks and air power to defeat enemies quickly.", "sentence": "Germany used [blank] tactics to quickly conquer France and the Low Countries in 1940." },
+    { "term": "Holocaust", "definition": "The systematic murder of approximately 6 million Jews and millions of others by the Nazi regime during WWII.", "sentence": "The [blank] was the genocide of six million Jews and other groups carried out by the Nazis." },
+    { "term": "Dunkirk", "definition": "The evacuation of over 330,000 Allied troops from the beaches of northern France in May–June 1940.", "sentence": "Operation Dynamo was the codename for the [blank] evacuation of Allied soldiers in 1940." },
+    { "term": "D-Day", "definition": "6 June 1944; the Allied amphibious invasion of Nazi-occupied France on the beaches of Normandy.", "sentence": "[Blank] marked the start of the liberation of Western Europe from Nazi occupation." },
+    { "term": "appeasement", "definition": "The British and French policy of making concessions to Hitler in the 1930s to avoid war.", "sentence": "The Munich Agreement of 1938 is seen as an example of [blank] towards Hitler." },
+    { "term": "evacuation", "definition": "The large-scale movement of children from British cities to the countryside to protect them from bombing.", "sentence": "Over 1.5 million children experienced [blank] from British cities during the Blitz." },
+    { "term": "Blitz", "definition": "The sustained German bombing campaign against British cities from September 1940 to May 1941.", "sentence": "London suffered heavy bombing raids during the [blank], killing tens of thousands of civilians." },
+    { "term": "rationing", "definition": "The government control of food and goods to ensure fair distribution during wartime shortages.", "sentence": "[Blank] was introduced in Britain in 1940 to ensure everyone received a fair share of food." },
+    { "term": "propaganda", "definition": "Information used to promote a political cause or point of view, often used by governments during wartime to influence public opinion.", "sentence": "Both the Allies and the Axis powers used [blank] posters and films to encourage their populations." },
+    { "term": "Hiroshima", "definition": "The Japanese city on which the USA dropped the first atomic bomb on 6 August 1945.", "sentence": "The atomic bomb dropped on [blank] on 6 August 1945 killed around 70,000 people instantly." },
+    { "term": "VE Day", "definition": "Victory in Europe Day; 8 May 1945, marking the end of the war in Europe after Germany's surrender.", "sentence": "[Blank] on 8 May 1945 marked the end of World War Two in Europe." },
+    { "term": "Churchill", "definition": "Winston Churchill; British Prime Minister from 1940 who led Britain through most of World War Two.", "sentence": "[Blank] became Prime Minister in May 1940 and inspired Britain to continue fighting with his speeches." },
+    { "term": "Hitler", "definition": "Adolf Hitler; leader of Nazi Germany from 1933 to 1945, responsible for starting WWII and ordering the Holocaust.", "sentence": "[Blank]'s invasion of Poland on 1 September 1939 triggered Britain and France to declare war on Germany." },
+    { "term": "Battle of Britain", "definition": "The 1940 air campaign in which the RAF successfully defended Britain against the German Luftwaffe.", "sentence": "The [blank] was the first major military campaign fought entirely by air forces." },
+    { "term": "RAF", "definition": "Royal Air Force; the British air force that defended Britain against the Luftwaffe in the Battle of Britain.", "sentence": "The [blank] pilots, nicknamed 'the Few' by Churchill, were crucial to Britain's defence in 1940." },
+    { "term": "Auschwitz", "definition": "The largest Nazi concentration and extermination camp, located in occupied Poland, where over 1 million Jews were murdered.", "sentence": "[Blank] was the largest Nazi death camp, where systematic murder on an industrial scale took place." },
+    { "term": "Pearl Harbor", "definition": "The Japanese surprise attack on the US naval base in Hawaii on 7 December 1941, bringing the USA into the war.", "sentence": "The attack on [blank] on 7 December 1941 caused the United States to enter World War Two." },
+    { "term": "Stalin", "definition": "Joseph Stalin; leader of the Soviet Union, who allied with Britain and the USA after Germany invaded the USSR in 1941.", "sentence": "[Blank] led the Soviet Union against Germany after Operation Barbarossa began in June 1941." },
+    { "term": "resistance", "definition": "Organised opposition to Nazi occupation in conquered countries, often involving sabotage and intelligence gathering.", "sentence": "French [blank] fighters helped the Allied war effort by sabotaging German supply lines." },
+    { "term": "genocide", "definition": "The deliberate killing of a large group of people, especially those of a particular ethnic group or nation.", "sentence": "The Holocaust was an act of [blank] targeting Jewish people and other minority groups." }
+  ]
+}

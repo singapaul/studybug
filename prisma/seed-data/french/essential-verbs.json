@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "essential-verbs",
+  "items": [
+    { "term": "être", "definition": "to be", "sentence": "Je vais [blank] médecin quand je serai grand." },
+    { "term": "avoir", "definition": "to have", "sentence": "Elle voudrait [blank] un chien." },
+    { "term": "aller", "definition": "to go", "sentence": "Nous allons [blank] au cinéma ce soir." },
+    { "term": "faire", "definition": "to do / to make", "sentence": "Qu'est-ce que tu vas [blank] ce weekend ?" },
+    { "term": "vouloir", "definition": "to want", "sentence": "Je [blank] un café, s'il vous plaît." },
+    { "term": "pouvoir", "definition": "to be able to / can", "sentence": "Est-ce que tu [blank] m'aider avec mes devoirs ?" },
+    { "term": "devoir", "definition": "to have to / must", "sentence": "Je [blank] finir mes devoirs avant de sortir." },
+    { "term": "savoir", "definition": "to know (a fact or how to do something)", "sentence": "Tu [blank] parler espagnol ?" },
+    { "term": "venir", "definition": "to come", "sentence": "Elle va [blank] chez moi samedi." },
+    { "term": "prendre", "definition": "to take", "sentence": "Je vais [blank] le bus pour aller au collège." },
+    { "term": "parler", "definition": "to speak / to talk", "sentence": "En France, les gens [blank] français." },
+    { "term": "aimer", "definition": "to like / to love", "sentence": "J'[blank] beaucoup le chocolat." },
+    { "term": "habiter", "definition": "to live (in a place)", "sentence": "J'[blank] dans une grande ville." },
+    { "term": "travailler", "definition": "to work", "sentence": "Mon père [blank] dans un bureau." },
+    { "term": "manger", "definition": "to eat", "sentence": "Nous [blank] ensemble à midi." },
+    { "term": "boire", "definition": "to drink", "sentence": "Elle [blank] du jus d'orange chaque matin." },
+    { "term": "sortir", "definition": "to go out", "sentence": "Je [blank] avec mes amis le vendredi soir." },
+    { "term": "regarder", "definition": "to watch / to look at", "sentence": "Il [blank] la télé tous les soirs." },
+    { "term": "écouter", "definition": "to listen to", "sentence": "J'adore [blank] de la musique." },
+    { "term": "jouer", "definition": "to play", "sentence": "Il [blank] au foot avec ses amis." }
+  ]
+}

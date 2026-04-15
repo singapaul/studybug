@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "respiration",
+  "items": [
+    { "term": "respiration", "definition": "The process by which cells break down glucose to release energy, occurring in all living organisms.", "sentence": "All living cells use [blank] to release energy from glucose." },
+    { "term": "aerobic", "definition": "Describes respiration that uses oxygen to break down glucose, producing carbon dioxide, water, and a large amount of energy.", "sentence": "[Blank] respiration uses oxygen and produces carbon dioxide and water." },
+    { "term": "anaerobic", "definition": "Describes respiration that occurs without oxygen, producing less energy and different waste products.", "sentence": "During a sprint race, muscles respire [blank] when oxygen runs out." },
+    { "term": "ATP", "definition": "The molecule that stores and transfers energy in cells; the universal energy currency.", "sentence": "Energy from respiration is stored in [blank] molecules, which power cell activities." },
+    { "term": "glucose", "definition": "The sugar molecule that is broken down during respiration to release energy.", "sentence": "During respiration, [blank] is broken down to release energy for the cell." },
+    { "term": "mitochondria", "definition": "The organelles in cells where aerobic respiration takes place.", "sentence": "Aerobic respiration occurs in the [blank], which are most abundant in active cells." },
+    { "term": "lactic acid", "definition": "The waste product of anaerobic respiration in animal cells, which causes muscle fatigue.", "sentence": "The build-up of [blank] in muscles causes the burning sensation felt during intense exercise." },
+    { "term": "fermentation", "definition": "A type of anaerobic respiration in yeast and bacteria that produces ethanol and carbon dioxide.", "sentence": "Yeast uses [blank] to produce ethanol and carbon dioxide from glucose." },
+    { "term": "ethanol", "definition": "The alcohol produced when yeast respires anaerobically, used in bread-making and brewing.", "sentence": "During brewing, yeast produces [blank] and carbon dioxide from glucose." },
+    { "term": "glycolysis", "definition": "The first stage of respiration, occurring in the cytoplasm, where glucose is split into two pyruvate molecules.", "sentence": "[Blank] occurs in the cytoplasm and splits glucose into two pyruvate molecules." },
+    { "term": "oxygen debt", "definition": "The extra oxygen needed after exercise to break down the lactic acid produced during anaerobic respiration.", "sentence": "After sprinting, a runner breathes heavily to repay the [blank] caused by anaerobic respiration." },
+    { "term": "carbon dioxide", "definition": "A waste product of aerobic respiration that is expelled from the body through the lungs.", "sentence": "Aerobic respiration produces water and [blank] as waste products." },
+    { "term": "exothermic", "definition": "Describes a reaction that releases energy; respiration is exothermic because it releases heat.", "sentence": "Respiration is an [blank] reaction because it releases energy as heat." },
+    { "term": "yeast", "definition": "A single-celled fungus that respires anaerobically to produce ethanol and carbon dioxide.", "sentence": "[Blank] is used in bread-making because its fermentation produces carbon dioxide, which makes the dough rise." },
+    { "term": "enzyme", "definition": "A biological catalyst that speeds up chemical reactions in cells, including those in respiration.", "sentence": "Each stage of respiration is controlled by a specific [blank]." },
+    { "term": "cytoplasm", "definition": "The jelly-like fluid in the cell where anaerobic respiration and glycolysis take place.", "sentence": "Anaerobic respiration takes place in the [blank] of the cell." },
+    { "term": "substrate", "definition": "The molecule that an enzyme acts on; glucose is the substrate in the first stages of respiration.", "sentence": "Glucose is the [blank] used at the start of the respiration pathway." },
+    { "term": "muscle fatigue", "definition": "The tiredness and inability to contract experienced by muscles during prolonged exercise, caused by lactic acid build-up.", "sentence": "[Blank] occurs when lactic acid builds up faster than it can be removed from the muscles." },
+    { "term": "breathing rate", "definition": "The number of breaths taken per minute; increases during exercise to supply more oxygen for respiration.", "sentence": "During exercise, your [blank] increases to supply more oxygen to the muscles." },
+    { "term": "word equation", "definition": "A simple way of representing a chemical reaction using the names of reactants and products.", "sentence": "The [blank] for aerobic respiration is: glucose + oxygen → carbon dioxide + water (+ energy)." }
+  ]
+}

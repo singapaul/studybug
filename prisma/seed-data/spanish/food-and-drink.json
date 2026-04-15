@@ -1,0 +1,26 @@
+{
+  "subject": "spanish",
+  "topic": "food-and-drink",
+  "items": [
+    { "term": "pan", "definition": "bread", "sentence": "Compro el [blank] en la panadería cada mañana." },
+    { "term": "queso", "definition": "cheese", "sentence": "En España hay muchos tipos de [blank], como el manchego." },
+    { "term": "carne", "definition": "meat", "sentence": "No como [blank] porque soy vegetariano." },
+    { "term": "pollo", "definition": "chicken", "sentence": "Esta noche vamos a cenar [blank] asado con patatas." },
+    { "term": "pescado", "definition": "fish", "sentence": "En la costa, la gente come mucho [blank] fresco." },
+    { "term": "verduras", "definition": "vegetables", "sentence": "Hay que comer [blank] todos los días para mantenerse sano." },
+    { "term": "fruta", "definition": "fruit", "sentence": "Como [blank] fresca en el desayuno cada mañana." },
+    { "term": "agua", "definition": "water", "sentence": "¿Me pone un vaso de [blank], por favor?" },
+    { "term": "zumo", "definition": "juice", "sentence": "Tomo un [blank] de naranja con el desayuno." },
+    { "term": "leche", "definition": "milk", "sentence": "Los niños beben [blank] con los cereales por las mañanas." },
+    { "term": "café", "definition": "coffee", "sentence": "Los españoles suelen tomar un [blank] después de comer." },
+    { "term": "azúcar", "definition": "sugar", "sentence": "¿Quieres [blank] en el café?" },
+    { "term": "arroz", "definition": "rice", "sentence": "La paella se hace con [blank] y mariscos." },
+    { "term": "pasta", "definition": "pasta", "sentence": "A mis hijos les encanta la [blank] con tomate." },
+    { "term": "bocadillo", "definition": "sandwich (on a baguette)", "sentence": "Me hago un [blank] de jamón para llevar al colegio." },
+    { "term": "desayuno", "definition": "breakfast", "sentence": "Tomo el [blank] a las siete de la mañana antes de ir al cole." },
+    { "term": "almuerzo", "definition": "lunch", "sentence": "El [blank] en España suele ser la comida principal del día." },
+    { "term": "cena", "definition": "dinner", "sentence": "En España, la [blank] se suele hacer bastante tarde, hacia las nueve." },
+    { "term": "pedir", "definition": "to order (food)", "sentence": "¿Están listos para [blank]?" },
+    { "term": "tapas", "definition": "small portions of food served as snacks or appetisers, typical of Spanish culture", "sentence": "Salimos a tomar unas [blank] en el bar del centro." }
+  ]
+}

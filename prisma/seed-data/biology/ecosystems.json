@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "ecosystems",
+  "items": [
+    { "term": "ecosystem", "definition": "All the living organisms in an area together with the non-living (abiotic) factors that affect them.", "sentence": "A pond and all the organisms living in and around it form an [blank]." },
+    { "term": "food chain", "definition": "A sequence showing how energy and nutrients are transferred from one organism to another.", "sentence": "Grass → Rabbit → Fox is an example of a [blank]." },
+    { "term": "food web", "definition": "A network of interconnected food chains in an ecosystem, showing the feeding relationships between organisms.", "sentence": "A [blank] shows how different food chains in an ecosystem are linked together." },
+    { "term": "producer", "definition": "An organism that makes its own food through photosynthesis; always at the start of a food chain.", "sentence": "Plants are [blank] because they make food from sunlight and are at the start of every food chain." },
+    { "term": "consumer", "definition": "An organism that obtains energy by eating other organisms.", "sentence": "A rabbit is a primary [blank] because it eats plants." },
+    { "term": "decomposer", "definition": "An organism (such as bacteria or fungi) that breaks down dead organic matter, recycling nutrients into the soil.", "sentence": "A [blank] like a fungus breaks down dead leaves and returns nutrients to the soil." },
+    { "term": "predator", "definition": "An animal that hunts, kills, and eats other animals for food.", "sentence": "The fox is a [blank] that hunts rabbits for food." },
+    { "term": "prey", "definition": "An animal that is hunted and eaten by a predator.", "sentence": "Rabbits are [blank] for foxes in a woodland ecosystem." },
+    { "term": "population", "definition": "All the individuals of one species living in a particular area at the same time.", "sentence": "The [blank] of rabbits in a field may be limited by the amount of food available." },
+    { "term": "community", "definition": "All the different populations of organisms living in the same area at the same time.", "sentence": "The [blank] in a forest includes all species of plants, animals, fungi, and microorganisms living there." },
+    { "term": "habitat", "definition": "The environment in which an organism lives, providing it with food, shelter, and conditions to survive.", "sentence": "The oak tree is the natural [blank] of many insects, birds, and fungi." },
+    { "term": "biodiversity", "definition": "The variety of different species of organisms in an ecosystem; a high biodiversity indicates a healthy ecosystem.", "sentence": "Deforestation reduces [blank] by destroying the habitats of many species." },
+    { "term": "biomass", "definition": "The total mass of living material in an organism or group of organisms, often used in energy transfer calculations.", "sentence": "Energy is lost at each stage of a food chain, so [blank] decreases at higher trophic levels." },
+    { "term": "competition", "definition": "The struggle between organisms for limited resources such as food, water, or mates.", "sentence": "Plants of the same species growing close together show [blank] for light, water, and minerals." },
+    { "term": "abiotic", "definition": "Describes the non-living factors in an ecosystem, such as temperature, light intensity, and pH.", "sentence": "Temperature and rainfall are [blank] factors that affect the distribution of organisms." },
+    { "term": "biotic", "definition": "Describes the living factors in an ecosystem, such as predation, disease, and competition.", "sentence": "Predation is a [blank] factor that can affect the size of a prey population." },
+    { "term": "nitrogen cycle", "definition": "The process by which nitrogen is converted between different chemical forms as it circulates through ecosystems.", "sentence": "Bacteria play an important role in the [blank] by fixing nitrogen from the air into the soil." },
+    { "term": "carbon cycle", "definition": "The movement of carbon through different parts of the environment via photosynthesis, respiration, combustion, and decomposition.", "sentence": "Burning fossil fuels disrupts the [blank] by releasing stored carbon dioxide into the atmosphere." },
+    { "term": "adaptation", "definition": "A feature of an organism that makes it well-suited to surviving in its particular habitat.", "sentence": "The polar bear's thick fur is an [blank] to the cold Arctic environment." },
+    { "term": "trophic level", "definition": "The position an organism occupies in a food chain, from producer to top consumer.", "sentence": "Grass is at the first [blank], while a hawk at the top is at the fourth or fifth." }
+  ]
+}

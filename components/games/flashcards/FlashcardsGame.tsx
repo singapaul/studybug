@@ -10,7 +10,6 @@ import { Clock, ChevronLeft, ChevronRight, CheckCircle2, XCircle, BookOpen, Home
 import { motion, AnimatePresence } from 'framer-motion'
 import { cn } from '@/lib/utils'
 import FlashcardCard from './FlashcardCard'
-import FlashcardsResult from './FlashcardsResult'
 import { CardProgress, computeFlashcardsScore, shuffleArray } from '@/lib/game-logic/flashcards'
 
 interface FlashcardsGameProps {
@@ -84,19 +83,6 @@ export default function FlashcardsGame({ gameData, gameName, onComplete, onExit 
     }
   }, [currentIndex, cards.length, time, onComplete])
 
-  const handleReviewUnknown = () => {
-    const unknownCards = cards.filter((_, i) => progress[i].known === false)
-    if (unknownCards.length === 0) return
-    setCards(unknownCards)
-    setProgress(unknownCards.map((c) => ({ cardId: c.id, known: null, viewed: false })))
-    setCurrentIndex(0)
-    setIsFlipped(false)
-    setTime(0)
-    setIsGameActive(true)
-    setIsComplete(false)
-    setReviewMode(true)
-  }
-
   if (!cards.length || currentIndex >= cards.length) {
     return (
       <div className="flex items-center justify-center p-8">
@@ -112,18 +98,7 @@ export default function FlashcardsGame({ gameData, gameName, onComplete, onExit 
   const unknownCount = progress.filter((p) => p.known === false).length
 
   if (isComplete) {
-    return (
-      <FlashcardsResult
-        totalCards={cards.length}
-        knownCards={knownCount}
-        unknownCards={unknownCount}
-        time={time}
-        reviewMode={reviewMode}
-        onReviewUnknown={handleReviewUnknown}
-        onPlayAgain={() => initializeGame(isShuffled)}
-        onExit={onExit}
-      />
-    )
+    return null
   }
 
   const currentCard = cards[currentIndex]

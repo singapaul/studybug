@@ -1,0 +1,26 @@
+{
+  "subject": "chemistry",
+  "topic": "acids-bases",
+  "items": [
+    { "term": "acid", "definition": "A substance that produces H⁺ ions in water; has a pH below 7.", "sentence": "Hydrochloric acid is a strong [blank] with a pH of around 1." },
+    { "term": "alkali", "definition": "A soluble base that produces OH⁻ ions in water; has a pH above 7.", "sentence": "Sodium hydroxide is an [blank] used to neutralise acids." },
+    { "term": "base", "definition": "A substance that reacts with an acid in a neutralisation reaction; includes alkalis and insoluble metal oxides.", "sentence": "Copper oxide is a [blank] that reacts with sulfuric acid to form copper sulfate." },
+    { "term": "neutralisation", "definition": "The reaction between an acid and a base that produces a salt and water.", "sentence": "The reaction between hydrochloric acid and sodium hydroxide is an example of [blank]." },
+    { "term": "pH", "definition": "A scale from 0–14 that measures how acidic or alkaline a solution is; 7 is neutral, below 7 is acidic, above 7 is alkaline.", "sentence": "A solution with a [blank] of 2 is strongly acidic." },
+    { "term": "salt", "definition": "The product (along with water) of a neutralisation reaction between an acid and a base.", "sentence": "Sodium chloride is a [blank] formed when hydrochloric acid reacts with sodium hydroxide." },
+    { "term": "indicator", "definition": "A substance that changes colour depending on whether a solution is acidic or alkaline.", "sentence": "Universal [blank] turns red in a strong acid and purple in a strong alkali." },
+    { "term": "litmus", "definition": "A natural indicator that turns red in acid and blue in alkali.", "sentence": "[Blank] paper turns red when dipped into vinegar." },
+    { "term": "hydrogen", "definition": "The gas produced when a metal reacts with an acid; identified by the squeaky pop test.", "sentence": "When zinc reacts with hydrochloric acid, [blank] gas is produced." },
+    { "term": "carbonate", "definition": "A compound containing the CO₃²⁻ ion; reacts with acids to produce a salt, water, and carbon dioxide.", "sentence": "Calcium [blank] reacts with hydrochloric acid to produce carbon dioxide gas." },
+    { "term": "titration", "definition": "A technique used to find the exact volume of acid or alkali needed to neutralise a given volume of the other.", "sentence": "[Blank] is used in the laboratory to accurately determine the concentration of an unknown solution." },
+    { "term": "concentration", "definition": "The amount of solute dissolved in a given volume of solution, measured in mol/dm³.", "sentence": "Increasing the [blank] of an acid means there are more H⁺ ions per unit volume." },
+    { "term": "strong acid", "definition": "An acid that completely dissociates (ionises) in water, producing a high concentration of H⁺ ions.", "sentence": "Hydrochloric acid is a [blank] because it fully ionises in water." },
+    { "term": "weak acid", "definition": "An acid that only partially dissociates in water, resulting in a lower concentration of H⁺ ions.", "sentence": "Ethanoic acid is a [blank] acid because it does not fully ionise in solution." },
+    { "term": "corrosive", "definition": "Describes a substance that can damage living tissue or materials by chemical action.", "sentence": "Concentrated sulfuric acid is [blank] and must be handled with great care." },
+    { "term": "sulfate", "definition": "A salt formed when sulfuric acid reacts with a base; contains the SO₄²⁻ ion.", "sentence": "Copper [blank] is a blue crystalline salt made by reacting copper oxide with sulfuric acid." },
+    { "term": "nitrate", "definition": "A salt formed when nitric acid reacts with a base; contains the NO₃⁻ ion.", "sentence": "Ammonium [blank] is used as a fertiliser because it provides nitrogen for plant growth." },
+    { "term": "precipitation", "definition": "The formation of an insoluble solid (precipitate) when two solutions are mixed together.", "sentence": "[Blank] occurs when silver nitrate solution is added to a chloride solution, forming a white precipitate." },
+    { "term": "dissociation", "definition": "The splitting of an ionic compound or acid into its constituent ions when dissolved in water.", "sentence": "The [blank] of hydrochloric acid in water produces H⁺ and Cl⁻ ions." },
+    { "term": "exothermic", "definition": "Describes a reaction that releases heat energy to the surroundings, such as neutralisation.", "sentence": "Neutralisation is an [blank] reaction — the temperature of the solution rises." }
+  ]
+}

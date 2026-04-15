@@ -1,0 +1,26 @@
+{
+  "subject": "physics",
+  "topic": "forces-and-motion",
+  "items": [
+    { "term": "force", "definition": "A push or pull acting on an object; measured in Newtons (N) and can change an object's speed, direction, or shape.", "sentence": "A [blank] is needed to change the speed or direction of a moving object." },
+    { "term": "Newton", "definition": "The SI unit of force, named after Isaac Newton; symbol N.", "sentence": "The weight of a 1 kg mass on Earth is approximately 10 [blank]s." },
+    { "term": "acceleration", "definition": "The rate of change of velocity; measured in m/s². An object accelerates when a resultant force acts on it.", "sentence": "A car has an [blank] of 3 m/s² if it speeds up by 3 m/s every second." },
+    { "term": "velocity", "definition": "The speed of an object in a given direction; a vector quantity measured in m/s.", "sentence": "A ball moving at 5 m/s to the north has a [blank] of 5 m/s north." },
+    { "term": "speed", "definition": "The distance travelled by an object per unit time; a scalar quantity measured in m/s.", "sentence": "The [blank] of a car is 30 m/s if it travels 30 metres every second." },
+    { "term": "friction", "definition": "A resistive force that opposes the motion of an object moving through a surface or fluid.", "sentence": "[Blank] between the road and the tyres slows a car down when the brakes are applied." },
+    { "term": "gravity", "definition": "An attractive force that acts between any two masses; on Earth it pulls objects towards the ground.", "sentence": "[Blank] is the force that keeps planets in orbit around the Sun." },
+    { "term": "weight", "definition": "The gravitational force acting on an object due to its mass; measured in Newtons. W = mg.", "sentence": "The [blank] of an object on the Moon is less than on Earth because gravity is weaker there." },
+    { "term": "mass", "definition": "The amount of matter in an object; measured in kilograms. Mass does not change with location.", "sentence": "An object's [blank] stays the same whether it is on Earth or the Moon." },
+    { "term": "resultant", "definition": "The single force that has the same effect as all the forces acting on an object combined.", "sentence": "If a 10 N force right and a 4 N force left act on an object, the [blank] force is 6 N right." },
+    { "term": "equilibrium", "definition": "The state in which all forces on an object are balanced, so the resultant force is zero and the object is stationary or moving at constant velocity.", "sentence": "A book on a table is in [blank] because the weight and normal reaction force are equal." },
+    { "term": "inertia", "definition": "The tendency of an object to resist changes in its state of rest or uniform motion.", "sentence": "A large truck has more [blank] than a bicycle and is harder to stop." },
+    { "term": "momentum", "definition": "The product of an object's mass and velocity (p = mv); a vector quantity measured in kg·m/s.", "sentence": "A heavy lorry travelling slowly can have the same [blank] as a lighter car travelling faster." },
+    { "term": "deceleration", "definition": "A negative acceleration; when an object slows down.", "sentence": "The brakes cause a [blank] of 5 m/s² in the car." },
+    { "term": "terminal velocity", "definition": "The constant maximum speed reached when the driving force equals the resistive forces on a falling object.", "sentence": "A skydiver reaches [blank] when air resistance equals their weight." },
+    { "term": "Newton's first law", "definition": "An object will remain at rest or in uniform motion unless acted upon by a resultant force.", "sentence": "According to [blank], a ball rolling on a frictionless surface will continue at the same speed forever." },
+    { "term": "Newton's second law", "definition": "The resultant force on an object equals its mass multiplied by its acceleration: F = ma.", "sentence": "[Blank] states that a larger force is needed to accelerate a heavier object at the same rate." },
+    { "term": "stopping distance", "definition": "The total distance travelled by a vehicle before it stops; the sum of thinking distance and braking distance.", "sentence": "The [blank] of a car increases in wet conditions because braking distance is greater." },
+    { "term": "braking distance", "definition": "The distance a vehicle travels during braking after the brakes are applied, before coming to a stop.", "sentence": "Higher speeds greatly increase the [blank] because kinetic energy is proportional to v²." },
+    { "term": "scalar", "definition": "A quantity that has magnitude only, such as speed, distance, or mass.", "sentence": "Speed is a [blank] quantity because it only has a size, not a direction." }
+  ]
+}

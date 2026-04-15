@@ -1,0 +1,26 @@
+{
+  "subject": "physics",
+  "topic": "waves",
+  "items": [
+    { "term": "wave", "definition": "A disturbance that transfers energy from one place to another without transferring matter.", "sentence": "A [blank] transfers energy through a medium without the medium itself moving forward." },
+    { "term": "frequency", "definition": "The number of complete waves passing a point per second; measured in hertz (Hz).", "sentence": "A sound with a [blank] of 440 Hz vibrates 440 times per second and produces the note A." },
+    { "term": "wavelength", "definition": "The distance from one point on a wave to the identical point on the next wave; measured in metres.", "sentence": "Red light has a longer [blank] than blue light." },
+    { "term": "amplitude", "definition": "The maximum displacement of a point on a wave from its rest (equilibrium) position.", "sentence": "Louder sounds have a greater [blank] than quieter sounds." },
+    { "term": "transverse", "definition": "A wave in which the oscillations are perpendicular (at right angles) to the direction of energy transfer.", "sentence": "Light is a [blank] wave because the electromagnetic field vibrates at right angles to the direction of travel." },
+    { "term": "longitudinal", "definition": "A wave in which the oscillations are parallel to the direction of energy transfer, such as sound.", "sentence": "Sound is a [blank] wave, with compressions and rarefactions along the direction of travel." },
+    { "term": "reflection", "definition": "The bouncing of a wave back from a surface; the angle of incidence equals the angle of reflection.", "sentence": "A mirror causes [blank] of light, with the angle of reflection equal to the angle of incidence." },
+    { "term": "refraction", "definition": "The change in direction of a wave as it passes from one medium to another due to a change in speed.", "sentence": "Light bends towards the normal when it enters glass from air — this is called [blank]." },
+    { "term": "diffraction", "definition": "The spreading out of waves as they pass through a gap or around an obstacle.", "sentence": "[Blank] of waves through a narrow gap is greatest when the gap is similar in size to the wavelength." },
+    { "term": "electromagnetic", "definition": "Describes a spectrum of transverse waves that all travel at the speed of light in a vacuum, including radio waves and gamma rays.", "sentence": "Visible light, X-rays, and radio waves are all part of the [blank] spectrum." },
+    { "term": "infrared", "definition": "Electromagnetic radiation with a wavelength slightly longer than visible light; detected as heat.", "sentence": "[Blank] radiation is emitted by all warm objects and is used in thermal imaging cameras." },
+    { "term": "ultraviolet", "definition": "Electromagnetic radiation with a shorter wavelength than visible light; can cause sunburn and skin cancer.", "sentence": "[Blank] radiation from the Sun can damage skin cells and cause cancer." },
+    { "term": "gamma ray", "definition": "The highest-energy electromagnetic radiation, emitted from the nucleus of radioactive atoms; can cause cancer.", "sentence": "[Blank] radiation is used to sterilise medical equipment because it kills bacteria." },
+    { "term": "X-ray", "definition": "High-energy electromagnetic radiation used in medicine to image bones, as it passes through soft tissue but is absorbed by bone.", "sentence": "Doctors use [blank] to image broken bones because bone absorbs them more than soft tissue." },
+    { "term": "speed", "definition": "The rate at which a wave travels; for electromagnetic waves in a vacuum this is 3 × 10⁸ m/s. v = fλ.", "sentence": "The [blank] of a wave can be calculated using the formula v = fλ." },
+    { "term": "sound", "definition": "A longitudinal mechanical wave produced by vibrating objects that requires a medium to travel.", "sentence": "[Blank] cannot travel in a vacuum because there are no particles to vibrate and carry the wave." },
+    { "term": "ultrasound", "definition": "Sound with a frequency above 20,000 Hz (above the range of human hearing); used in medical scanning.", "sentence": "[Blank] scanning is used to image unborn babies because it is safer than X-rays." },
+    { "term": "vacuum", "definition": "A region with no matter; electromagnetic waves can travel through it but sound cannot.", "sentence": "Light can travel through a [blank] but sound cannot, because sound needs particles to vibrate." },
+    { "term": "echo", "definition": "A reflected sound wave that can be used to measure distance or detect objects (echolocation).", "sentence": "Dolphins use [blank]location to find prey by emitting ultrasound and detecting the reflections." },
+    { "term": "compression", "definition": "A region in a longitudinal wave where the particles are pushed together (high pressure).", "sentence": "In a sound wave, a [blank] is a region where particles are close together and pressure is high." }
+  ]
+}

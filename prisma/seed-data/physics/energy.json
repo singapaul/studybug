@@ -1,0 +1,26 @@
+{
+  "subject": "physics",
+  "topic": "energy",
+  "items": [
+    { "term": "energy", "definition": "The capacity to do work; measured in joules (J). It can be transferred between stores but cannot be created or destroyed.", "sentence": "The law of conservation of [blank] states that energy cannot be created or destroyed." },
+    { "term": "kinetic energy", "definition": "The energy an object has due to its motion; calculated as ½mv².", "sentence": "A fast-moving car has more [blank] than a slow-moving one of the same mass." },
+    { "term": "potential energy", "definition": "Stored energy due to position or state; includes gravitational, elastic, and chemical potential energy.", "sentence": "A compressed spring stores elastic [blank] that is released when the spring is let go." },
+    { "term": "gravitational", "definition": "Relating to gravity; gravitational potential energy (GPE = mgh) is the energy stored due to an object's height.", "sentence": "A ball at the top of a hill has [blank] potential energy that converts to kinetic energy as it rolls down." },
+    { "term": "conservation", "definition": "The principle that energy cannot be created or destroyed, only transferred from one store to another.", "sentence": "The [blank] of energy means the total energy in a closed system always remains the same." },
+    { "term": "efficiency", "definition": "The proportion of input energy that is usefully transferred; calculated as (useful output ÷ total input) × 100%.", "sentence": "An LED bulb has a higher [blank] than an incandescent bulb because it wastes less energy as heat." },
+    { "term": "joule", "definition": "The SI unit of energy and work; symbol J.", "sentence": "A force of 1 Newton moving through 1 metre does 1 [blank] of work." },
+    { "term": "watt", "definition": "The SI unit of power; equal to 1 joule per second. Symbol W.", "sentence": "A 60 [blank] light bulb transfers 60 joules of energy every second." },
+    { "term": "power", "definition": "The rate at which energy is transferred or work is done; measured in watts. P = E/t.", "sentence": "A machine with high [blank] can do the same amount of work in less time." },
+    { "term": "thermal energy", "definition": "Energy stored in the movement of particles in a substance; also called heat energy.", "sentence": "Burning fuel releases chemical energy, which is transferred to [blank] energy in the surroundings." },
+    { "term": "insulation", "definition": "A material that reduces the transfer of thermal energy by conduction, convection, or radiation.", "sentence": "Cavity wall [blank] reduces the rate at which heat is lost from a house." },
+    { "term": "conduction", "definition": "The transfer of thermal energy through a material by the vibration and collision of particles.", "sentence": "Heat travels through a metal spoon by [blank] when placed in hot water." },
+    { "term": "convection", "definition": "The transfer of thermal energy through a fluid (liquid or gas) by the movement of the fluid itself.", "sentence": "A hot radiator heats a room by [blank] currents in the air." },
+    { "term": "radiation", "definition": "The transfer of energy by electromagnetic waves (particularly infrared), which does not require a medium.", "sentence": "The Sun heats the Earth by [blank] because the energy travels through the vacuum of space." },
+    { "term": "renewable", "definition": "Describes an energy source that will not run out and is replenished naturally, such as wind, solar, or tidal.", "sentence": "Wind and solar power are examples of [blank] energy sources." },
+    { "term": "fossil fuel", "definition": "A non-renewable energy source (coal, oil, or natural gas) formed from the remains of ancient organisms.", "sentence": "Burning [blank] releases carbon dioxide, contributing to climate change." },
+    { "term": "dissipation", "definition": "The spread of energy to the surroundings in a less useful form, typically as heat or sound.", "sentence": "[Blank] of energy as heat means that most machines cannot be 100% efficient." },
+    { "term": "work done", "definition": "The energy transferred when a force moves an object through a distance; W = Fd, measured in joules.", "sentence": "[Blank] is calculated by multiplying force by the distance moved in the direction of the force." },
+    { "term": "chemical", "definition": "A type of energy store found in fuels, food, and batteries, released through chemical reactions.", "sentence": "A battery stores [blank] energy that is converted to electrical energy in a circuit." },
+    { "term": "specific heat capacity", "definition": "The energy needed to raise the temperature of 1 kg of a substance by 1°C; measured in J/kg°C.", "sentence": "Water has a high [blank], so it takes a lot of energy to heat it up." }
+  ]
+}

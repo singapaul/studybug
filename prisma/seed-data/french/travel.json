@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "travel",
+  "items": [
+    { "term": "voyager", "definition": "to travel", "sentence": "J'adore [blank] dans d'autres pays." },
+    { "term": "avion", "definition": "plane / aeroplane", "sentence": "Nous prenons l'[blank] pour aller à New York." },
+    { "term": "train", "definition": "train", "sentence": "Le [blank] est rapide et pratique pour voyager en France." },
+    { "term": "voiture", "definition": "car", "sentence": "Nous sommes allés en [blank] de Paris à Lyon." },
+    { "term": "gare", "definition": "train station", "sentence": "Il faut arriver à la [blank] vingt minutes avant le départ." },
+    { "term": "aéroport", "definition": "airport", "sentence": "L'[blank] de Paris Charles de Gaulle est très grand." },
+    { "term": "passeport", "definition": "passport", "sentence": "N'oublie pas ton [blank] avant de partir à l'étranger." },
+    { "term": "hôtel", "definition": "hotel", "sentence": "Nous avons réservé une chambre dans un [blank] près de la mer." },
+    { "term": "chambre", "definition": "bedroom / room", "sentence": "Je voudrais réserver une [blank] pour deux nuits." },
+    { "term": "billet", "definition": "ticket", "sentence": "J'ai acheté mon [blank] de train sur internet." },
+    { "term": "valise", "definition": "suitcase", "sentence": "Ma [blank] est trop lourde — j'ai trop de vêtements !" },
+    { "term": "vacances", "definition": "holidays", "sentence": "Pendant les [blank], nous allons à la plage." },
+    { "term": "plage", "definition": "beach", "sentence": "Je préfère passer mes vacances à la [blank]." },
+    { "term": "montagne", "definition": "mountain", "sentence": "En hiver, nous allons à la [blank] pour faire du ski." },
+    { "term": "étranger", "definition": "abroad / foreign country", "sentence": "Elle aime voyager à l'[blank] pour découvrir de nouvelles cultures." },
+    { "term": "séjourner", "definition": "to stay (somewhere temporarily)", "sentence": "Nous allons [blank] dans un gîte pendant une semaine." },
+    { "term": "réserver", "definition": "to book / to reserve", "sentence": "Il faut [blank] le restaurant à l'avance." },
+    { "term": "touriste", "definition": "tourist", "sentence": "Paris accueille des millions de [blank] chaque année." },
+    { "term": "carte", "definition": "map / card", "sentence": "Nous avons besoin d'une [blank] pour trouver notre chemin." },
+    { "term": "retour", "definition": "return / way back", "sentence": "Le voyage de [blank] durait trois heures." }
+  ]
+}

@@ -35,13 +35,21 @@ vi.mock('framer-motion', () => ({
 vi.mock('@/hooks/use-games', () => ({
   useGame: vi.fn(),
   useSubmitAttempt: vi.fn(),
+  useGameAttempts: vi.fn(),
 }))
 
-import { useGame, useSubmitAttempt } from '@/hooks/use-games'
+vi.mock('@/hooks/use-plan', () => ({
+  usePlan: vi.fn(),
+}))
+
+import { useGame, useSubmitAttempt, useGameAttempts } from '@/hooks/use-games'
+import { usePlan } from '@/hooks/use-plan'
 import PlayGamePage from '@/app/(dashboard)/games/[id]/page'
 
 const mockUseGame = useGame as ReturnType<typeof vi.fn>
 const mockUseSubmitAttempt = useSubmitAttempt as ReturnType<typeof vi.fn>
+const mockUseGameAttempts = useGameAttempts as ReturnType<typeof vi.fn>
+const mockUsePlan = usePlan as ReturnType<typeof vi.fn>
 
 const GAMES: Record<string, { id: string; userId: string; name: string; gameType: GameType; gameData: string; createdAt: Date; updatedAt: Date }> = {
   'game-1': {
@@ -81,6 +89,8 @@ const GAMES: Record<string, { id: string; userId: string; name: string; gameType
 beforeEach(() => {
   vi.clearAllMocks()
   mockUseSubmitAttempt.mockReturnValue({ mutate: vi.fn() })
+  mockUseGameAttempts.mockReturnValue({ data: [] })
+  mockUsePlan.mockReturnValue({ plan: 'free', isPro: false })
 })
 
 describe('Play game page', () => {

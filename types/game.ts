@@ -4,6 +4,9 @@ export enum GameType {
   MULTIPLE_CHOICE = 'MULTIPLE_CHOICE',
   SPLAT = 'SPLAT',
   SWIPE = 'SWIPE',
+  FILL_IN_THE_BLANK = 'FILL_IN_THE_BLANK',
+  SPEED_ROUND = 'SPEED_ROUND',
+  ANAGRAM = 'ANAGRAM',
 }
 
 export interface Game {
@@ -12,6 +15,8 @@ export interface Game {
   name: string
   gameType: GameType
   gameData: string // JSON string of type-specific data
+  shareToken?: string | null
+  sourceLibraryDeckId?: string | null
   createdAt: Date
   updatedAt: Date
 }
@@ -86,12 +91,50 @@ export interface SwipeGameData {
   items: SwipeItem[]
 }
 
+export interface FillInTheBlankItem {
+  id: string
+  sentence: string // contains [blank] marker
+  answer: string   // correct value for the blank
+}
+
+export interface FillInTheBlankGameData {
+  description?: string
+  items: FillInTheBlankItem[]
+}
+
+export interface SpeedRoundItem {
+  id: string
+  question: string
+  answer: string
+  distractors?: string[] // optional wrong answers; auto-generated from pool if absent
+}
+
+export interface SpeedRoundGameData {
+  description?: string
+  timeLimit: number // seconds: 30 | 60 | 90 | 120
+  items: SpeedRoundItem[]
+}
+
+export interface AnagramItem {
+  id: string
+  word: string  // the correct answer
+  hint?: string // optional clue shown above scrambled letters
+}
+
+export interface AnagramGameData {
+  description?: string
+  items: AnagramItem[]
+}
+
 export type GameData =
   | PairsGameData
   | FlashcardsGameData
   | MultipleChoiceGameData
   | SplatGameData
   | SwipeGameData
+  | FillInTheBlankGameData
+  | SpeedRoundGameData
+  | AnagramGameData
 
 export interface CreateGameInput {
   name: string

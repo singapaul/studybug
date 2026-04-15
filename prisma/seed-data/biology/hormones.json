@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "hormones",
+  "items": [
+    { "term": "hormone", "definition": "A chemical messenger produced by a gland and carried in the blood to a target organ where it produces an effect.", "sentence": "Insulin is a [blank] produced by the pancreas that lowers blood glucose levels." },
+    { "term": "insulin", "definition": "A hormone produced by the pancreas that causes cells to take up glucose from the blood, lowering blood sugar levels.", "sentence": "[Blank] is released after a meal to lower the level of glucose in the blood." },
+    { "term": "glucagon", "definition": "A hormone produced by the pancreas that causes the liver to convert glycogen into glucose, raising blood sugar levels.", "sentence": "[Blank] is released when blood glucose is too low, causing the liver to release more glucose." },
+    { "term": "adrenaline", "definition": "A hormone produced by the adrenal glands in response to stress or danger, preparing the body for 'fight or flight'.", "sentence": "[Blank] increases heart rate and breathing rate to prepare the body for sudden action." },
+    { "term": "oestrogen", "definition": "A female sex hormone produced by the ovaries that controls the development of secondary sexual characteristics and the menstrual cycle.", "sentence": "[Blank] is responsible for the development of female secondary sexual characteristics during puberty." },
+    { "term": "testosterone", "definition": "A male sex hormone produced by the testes that controls the development of male secondary sexual characteristics.", "sentence": "[Blank] is produced by the testes and causes voice-breaking and increased muscle mass in males." },
+    { "term": "thyroxine", "definition": "A hormone produced by the thyroid gland that regulates the metabolic rate of the body.", "sentence": "[Blank] controls the speed of chemical reactions in the body and is important for normal growth." },
+    { "term": "pancreas", "definition": "The gland that produces insulin and glucagon to regulate blood glucose levels.", "sentence": "The [blank] monitors blood glucose levels and releases insulin or glucagon to maintain balance." },
+    { "term": "diabetes", "definition": "A condition in which the body cannot regulate blood glucose levels properly; Type 1 is caused by lack of insulin, Type 2 by insensitivity to it.", "sentence": "People with Type 1 [blank] cannot produce insulin and must inject it to control blood sugar." },
+    { "term": "homeostasis", "definition": "The maintenance of a constant internal environment within the body, despite external changes.", "sentence": "The control of blood glucose and body temperature are both examples of [blank]." },
+    { "term": "negative feedback", "definition": "A control mechanism in which a change triggers a response that reverses the change, maintaining a steady state.", "sentence": "[Blank] ensures that blood glucose levels return to normal after a meal." },
+    { "term": "puberty", "definition": "The period of physical development during which the body matures and becomes capable of reproduction.", "sentence": "Sex hormones such as oestrogen and testosterone cause the changes associated with [blank]." },
+    { "term": "menstrual cycle", "definition": "The monthly cycle of hormonal changes in females that prepares the uterus for pregnancy.", "sentence": "The [blank] is controlled by the hormones FSH, LH, oestrogen, and progesterone." },
+    { "term": "FSH", "definition": "Follicle Stimulating Hormone; a hormone that stimulates the ovaries to produce oestrogen and causes an egg to mature.", "sentence": "[Blank] is released by the pituitary gland and causes an egg follicle to develop in the ovary." },
+    { "term": "LH", "definition": "Luteinising Hormone; the hormone that triggers ovulation (the release of an egg from the ovary).", "sentence": "[Blank] causes ovulation by triggering the release of a mature egg from the ovary." },
+    { "term": "ADH", "definition": "Anti-Diuretic Hormone; a hormone produced by the pituitary gland that controls water reabsorption in the kidneys.", "sentence": "[Blank] causes the kidneys to reabsorb more water when the blood becomes too concentrated." },
+    { "term": "pituitary", "definition": "The master gland in the brain that releases several hormones including FSH, LH, and ADH.", "sentence": "The [blank] gland is sometimes called the master gland because it controls many other endocrine glands." },
+    { "term": "glycogen", "definition": "The storage form of glucose found in the liver and muscles, which can be converted back to glucose when needed.", "sentence": "Excess glucose is converted to [blank] for storage in the liver." },
+    { "term": "contraception", "definition": "Methods used to prevent pregnancy, some of which use synthetic hormones to alter the menstrual cycle.", "sentence": "Hormonal [blank] uses oestrogen and progesterone to prevent the release of eggs." },
+    { "term": "target organ", "definition": "The specific organ that a hormone travels to in the blood and causes a response in.", "sentence": "The liver is the [blank] for glucagon, responding by breaking down glycogen into glucose." }
+  ]
+}

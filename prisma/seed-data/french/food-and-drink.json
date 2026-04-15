@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "food-and-drink",
+  "items": [
+    { "term": "pain", "definition": "bread", "sentence": "J'achète du [blank] à la boulangerie chaque matin." },
+    { "term": "fromage", "definition": "cheese", "sentence": "La France est connue pour son [blank] et son vin." },
+    { "term": "viande", "definition": "meat", "sentence": "Je ne mange pas de [blank] car je suis végétarien." },
+    { "term": "poulet", "definition": "chicken", "sentence": "Nous allons manger du [blank] rôti ce soir." },
+    { "term": "poisson", "definition": "fish", "sentence": "En Bretagne, on mange beaucoup de [blank] frais." },
+    { "term": "légumes", "definition": "vegetables", "sentence": "Il faut manger des [blank] tous les jours pour rester en bonne santé." },
+    { "term": "fruits", "definition": "fruit", "sentence": "Je mange des [blank] frais au petit-déjeuner." },
+    { "term": "eau", "definition": "water", "sentence": "Puis-je avoir un verre d'[blank], s'il vous plaît ?" },
+    { "term": "jus", "definition": "juice", "sentence": "Je prends un [blank] d'orange avec mon petit-déjeuner." },
+    { "term": "café", "definition": "coffee", "sentence": "Les Français boivent souvent un [blank] après le repas." },
+    { "term": "lait", "definition": "milk", "sentence": "Les enfants boivent du [blank] avec leurs céréales." },
+    { "term": "sucre", "definition": "sugar", "sentence": "Tu veux du [blank] dans ton café ?" },
+    { "term": "sel", "definition": "salt", "sentence": "Il ne faut pas mettre trop de [blank] dans la nourriture." },
+    { "term": "riz", "definition": "rice", "sentence": "Nous mangeons du [blank] avec le curry." },
+    { "term": "pâtes", "definition": "pasta", "sentence": "Mes enfants adorent les [blank] à la bolognaise." },
+    { "term": "gâteau", "definition": "cake", "sentence": "Elle a préparé un [blank] au chocolat pour l'anniversaire." },
+    { "term": "repas", "definition": "meal", "sentence": "Le [blank] principal en France se prend à midi." },
+    { "term": "déjeuner", "definition": "lunch", "sentence": "Nous prenons le [blank] ensemble à l'école." },
+    { "term": "dîner", "definition": "dinner / to have dinner", "sentence": "Nous allons [blank] au restaurant ce soir." },
+    { "term": "commander", "definition": "to order (food)", "sentence": "Êtes-vous prêts à [blank] ?" }
+  ]
+}

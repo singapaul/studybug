@@ -1,0 +1,26 @@
+{
+  "subject": "chemistry",
+  "topic": "rates-of-reaction",
+  "items": [
+    { "term": "rate", "definition": "The speed at which a chemical reaction takes place, measured by how quickly reactants are used up or products are formed.", "sentence": "The [blank] of reaction can be measured by recording the volume of gas produced over time." },
+    { "term": "catalyst", "definition": "A substance that speeds up a chemical reaction without being used up itself.", "sentence": "Manganese dioxide acts as a [blank] in the decomposition of hydrogen peroxide." },
+    { "term": "concentration", "definition": "The number of particles per unit volume in a solution; higher concentration means more frequent collisions.", "sentence": "Increasing the [blank] of acid increases the rate of reaction because there are more particles per volume." },
+    { "term": "temperature", "definition": "A measure of the average kinetic energy of particles; higher temperature increases collision frequency and energy.", "sentence": "Increasing the [blank] of a reaction speeds it up by giving particles more energy to collide." },
+    { "term": "surface area", "definition": "The total area of a solid that is exposed to reactants; greater surface area increases the rate of reaction.", "sentence": "Powdered calcium carbonate reacts faster than lumps because it has a greater [blank]." },
+    { "term": "pressure", "definition": "For gases, increasing pressure forces particles closer together, increasing collision frequency and rate.", "sentence": "Increasing [blank] in a gas reaction speeds it up by forcing molecules closer together." },
+    { "term": "collision theory", "definition": "The theory that reactions occur when particles collide with sufficient energy and in the correct orientation.", "sentence": "According to [blank], a reaction only occurs when particles collide with enough energy." },
+    { "term": "activation energy", "definition": "The minimum energy needed by colliding particles for a reaction to occur.", "sentence": "A catalyst lowers the [blank] required for a reaction to take place." },
+    { "term": "frequency", "definition": "How often particles collide per unit time; increasing temperature or concentration increases collision frequency.", "sentence": "A higher [blank] of successful collisions leads to a faster rate of reaction." },
+    { "term": "enzyme", "definition": "A biological catalyst that speeds up chemical reactions in living organisms.", "sentence": "Amylase is an [blank] that speeds up the breakdown of starch in the mouth." },
+    { "term": "precipitate", "definition": "An insoluble solid that forms during a reaction in solution; its formation can be used to measure rate.", "sentence": "In the reaction of sodium thiosulfate with acid, a yellow [blank] forms and makes the solution cloudy." },
+    { "term": "reversible reaction", "definition": "A reaction that can proceed in both directions, with reactants forming products and products reforming reactants.", "sentence": "The Haber process involves a [blank] between nitrogen and hydrogen to form ammonia." },
+    { "term": "equilibrium", "definition": "The state in a reversible reaction where the forward and backward reaction rates are equal.", "sentence": "At [blank], the concentrations of reactants and products remain constant." },
+    { "term": "exothermic", "definition": "A reaction that releases heat energy to the surroundings, causing the temperature to rise.", "sentence": "Combustion is an [blank] reaction because it releases heat and light energy." },
+    { "term": "endothermic", "definition": "A reaction that absorbs heat energy from the surroundings, causing the temperature to fall.", "sentence": "Thermal decomposition is an [blank] reaction because it requires a constant input of heat." },
+    { "term": "yield", "definition": "The amount of product obtained in a reaction, often expressed as a percentage of the theoretical maximum.", "sentence": "Industrial processes aim to maximise [blank] while minimising cost and energy use." },
+    { "term": "decomposition", "definition": "A reaction in which a compound breaks down into simpler substances.", "sentence": "Calcium carbonate undergoes [blank] when heated, forming calcium oxide and carbon dioxide." },
+    { "term": "oxidation", "definition": "A reaction in which a substance gains oxygen or loses electrons.", "sentence": "Rusting is an example of [blank], where iron reacts with oxygen and water." },
+    { "term": "inhibitor", "definition": "A substance that slows down or stops a chemical reaction by reducing the activity of the catalyst.", "sentence": "Antifreeze acts as a corrosion [blank] in a car engine by slowing the reaction between metal and water." },
+    { "term": "graph", "definition": "A visual representation of data; in rate of reaction experiments, steeper graphs indicate faster reactions.", "sentence": "A steeper [blank] at the start of a reaction indicates a faster initial rate." }
+  ]
+}

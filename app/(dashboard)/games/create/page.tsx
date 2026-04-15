@@ -1,14 +1,14 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { ArrowLeft } from 'lucide-react'
+import { ArrowLeft, Sparkles } from 'lucide-react'
 import Link from 'next/link'
 import { GAME_TEMPLATES } from '@/lib/game-templates'
 import { GameTypeCard } from '@/components/games/GameTypeCard'
 import { PremiumGate } from '@/components/premium-gate'
 import { GameType } from '@/types/game'
 
-const PREMIUM_GAME_TYPES = [GameType.SPLAT, GameType.SWIPE]
+const PREMIUM_GAME_TYPES = [GameType.SPLAT, GameType.SWIPE, GameType.FILL_IN_THE_BLANK, GameType.SPEED_ROUND, GameType.ANAGRAM]
 
 export default function CreateGamePage() {
   const router = useRouter()
@@ -27,6 +27,21 @@ export default function CreateGamePage() {
         <p className="text-muted-foreground mt-1">
           Pick the format that best suits what you want to study
         </p>
+      </div>
+
+      <div className="mb-6">
+        <PremiumGate feature="AI game generation">
+          <button
+            onClick={() => router.push('/games/generate')}
+            className="w-full rounded-xl border-2 border-dashed border-primary/30 hover:border-primary/60 p-6 text-left transition-colors bg-primary/5 hover:bg-primary/10"
+          >
+            <Sparkles className="h-8 w-8 text-primary mb-3" />
+            <h3 className="font-semibold">Generate from Document</h3>
+            <p className="text-sm text-muted-foreground mt-1">
+              Upload a PDF or text file — AI creates all game types for you
+            </p>
+          </button>
+        </PremiumGate>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

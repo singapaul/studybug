@@ -13,11 +13,13 @@ import { toast } from 'sonner'
 interface FlashcardsBuilderProps {
   onSave: (name: string, gameData: FlashcardsGameData) => void
   onCancel: () => void
+  initialName?: string
+  initialData?: FlashcardsGameData
 }
 
-export function FlashcardsBuilder({ onSave, onCancel }: FlashcardsBuilderProps) {
-  const [gameName, setGameName] = useState('')
-  const [cards, setCards] = useState<FlashcardItem[]>([])
+export function FlashcardsBuilder({ onSave, onCancel, initialName = '', initialData }: FlashcardsBuilderProps) {
+  const [gameName, setGameName] = useState(initialName)
+  const [cards, setCards] = useState<FlashcardItem[]>(initialData?.cards ?? [])
   const [isSaving, setIsSaving] = useState(false)
 
   const addCard = () => {

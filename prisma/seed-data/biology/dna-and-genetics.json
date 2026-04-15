@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "dna-and-genetics",
+  "items": [
+    { "term": "DNA", "definition": "The molecule that carries genetic information, made of two strands wound into a double helix and found in the nucleus.", "sentence": "[Blank] contains the instructions for building and running an organism, stored in the nucleus." },
+    { "term": "gene", "definition": "A section of DNA that codes for the production of a specific protein.", "sentence": "Each [blank] contains the code for making a specific protein in the body." },
+    { "term": "allele", "definition": "A different version of the same gene; you inherit one from each parent.", "sentence": "The [blank] for brown eyes is dominant over the allele for blue eyes." },
+    { "term": "chromosome", "definition": "A long strand of DNA wound around proteins, found in the nucleus and carrying many genes.", "sentence": "Human body cells contain 46 [blank], arranged in 23 pairs." },
+    { "term": "dominant", "definition": "Describes an allele that is always expressed in the phenotype, even when only one copy is present.", "sentence": "The [blank] allele for brown eyes masks the recessive allele for blue eyes." },
+    { "term": "recessive", "definition": "Describes an allele that is only expressed when two copies are present (homozygous).", "sentence": "A child shows the [blank] trait only if they inherit the allele from both parents." },
+    { "term": "genotype", "definition": "The genetic make-up of an organism, expressed as letters to show which alleles are present.", "sentence": "The [blank] of an organism shows which alleles it carries, e.g. Bb or bb." },
+    { "term": "phenotype", "definition": "The observable characteristics of an organism, determined by its genotype and environment.", "sentence": "The [blank] of a plant includes its height, leaf shape, and flower colour." },
+    { "term": "mutation", "definition": "A random change in the sequence of bases in DNA that may alter the protein produced.", "sentence": "A [blank] in a tumour suppressor gene can lead to uncontrolled cell division." },
+    { "term": "meiosis", "definition": "Cell division that produces four genetically different haploid sex cells (gametes) from one diploid cell.", "sentence": "[Blank] produces gametes with half the normal number of chromosomes." },
+    { "term": "mitosis", "definition": "Cell division that produces two genetically identical diploid cells, used for growth and repair.", "sentence": "[Blank] is used for growth and repair, producing cells identical to the parent cell." },
+    { "term": "diploid", "definition": "Describes a cell that contains two copies of each chromosome (one from each parent).", "sentence": "Human body cells are [blank], containing 46 chromosomes in 23 pairs." },
+    { "term": "haploid", "definition": "Describes a cell that contains only one copy of each chromosome, such as a gamete.", "sentence": "Sperm and egg cells are [blank], containing only 23 chromosomes each." },
+    { "term": "homozygous", "definition": "Describes an organism that has two identical alleles for a particular gene.", "sentence": "A plant that is [blank] for tall height has two copies of the tall allele (TT)." },
+    { "term": "heterozygous", "definition": "Describes an organism that has two different alleles for a particular gene.", "sentence": "A [blank] individual has one dominant and one recessive allele for a trait." },
+    { "term": "inheritance", "definition": "The passing of genetic information from parent to offspring.", "sentence": "Cystic fibrosis is an example of a condition caused by [blank] of a faulty gene." },
+    { "term": "gamete", "definition": "A sex cell (sperm or egg in animals; pollen or ovule in plants) that contains a haploid set of chromosomes.", "sentence": "During fertilisation, two [blank] fuse to form a diploid zygote." },
+    { "term": "Punnett square", "definition": "A diagram used to predict the probability of offspring inheriting particular genotypes and phenotypes.", "sentence": "A [blank] can be used to calculate the chance of a child inheriting cystic fibrosis." },
+    { "term": "cystic fibrosis", "definition": "A genetic disorder caused by two recessive alleles, affecting the lungs and digestive system.", "sentence": "[Blank] is caused by inheriting two recessive alleles and leads to thick mucus in the lungs." },
+    { "term": "variation", "definition": "Differences in characteristics between individuals of the same species, caused by genetics or environment.", "sentence": "Genetic [blank] within a population increases the chance of some individuals surviving a new disease." }
+  ]
+}

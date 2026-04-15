@@ -1,0 +1,26 @@
+{
+  "subject": "chemistry",
+  "topic": "periodic-table",
+  "items": [
+    { "term": "period", "definition": "A horizontal row in the periodic table; elements in the same period have the same number of electron shells.", "sentence": "Sodium and chlorine are in the same [blank], period 3 of the periodic table." },
+    { "term": "group", "definition": "A vertical column in the periodic table; elements in the same group have the same number of outer electrons and similar properties.", "sentence": "Lithium, sodium, and potassium are all in [blank] 1 of the periodic table." },
+    { "term": "metal", "definition": "An element on the left and centre of the periodic table; typically shiny, conducts electricity, and forms positive ions.", "sentence": "Iron is a [blank] that is magnetic and can conduct electricity." },
+    { "term": "non-metal", "definition": "An element on the right side of the periodic table; typically poor conductors and form negative ions or covalent bonds.", "sentence": "Chlorine is a [blank] that forms a diatomic molecule and is a yellow-green gas." },
+    { "term": "alkali metal", "definition": "An element in Group 1 of the periodic table; very reactive metals that form +1 ions.", "sentence": "Sodium is an [blank] that reacts vigorously with water to form a hydroxide solution." },
+    { "term": "halogen", "definition": "An element in Group 7 (17) of the periodic table; non-metals that form diatomic molecules and react to gain one electron.", "sentence": "Chlorine is a [blank] that exists as a diatomic gas at room temperature." },
+    { "term": "noble gas", "definition": "An element in Group 0 (18) of the periodic table; inert gases with full outer electron shells.", "sentence": "Helium is a [blank] that is used in balloons because it is lighter than air and unreactive." },
+    { "term": "transition metal", "definition": "An element in the central block of the periodic table; typically hard, dense, good conductors with variable oxidation states.", "sentence": "Iron is a [blank] that can form ions with different charges, such as Fe²⁺ and Fe³⁺." },
+    { "term": "reactivity", "definition": "How readily an element reacts with other substances; increases down Group 1 and decreases down Group 7.", "sentence": "The [blank] of alkali metals increases as you go down Group 1." },
+    { "term": "Mendeleev", "definition": "Dmitri Mendeleev, the scientist credited with creating the first widely accepted version of the periodic table.", "sentence": "[Blank] arranged elements by atomic mass and left gaps for undiscovered elements." },
+    { "term": "electron shell", "definition": "An energy level around the nucleus where electrons are found, determining an element's period and reactivity.", "sentence": "The number of occupied [blank]s tells you which period an element is in." },
+    { "term": "symbol", "definition": "A one- or two-letter abbreviation for an element used in chemical formulae and equations.", "sentence": "The chemical [blank] for sodium is Na and for iron is Fe." },
+    { "term": "displacement", "definition": "A reaction in which a more reactive element takes the place of a less reactive element in a compound.", "sentence": "Chlorine displaces bromide in a [blank] reaction because it is more reactive." },
+    { "term": "oxidation", "definition": "A reaction in which an atom or ion loses electrons (in terms of electron transfer) or gains oxygen.", "sentence": "[Blank] occurs when iron loses electrons to form Fe²⁺ ions." },
+    { "term": "reduction", "definition": "A reaction in which an atom or ion gains electrons or loses oxygen.", "sentence": "[Blank] occurs at the cathode during electrolysis when positive ions gain electrons." },
+    { "term": "ionisation", "definition": "The process by which an atom gains or loses electrons to form an ion.", "sentence": "Group 1 metals undergo [blank] easily because their outer electron is far from the nucleus." },
+    { "term": "abundance", "definition": "The proportion of a particular isotope of an element found in a natural sample.", "sentence": "The relative atomic mass of chlorine is calculated using the [blank] of its two isotopes." },
+    { "term": "property", "definition": "A characteristic of an element or compound, such as melting point, conductivity, or reactivity.", "sentence": "Elements in the same group share similar chemical [blank]s." },
+    { "term": "trend", "definition": "A pattern of change in properties across a period or down a group in the periodic table.", "sentence": "The [blank] in reactivity down Group 1 can be explained by the increasing number of electron shells." },
+    { "term": "fluorine", "definition": "The most reactive halogen, in Group 7; a pale yellow diatomic gas at room temperature.", "sentence": "[Blank] is the most electronegative element and the most reactive of the halogens." }
+  ]
+}

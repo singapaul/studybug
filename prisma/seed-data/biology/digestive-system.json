@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "digestive-system",
+  "items": [
+    { "term": "digestion", "definition": "The breakdown of large, insoluble food molecules into small, soluble ones that can be absorbed into the blood.", "sentence": "[Blank] breaks down large food molecules so they can pass through the gut wall into the blood." },
+    { "term": "enzyme", "definition": "A biological catalyst that speeds up the chemical breakdown of food molecules during digestion.", "sentence": "Each type of food molecule is broken down by a specific [blank]." },
+    { "term": "amylase", "definition": "An enzyme that breaks down starch into maltose (a sugar), produced in the salivary glands and pancreas.", "sentence": "[Blank] in saliva begins the digestion of starch in the mouth." },
+    { "term": "protease", "definition": "An enzyme that breaks down proteins into amino acids, produced in the stomach and pancreas.", "sentence": "[Blank] in the stomach breaks down proteins into amino acids." },
+    { "term": "lipase", "definition": "An enzyme that breaks down lipids (fats) into glycerol and fatty acids, produced in the pancreas.", "sentence": "[Blank] is produced by the pancreas and breaks down fats into fatty acids and glycerol." },
+    { "term": "bile", "definition": "An alkaline substance produced by the liver and stored in the gall bladder that emulsifies fats.", "sentence": "[Blank] is released into the small intestine to emulsify fat droplets into smaller ones." },
+    { "term": "villi", "definition": "Tiny finger-like projections lining the small intestine that increase the surface area for absorption.", "sentence": "[Blank] in the small intestine have a large surface area to maximise absorption of digested food." },
+    { "term": "peristalsis", "definition": "The wave-like contractions of muscles in the gut wall that push food along the digestive system.", "sentence": "[Blank] moves food through the oesophagus and intestines by muscular contractions." },
+    { "term": "stomach", "definition": "A muscular organ that produces hydrochloric acid and protease enzymes to digest protein.", "sentence": "The [blank] produces acid to kill bacteria and to provide the ideal pH for protease enzymes." },
+    { "term": "pancreas", "definition": "A gland that produces digestive enzymes (amylase, protease, lipase) and releases them into the small intestine.", "sentence": "The [blank] releases enzymes into the small intestine to digest carbohydrates, proteins, and fats." },
+    { "term": "liver", "definition": "The organ that produces bile, and also detoxifies the blood and stores glycogen.", "sentence": "The [blank] produces bile, which is stored in the gall bladder before being released into the small intestine." },
+    { "term": "absorption", "definition": "The process by which digested food molecules pass through the gut wall into the bloodstream.", "sentence": "[Blank] of digested food occurs mainly in the small intestine through the villi." },
+    { "term": "oesophagus", "definition": "The muscular tube that carries food from the mouth to the stomach by peristalsis.", "sentence": "Food travels from the mouth to the stomach through the [blank]." },
+    { "term": "small intestine", "definition": "The part of the digestive system where most digestion is completed and most absorption of nutrients occurs.", "sentence": "The [blank] is lined with villi that absorb digested food molecules into the blood." },
+    { "term": "large intestine", "definition": "The part of the digestive system that absorbs water from undigested food, forming solid waste.", "sentence": "The [blank] absorbs water from the remaining food material to form faeces." },
+    { "term": "emulsification", "definition": "The process by which bile breaks large fat droplets into smaller ones to increase the surface area for lipase.", "sentence": "[Blank] of fats by bile increases the surface area available for lipase to act on." },
+    { "term": "salivary gland", "definition": "Glands in the mouth that produce saliva containing amylase to begin carbohydrate digestion.", "sentence": "The [blank] in your mouth produces amylase to begin digesting starch." },
+    { "term": "hydrochloric acid", "definition": "The acid produced in the stomach that kills bacteria and provides an acidic pH for protease enzymes.", "sentence": "The stomach produces [blank] to kill harmful microorganisms in food." },
+    { "term": "amino acids", "definition": "The small molecules produced when proteins are digested; absorbed into the blood and used to build new proteins.", "sentence": "Proteins are broken down into [blank] by protease enzymes during digestion." },
+    { "term": "glycerol", "definition": "One of the products of fat digestion (along with fatty acids), produced by the action of lipase.", "sentence": "Lipase breaks fats into fatty acids and [blank], which are absorbed through the gut wall." }
+  ]
+}

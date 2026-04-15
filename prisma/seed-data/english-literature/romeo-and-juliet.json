@@ -1,0 +1,26 @@
+{
+  "subject": "english-literature",
+  "topic": "romeo-and-juliet",
+  "items": [
+    { "term": "tragedy", "definition": "A genre of drama in which the protagonist suffers a serious downfall or death, often due to a fatal flaw.", "sentence": "Romeo and Juliet is a [blank] because both protagonists die at the end of the play." },
+    { "term": "prologue", "definition": "An introductory speech before the main play begins; in Romeo and Juliet it takes the form of a sonnet.", "sentence": "The [blank] reveals that Romeo and Juliet are 'star-crossed lovers' and will die." },
+    { "term": "feud", "definition": "A long-running bitter quarrel between families or groups; the Montague–Capulet conflict drives the plot.", "sentence": "The ancient [blank] between the Montague and Capulet families causes the deaths of Romeo and Juliet." },
+    { "term": "fate", "definition": "The idea that events are predetermined and cannot be avoided; a key theme in Romeo and Juliet.", "sentence": "The couple are described as 'star-crossed lovers', suggesting [blank] controls their destiny." },
+    { "term": "iambic pentameter", "definition": "A metrical pattern of five unstressed followed by five stressed syllables per line, used by Shakespeare for noble characters.", "sentence": "Shakespeare uses [blank] when characters like Romeo speak poetically about love." },
+    { "term": "soliloquy", "definition": "A speech delivered alone on stage, revealing a character's inner thoughts to the audience.", "sentence": "Juliet's 'What's in a name?' speech is a [blank] in which she reflects on her love for Romeo." },
+    { "term": "Mercutio", "definition": "Romeo's witty, hot-tempered friend whose death at Tybalt's hands triggers Romeo's banishment.", "sentence": "[Blank]'s death causes Romeo to abandon reason and kill Tybalt, leading to his banishment." },
+    { "term": "Tybalt", "definition": "Juliet's aggressive cousin who kills Mercutio and is then killed by Romeo; his violence escalates the tragedy.", "sentence": "[Blank]'s aggression and Romeo's retaliation set in motion the events that lead to the lovers' deaths." },
+    { "term": "Friar Lawrence", "definition": "The friar who marries Romeo and Juliet and devises the sleeping potion plan, which ultimately fails.", "sentence": "[Blank]'s well-intentioned plan for Juliet to fake her death goes tragically wrong." },
+    { "term": "banishment", "definition": "The punishment given to Romeo by the Prince after he kills Tybalt; he is exiled from Verona.", "sentence": "Romeo's [blank] from Verona separates the lovers and contributes to the tragic ending." },
+    { "term": "patriarchy", "definition": "A social system in which men hold power; the Capulet family's control over Juliet reflects this.", "sentence": "The [blank] of Elizabethan society is shown through Lord Capulet's attempt to control Juliet's marriage." },
+    { "term": "impulsive", "definition": "Acting without thinking, following emotion rather than reason; a key trait of Romeo and Juliet.", "sentence": "Romeo's [blank] nature is shown when he kills Tybalt without considering the consequences." },
+    { "term": "contrast", "definition": "The technique of placing opposing ideas or characters side by side to highlight differences.", "sentence": "Shakespeare uses [blank] between love and hate, light and dark throughout the play." },
+    { "term": "foreshadowing", "definition": "A literary technique in which clues are given about events that will happen later in the story.", "sentence": "When Juliet says 'my grave is like to be my wedding bed', it is [blank] of her death." },
+    { "term": "sonnet", "definition": "A 14-line poem with a specific rhyme scheme; the prologue and Romeo and Juliet's first conversation are written as sonnets.", "sentence": "The [blank] form of the prologue signals to the audience that this is a love story." },
+    { "term": "dramatic irony", "definition": "When the audience knows something that the characters on stage do not, creating tension or sadness.", "sentence": "[Blank] is used when Romeo believes Juliet is dead but the audience knows she has only taken a potion." },
+    { "term": "oxymoron", "definition": "A figure of speech combining contradictory words, such as 'loving hate' or 'cold fire'; common in Romeo's speeches.", "sentence": "Romeo uses [blank]s like 'brawling love' and 'loving hate' to express the confusion of his feelings." },
+    { "term": "Verona", "definition": "The Italian city where the play is set, which provides a context of civic unrest and family honour.", "sentence": "The Prince of [blank] threatens death to anyone who breaks the peace again after the opening brawl." },
+    { "term": "reconciliation", "definition": "The restoration of friendly relations; after the deaths, the Capulets and Montagues are reconciled.", "sentence": "The [blank] of the two families at the end of the play is too late to save Romeo and Juliet." },
+    { "term": "haste", "definition": "Excessive speed or urgency; a key theme showing how rushing leads to tragic mistakes.", "sentence": "The theme of [blank] is shown when Romeo, believing Juliet dead, immediately drinks the poison." }
+  ]
+}

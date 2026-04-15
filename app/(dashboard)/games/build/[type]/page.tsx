@@ -11,6 +11,9 @@ import { PairsBuilder } from '@/components/games/PairsBuilder'
 import { SplatBuilder } from '@/components/games/SplatBuilder'
 import { SwipeBuilder } from '@/components/games/SwipeBuilder'
 import { MultipleChoiceBuilder } from '@/components/games/MultipleChoiceBuilder'
+import { FillInTheBlankBuilder } from '@/components/games/FillInTheBlankBuilder'
+import { SpeedRoundBuilder } from '@/components/games/SpeedRoundBuilder'
+import { AnagramBuilder } from '@/components/games/AnagramBuilder'
 import { toast } from 'sonner'
 import { useState } from 'react'
 import { PremiumGate } from '@/components/premium-gate'
@@ -95,6 +98,15 @@ export default function BuildGamePage() {
       )}
       {gameType === GameType.MULTIPLE_CHOICE && (
         <MultipleChoiceBuilder onSave={handleSave} onCancel={handleCancel} />
+      )}
+      {gameType === GameType.FILL_IN_THE_BLANK && (
+        <FillInTheBlankBuilder onSave={handleSave} onCancel={handleCancel} />
+      )}
+      {gameType === GameType.SPEED_ROUND && (
+        <SpeedRoundBuilder onSave={handleSave} onCancel={handleCancel} />
+      )}
+      {gameType === GameType.ANAGRAM && (
+        <AnagramBuilder onSave={handleSave} onCancel={handleCancel} />
       )}
     </div>
   )

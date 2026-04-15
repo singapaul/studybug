@@ -1,0 +1,26 @@
+{
+  "subject": "french",
+  "topic": "adjectives",
+  "items": [
+    { "term": "grand", "definition": "big / tall", "sentence": "Paris est une [blank]e ville avec beaucoup de monuments." },
+    { "term": "petit", "definition": "small / short", "sentence": "Mon frère est plus [blank] que moi." },
+    { "term": "beau", "definition": "beautiful / handsome", "sentence": "C'est un très [blank] paysage." },
+    { "term": "vieux", "definition": "old", "sentence": "Ce [blank] château date du Moyen Âge." },
+    { "term": "nouveau", "definition": "new", "sentence": "J'ai acheté un [blank] téléphone hier." },
+    { "term": "bon", "definition": "good", "sentence": "Ce restaurant sert de très [blank] plats." },
+    { "term": "mauvais", "definition": "bad", "sentence": "Il a eu une [blank]e note à son examen." },
+    { "term": "heureux", "definition": "happy", "sentence": "Elle est très [blank]se depuis qu'elle a trouvé un emploi." },
+    { "term": "triste", "definition": "sad", "sentence": "Il était très [blank] quand son chien est mort." },
+    { "term": "sympa", "definition": "nice / friendly (informal)", "sentence": "Ses amis sont vraiment [blank] et accueillants." },
+    { "term": "gentil", "definition": "kind / nice", "sentence": "La voisine est très [blank]le et nous aide souvent." },
+    { "term": "intelligent", "definition": "intelligent / clever", "sentence": "Elle est très [blank]e et réussit bien à l'école." },
+    { "term": "fatigué", "definition": "tired", "sentence": "Je suis très [blank] après une longue journée." },
+    { "term": "intéressant", "definition": "interesting", "sentence": "Ce livre est vraiment [blank]." },
+    { "term": "ennuyeux", "definition": "boring", "sentence": "Le cours de géographie est très [blank]." },
+    { "term": "fort", "definition": "strong / good at something", "sentence": "Il est très [blank] en maths." },
+    { "term": "difficile", "definition": "difficult / hard", "sentence": "L'examen de physique était vraiment [blank]." },
+    { "term": "facile", "definition": "easy", "sentence": "Les exercices d'anglais étaient assez [blank]s." },
+    { "term": "propre", "definition": "clean / own", "sentence": "Il faut garder sa chambre [blank]." },
+    { "term": "rapide", "definition": "fast / quick", "sentence": "Le train à grande vitesse est très [blank]." }
+  ]
+}

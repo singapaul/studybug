@@ -1,0 +1,26 @@
+{
+  "subject": "spanish",
+  "topic": "family",
+  "items": [
+    { "term": "familia", "definition": "family", "sentence": "Mi [blank] es muy importante para mí." },
+    { "term": "padre", "definition": "father", "sentence": "Mi [blank] trabaja como ingeniero en Madrid." },
+    { "term": "madre", "definition": "mother", "sentence": "Mi [blank] es profesora de primaria." },
+    { "term": "hermano", "definition": "brother", "sentence": "Mi [blank] mayor estudia en la universidad." },
+    { "term": "hermana", "definition": "sister", "sentence": "Mi [blank] menor tiene solo ocho años." },
+    { "term": "abuelo", "definition": "grandfather", "sentence": "Mi [blank] vive en el campo y le encanta la jardinería." },
+    { "term": "abuela", "definition": "grandmother", "sentence": "Mi [blank] cocina muy bien — hace la mejor paella." },
+    { "term": "tío", "definition": "uncle", "sentence": "Mi [blank] vive en Barcelona y trabaja en el puerto." },
+    { "term": "tía", "definition": "aunt", "sentence": "Mi [blank] nos visita todos los veranos." },
+    { "term": "primo", "definition": "male cousin", "sentence": "Mi [blank] juega en un equipo de baloncesto." },
+    { "term": "prima", "definition": "female cousin", "sentence": "Mi [blank] estudia medicina en Sevilla." },
+    { "term": "hijo", "definition": "son", "sentence": "Su [blank] mayor tiene veinte años y ya trabaja." },
+    { "term": "hija", "definition": "daughter", "sentence": "Su [blank] es muy inteligente y saca muy buenas notas." },
+    { "term": "marido", "definition": "husband", "sentence": "El [blank] de mi hermana es muy simpático." },
+    { "term": "esposa", "definition": "wife", "sentence": "Su [blank] trabaja como dentista." },
+    { "term": "gemelos", "definition": "twins", "sentence": "Mi madre tiene [blank] — dos niños idénticos." },
+    { "term": "padrastro", "definition": "stepfather", "sentence": "Mi [blank] es muy amable y siempre nos ayuda." },
+    { "term": "madrastra", "definition": "stepmother", "sentence": "Su [blank] cocina muy bien y son muy buenas amigas." },
+    { "term": "soltero", "definition": "single / unmarried (male)", "sentence": "Mi hermano mayor está [blank] y vive solo en un piso." },
+    { "term": "casado", "definition": "married (male)", "sentence": "Mi padre está [blank] con mi madre desde hace veinte años." }
+  ]
+}

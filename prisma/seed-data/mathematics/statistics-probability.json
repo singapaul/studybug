@@ -1,0 +1,26 @@
+{
+  "subject": "mathematics",
+  "topic": "statistics-probability",
+  "items": [
+    { "term": "mean", "definition": "The average of a set of values; calculated by adding all values and dividing by the number of values.", "sentence": "The [blank] of 3, 5, 7, and 9 is (3+5+7+9)÷4 = 6." },
+    { "term": "median", "definition": "The middle value in a data set when values are arranged in order.", "sentence": "In the data set 2, 4, 7, 9, 11, the [blank] is 7 because it is the middle value." },
+    { "term": "mode", "definition": "The value that appears most often in a data set.", "sentence": "In the data set 3, 5, 5, 7, 8, the [blank] is 5 because it appears twice." },
+    { "term": "range", "definition": "The difference between the largest and smallest values in a data set; a measure of spread.", "sentence": "The [blank] of the data set 4, 7, 9, 12, 15 is 15 − 4 = 11." },
+    { "term": "probability", "definition": "A measure of how likely an event is to occur, written as a fraction, decimal, or percentage between 0 and 1.", "sentence": "The [blank] of rolling a 6 on a fair die is 1/6." },
+    { "term": "frequency", "definition": "The number of times a value or event occurs in a data set or experiment.", "sentence": "A [blank] table shows how many times each value occurred in a survey." },
+    { "term": "hypothesis", "definition": "A statement or prediction about a population that is tested using data.", "sentence": "A [blank] is tested by collecting data and comparing results to what was predicted." },
+    { "term": "outlier", "definition": "A data value that is significantly higher or lower than most other values in the set.", "sentence": "An [blank] in a data set can distort the mean, making the median a better measure of average." },
+    { "term": "correlation", "definition": "A relationship between two variables; can be positive, negative, or zero.", "sentence": "A scatter diagram showing that taller people tend to have larger feet shows a positive [blank]." },
+    { "term": "scatter diagram", "definition": "A graph that shows the relationship between two variables by plotting data as points.", "sentence": "A [blank] is used to investigate whether there is a correlation between two variables." },
+    { "term": "histogram", "definition": "A graph using bars to show the frequency distribution of continuous data, where the area of each bar represents frequency.", "sentence": "A [blank] is used to display continuous data and the bars have no gaps between them." },
+    { "term": "cumulative frequency", "definition": "A running total of frequencies, used to estimate medians and quartiles from grouped data.", "sentence": "A [blank] graph can be used to find the median and interquartile range from grouped data." },
+    { "term": "interquartile range", "definition": "The difference between the upper quartile (Q3) and lower quartile (Q1); a measure of spread of the middle 50% of data.", "sentence": "The [blank] is a better measure of spread than the range because it is not affected by outliers." },
+    { "term": "tree diagram", "definition": "A diagram used to list all possible outcomes of two or more events and calculate probabilities.", "sentence": "A [blank] can be used to find the probability of getting two heads when flipping a coin twice." },
+    { "term": "independent", "definition": "Describes two events where the outcome of one does not affect the probability of the other.", "sentence": "Two coin flips are [blank] events because the outcome of the first flip does not affect the second." },
+    { "term": "sample", "definition": "A subset of a population used to collect data for statistical analysis.", "sentence": "A random [blank] of 50 students was surveyed about their travel habits." },
+    { "term": "bias", "definition": "An error in the collection of data that causes results to unfairly favour certain outcomes.", "sentence": "Asking only students in a sports club about exercise habits would introduce [blank] into the results." },
+    { "term": "stratified sampling", "definition": "A method of sampling where the population is divided into groups and members are selected proportionally from each group.", "sentence": "[Blank] ensures that different groups within a population are fairly represented in a survey." },
+    { "term": "relative frequency", "definition": "The proportion of times an event occurs in an experiment; used to estimate theoretical probability.", "sentence": "[Blank] is calculated by dividing the number of successful outcomes by the total number of trials." },
+    { "term": "mutually exclusive", "definition": "Describes two events that cannot both occur at the same time.", "sentence": "Rolling an even number and rolling a 3 are [blank] events because 3 is odd." }
+  ]
+}

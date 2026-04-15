@@ -15,6 +15,7 @@ const nextConfig = {
     ],
   },
   experimental: {
+    serverComponentsExternalPackages: ['pdf-parse'],
     serverActions: {
       allowedOrigins: ["localhost:3000"],
     },

@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
@@ -37,6 +37,12 @@ const navItems = [
     label: "Games",
     href: "/games",
     icon: Gamepad2,
+    proOnly: false,
+  },
+  {
+    label: "Library",
+    href: "/library",
+    icon: Library,
     proOnly: false,
   },
   {

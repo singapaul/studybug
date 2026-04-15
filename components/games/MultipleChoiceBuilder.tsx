@@ -14,11 +14,13 @@ import { toast } from 'sonner'
 interface MultipleChoiceBuilderProps {
   onSave: (name: string, gameData: MultipleChoiceGameData) => void
   onCancel: () => void
+  initialName?: string
+  initialData?: MultipleChoiceGameData
 }
 
-export function MultipleChoiceBuilder({ onSave, onCancel }: MultipleChoiceBuilderProps) {
-  const [gameName, setGameName] = useState('')
-  const [questions, setQuestions] = useState<MultipleChoiceQuestion[]>([])
+export function MultipleChoiceBuilder({ onSave, onCancel, initialName = '', initialData }: MultipleChoiceBuilderProps) {
+  const [gameName, setGameName] = useState(initialName)
+  const [questions, setQuestions] = useState<MultipleChoiceQuestion[]>(initialData?.questions ?? [])
   const [isSaving, setIsSaving] = useState(false)
 
   const addQuestion = () => {

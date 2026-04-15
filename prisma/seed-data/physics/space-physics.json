@@ -1,0 +1,26 @@
+{
+  "subject": "physics",
+  "topic": "space-physics",
+  "items": [
+    { "term": "galaxy", "definition": "A vast collection of stars, gas, and dust held together by gravity; our galaxy is the Milky Way.", "sentence": "Our Solar System is found within the Milky Way [blank]." },
+    { "term": "orbit", "definition": "The curved path of an object around another, maintained by gravitational attraction.", "sentence": "The Earth takes 365 days to complete one [blank] around the Sun." },
+    { "term": "gravity", "definition": "The attractive force between any two masses; it keeps planets orbiting stars and moons orbiting planets.", "sentence": "The Moon stays in its circular path around Earth because of [blank]." },
+    { "term": "star", "definition": "A massive ball of gas that generates energy through nuclear fusion reactions in its core.", "sentence": "The Sun is the nearest [blank] to Earth, providing light and heat for life." },
+    { "term": "planet", "definition": "A large spherical body that orbits a star and has cleared the neighbourhood of its orbit.", "sentence": "Jupiter is the largest [blank] in our Solar System." },
+    { "term": "moon", "definition": "A natural satellite that orbits a planet.", "sentence": "The [blank] orbits the Earth once approximately every 27 days." },
+    { "term": "asteroid", "definition": "A small rocky body that orbits the Sun, mostly found in the asteroid belt between Mars and Jupiter.", "sentence": "An [blank] from the asteroid belt may have caused the mass extinction of the dinosaurs." },
+    { "term": "comet", "definition": "A small icy body that orbits the Sun in a highly elliptical path; develops a tail as it nears the Sun.", "sentence": "A [blank] develops a visible tail of gas and dust when it passes close to the Sun." },
+    { "term": "light year", "definition": "The distance light travels in one year; approximately 9.46 × 10¹⁵ metres; used to measure vast distances in space.", "sentence": "The nearest star to the Sun, Proxima Centauri, is about 4.2 [blank]s away." },
+    { "term": "nuclear fusion", "definition": "The process in which light atomic nuclei (like hydrogen) join together at extremely high temperatures to form heavier nuclei, releasing energy.", "sentence": "Stars generate their energy through [blank], in which hydrogen nuclei fuse to form helium." },
+    { "term": "red giant", "definition": "A stage in the life cycle of a star like the Sun, when it expands after exhausting its hydrogen fuel.", "sentence": "Our Sun will eventually expand into a [blank] when its hydrogen runs out in about 5 billion years." },
+    { "term": "white dwarf", "definition": "The dense remnant of a medium-mass star after it sheds its outer layers as a planetary nebula.", "sentence": "After the red giant phase, a Sun-like star will shrink to form a [blank]." },
+    { "term": "supernova", "definition": "The explosive death of a massive star at the end of its life, which can briefly outshine an entire galaxy.", "sentence": "A massive star ends its life in a violent explosion called a [blank]." },
+    { "term": "black hole", "definition": "An extremely dense region of space with a gravitational pull so strong that nothing, not even light, can escape.", "sentence": "After a supernova, a sufficiently massive star can collapse to form a [blank]." },
+    { "term": "nebula", "definition": "A cloud of gas and dust in space; new stars form within nebulae through gravitational collapse.", "sentence": "Our Solar System formed about 4.6 billion years ago from a dense [blank] of gas and dust." },
+    { "term": "red-shift", "definition": "The increase in wavelength (shift towards the red end of the spectrum) of light from distant galaxies, indicating they are moving away from us.", "sentence": "The [blank] of light from distant galaxies is evidence that the universe is expanding." },
+    { "term": "Big Bang", "definition": "The leading scientific model for the origin of the universe, in which all matter, energy, space, and time originated from an extremely hot, dense state approximately 13.8 billion years ago.", "sentence": "The [blank] theory explains the origin of the universe as an expansion from an infinitely dense point." },
+    { "term": "solar system", "definition": "The Sun and all the objects bound to it by gravity, including the eight planets and their moons.", "sentence": "Earth is the third planet from the Sun in our [blank]." },
+    { "term": "satellite", "definition": "An object that orbits a planet; can be natural (a moon) or artificial (a communications satellite).", "sentence": "GPS systems rely on artificial [blank]s orbiting the Earth." },
+    { "term": "elliptical", "definition": "Describing an orbit shaped like an elongated circle; comets travel in highly elliptical orbits.", "sentence": "Comets have highly [blank] orbits that take them close to the Sun and then far out into space." }
+  ]
+}

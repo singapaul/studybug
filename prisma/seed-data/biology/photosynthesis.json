@@ -1,0 +1,26 @@
+{
+  "subject": "biology",
+  "topic": "photosynthesis",
+  "items": [
+    { "term": "photosynthesis", "definition": "The process by which plants use light energy to convert carbon dioxide and water into glucose and oxygen.", "sentence": "Plants carry out [blank] in their leaves to produce food from sunlight." },
+    { "term": "chlorophyll", "definition": "The green pigment found in chloroplasts that absorbs light energy for photosynthesis.", "sentence": "[Blank] is the pigment in leaves that absorbs sunlight for photosynthesis." },
+    { "term": "glucose", "definition": "The sugar produced by photosynthesis, used by plants for energy, growth, and storage.", "sentence": "During photosynthesis, light energy is used to make [blank] from carbon dioxide and water." },
+    { "term": "chloroplast", "definition": "The organelle in plant cells where photosynthesis takes place, containing chlorophyll.", "sentence": "The [blank] is the organelle in plant cells where photosynthesis occurs." },
+    { "term": "stomata", "definition": "Tiny pores on the underside of leaves through which carbon dioxide enters and oxygen leaves.", "sentence": "Carbon dioxide enters the leaf through small pores called [blank]." },
+    { "term": "transpiration", "definition": "The evaporation of water from the leaves of a plant through the stomata.", "sentence": "[Blank] causes water to evaporate from the leaf surface on a hot, dry day." },
+    { "term": "xylem", "definition": "Tissue that transports water and minerals from the roots to the leaves of a plant.", "sentence": "Water travels up the stem of a plant through the [blank]." },
+    { "term": "limiting factor", "definition": "A factor that restricts the rate of photosynthesis when it is in short supply, such as light, CO₂, or temperature.", "sentence": "On a dull day, light intensity is the [blank] for the rate of photosynthesis." },
+    { "term": "carbon dioxide", "definition": "A gas taken in by plants through stomata and used as a raw material for photosynthesis.", "sentence": "Plants absorb [blank] from the air through their stomata for use in photosynthesis." },
+    { "term": "starch", "definition": "The insoluble storage molecule that plants convert glucose into for long-term storage.", "sentence": "Plants convert excess glucose into [blank] for storage in leaves and roots." },
+    { "term": "palisade", "definition": "The layer of cells near the top of the leaf that contains many chloroplasts and is the main site of photosynthesis.", "sentence": "The [blank] layer is packed with chloroplasts to maximise light absorption." },
+    { "term": "guard cell", "definition": "A pair of cells surrounding each stoma that control its opening and closing.", "sentence": "The [blank] swells with water to open the stoma, allowing gas exchange." },
+    { "term": "light intensity", "definition": "The brightness of light, which affects the rate of photosynthesis — more light leads to a faster rate.", "sentence": "As [blank] increases, the rate of photosynthesis increases up to a certain point." },
+    { "term": "oxygen", "definition": "A gas released as a by-product of photosynthesis when water is split by light energy.", "sentence": "[Blank] is released from leaves as a by-product of photosynthesis." },
+    { "term": "destarching", "definition": "The process of removing starch from a plant by keeping it in darkness before an experiment.", "sentence": "Before testing for starch, a plant must be [blank] by placing it in the dark for 24 hours." },
+    { "term": "iodine", "definition": "A yellow-brown solution that turns blue-black in the presence of starch, used to test leaves for photosynthesis.", "sentence": "When [blank] solution is added to a leaf that has photosynthesised, it turns blue-black." },
+    { "term": "variegated", "definition": "Describes leaves with green and white patches; only green parts can photosynthesise.", "sentence": "A [blank] leaf has white areas that lack chlorophyll and cannot photosynthesise." },
+    { "term": "temperature", "definition": "A factor that affects the rate of photosynthesis by influencing enzyme activity.", "sentence": "Increasing the [blank] speeds up photosynthesis until the enzymes are denatured." },
+    { "term": "autotroph", "definition": "An organism that produces its own food using energy from sunlight or chemicals.", "sentence": "A plant is an [blank] because it makes its own food through photosynthesis." },
+    { "term": "producer", "definition": "An organism at the start of a food chain that makes its own food by photosynthesis.", "sentence": "Grass is a [blank] in a food chain because it makes food using sunlight." }
+  ]
+}

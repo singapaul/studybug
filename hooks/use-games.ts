@@ -5,7 +5,15 @@ import {
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
-import { Game, CreateGameInput } from "@/types/game";
+import {
+  Game,
+  CreateGameInput,
+  FlashcardItem,
+  PairsItem,
+  MultipleChoiceQuestion,
+  FillInTheBlankItem,
+  SpeedRoundItem,
+} from "@/types/game";
 
 interface ProgressData {
   personalBests: {
@@ -151,6 +159,84 @@ export function useDuplicateGame() {
       queryClient.invalidateQueries({ queryKey: ["games"] });
     },
   });
+}
+
+export interface GeneratedGameData {
+  flashcards: FlashcardItem[]
+  pairs: PairsItem[]
+  multipleChoice: MultipleChoiceQuestion[]
+  fillInTheBlank: FillInTheBlankItem[]
+  speedRound: SpeedRoundItem[]
+  usedToday: number
+  remainingToday: number
+}
+
+export function useShareGame() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const data = await apiFetch<{ shareToken: string }>(
+        `/api/games/${id}/share`,
+        { method: "POST" }
+      );
+      return data.shareToken;
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["games"] });
+    },
+  });
+}
+
+export function useUnshareGame() {
+  const queryClient = useQueryClient();
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiFetch(`/api/games/${id}/share`, { method: "DELETE" });
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["games"] });
+    },
+  });
+}
+
+export function useSharedGame(token: string) {
+  return useQuery<Game>({
+    queryKey: ["shared-game", token],
+    queryFn: async () => {
+      const res = await fetch(`/api/games/share/${token}`, { credentials: "include" });
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw Object.assign(new Error(body.error ?? "Not found"), { status: res.status });
+      }
+      const data = (await res.json()) as { game: Game };
+      return data.game;
+    },
+    enabled: !!token,
+  });
+}
+
+export function useGenerateGames() {
+  return useMutation({
+    mutationFn: async ({ file, topic }: { file: File; topic?: string }) => {
+      const form = new FormData()
+      form.append("file", file)
+      if (topic) form.append("topic", topic)
+      // Use raw fetch — apiFetch sets Content-Type: application/json which breaks multipart
+      const res = await fetch("/api/games/generate", {
+        method: "POST",
+        body: form,
+        credentials: "include",
+      })
+      if (!res.ok) {
+        const err = await res.json().catch(() => ({}))
+        throw Object.assign(new Error(err.error ?? "Generation failed"), {
+          code: err.code,
+          status: res.status,
+        })
+      }
+      return res.json() as Promise<GeneratedGameData>
+    },
+  })
 }
 
 export function useSubmitAttempt() {
