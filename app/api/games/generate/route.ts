@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import Anthropic from '@anthropic-ai/sdk'
-import pdfParse from 'pdf-parse'
+import { PDFParse } from 'pdf-parse'
+import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getAuthenticatedUser, isPro } from '@/lib/api-helpers'
 
@@ -99,7 +100,8 @@ export async function POST(req: NextRequest) {
   try {
     const buffer = Buffer.from(await file.arrayBuffer())
     if (contentType === 'application/pdf') {
-      const data = await pdfParse(buffer)
+      const parser = new PDFParse({ data: buffer })
+      const data = await parser.getText()
       extractedText = data.text
     } else {
       extractedText = buffer.toString('utf-8')
@@ -134,18 +136,24 @@ export async function POST(req: NextRequest) {
     const block = message.content[0]
     if (block.type !== 'text') throw new Error('Unexpected response type')
     generatedContent = block.text
+    console.log('[generate] Raw Claude response (first 300 chars):', generatedContent.slice(0, 300))
   } catch (err) {
-    console.error('Claude API error:', err)
+    console.error('[generate] Claude API error:', err)
     return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 })
   }
 
-  // Parse JSON — strip any markdown fences if present
+  // Extract JSON — grabs the outermost {...} block, fence-agnostic
+  const jsonMatch = generatedContent.match(/(\{[\s\S]*\}|\[[\s\S]*\])/)
+  const json = jsonMatch ? jsonMatch[0].trim() : generatedContent.trim()
+  console.log('[generate] Extracted JSON string (first 300 chars):', json.slice(0, 300))
+
+  // Parse and validate with Zod
   let parsed: ReturnType<typeof parseGeneratedContent>
   try {
-    const json = generatedContent.replace(/^```(?:json)?\n?/m, '').replace(/\n?```$/m, '').trim()
     parsed = parseGeneratedContent(json)
-  } catch {
-    console.error('Failed to parse Claude response:', generatedContent.slice(0, 500))
+  } catch (err) {
+    console.error('[generate] JSON parse failed. Full raw response:', generatedContent)
+    console.error('[generate] Parse error:', err)
     return NextResponse.json({ error: 'AI returned unexpected content. Please try again.' }, { status: 500 })
   }
 
@@ -187,25 +195,81 @@ export async function GET(req: NextRequest) {
   })
 }
 
-interface GeneratedContent {
-  flashcards: { id: string; front: string; back: string }[]
-  pairs: { id: string; leftText: string; rightText: string }[]
-  multipleChoice: {
-    id: string
-    question: string
-    options: { id: string; text: string; isCorrect: boolean }[]
-  }[]
-  fillInTheBlank: { id: string; sentence: string; answer: string }[]
-  speedRound: { id: string; question: string; answer: string }[]
+// ── Zod schemas ────────────────────────────────────────────────────────────────
+
+const FlashcardSchema = z.object({
+  id: z.string(),
+  front: z.string().min(1),
+  back: z.string().min(1),
+})
+
+const PairSchema = z.object({
+  id: z.string(),
+  leftText: z.string().min(1),
+  rightText: z.string().min(1),
+})
+
+const MultipleChoiceOptionSchema = z.object({
+  id: z.string(),
+  text: z.string().min(1),
+  isCorrect: z.boolean(),
+})
+
+const MultipleChoiceSchema = z.object({
+  id: z.string(),
+  question: z.string().min(1),
+  options: z.array(MultipleChoiceOptionSchema).length(4),
+})
+
+const FillInTheBlankSchema = z.object({
+  id: z.string(),
+  sentence: z.string().refine(s => s.includes('[blank]'), { message: 'Missing [blank]' }),
+  answer: z.string().min(1),
+})
+
+const SpeedRoundSchema = z.object({
+  id: z.string(),
+  question: z.string().min(1),
+  answer: z.string().min(1),
+})
+
+const GeneratedContentSchema = z.object({
+  flashcards: z.array(z.unknown()),
+  pairs: z.array(z.unknown()),
+  multipleChoice: z.array(z.unknown()),
+  fillInTheBlank: z.array(z.unknown()),
+  speedRound: z.array(z.unknown()),
+})
+
+// ── Parser ─────────────────────────────────────────────────────────────────────
+
+function parseItems<T>(items: unknown[], schema: z.ZodType<T>, label: string): T[] {
+  return items.flatMap((item, i) => {
+    const result = schema.safeParse(item)
+    if (!result.success) {
+      console.warn(`[generate] Skipping malformed ${label}[${i}]:`, result.error.format())
+      return []
+    }
+    return [result.data]
+  })
 }
 
-function parseGeneratedContent(json: string): GeneratedContent {
+function parseGeneratedContent(json: string) {
   const raw = JSON.parse(json)
-  return {
+
+  const topLevel = GeneratedContentSchema.parse({
     flashcards: Array.isArray(raw.flashcards) ? raw.flashcards : [],
     pairs: Array.isArray(raw.pairs) ? raw.pairs : [],
     multipleChoice: Array.isArray(raw.multipleChoice) ? raw.multipleChoice : [],
     fillInTheBlank: Array.isArray(raw.fillInTheBlank) ? raw.fillInTheBlank : [],
     speedRound: Array.isArray(raw.speedRound) ? raw.speedRound : [],
+  })
+
+  return {
+    flashcards: parseItems(topLevel.flashcards, FlashcardSchema, 'flashcard'),
+    pairs: parseItems(topLevel.pairs, PairSchema, 'pair'),
+    multipleChoice: parseItems(topLevel.multipleChoice, MultipleChoiceSchema, 'multipleChoice'),
+    fillInTheBlank: parseItems(topLevel.fillInTheBlank, FillInTheBlankSchema, 'fillInTheBlank'),
+    speedRound: parseItems(topLevel.speedRound, SpeedRoundSchema, 'speedRound'),
   }
 }
