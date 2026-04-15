@@ -9,6 +9,22 @@ const config: Config = {
     "./src/**/*.{ts,tsx}",
   ],
   prefix: "",
+  safelist: [
+    // Library subject icon background colours (assigned from DB, not statically detectable)
+    "bg-green-500",
+    "bg-blue-500",
+    "bg-purple-500",
+    "bg-yellow-500",
+    "bg-amber-600",
+    "bg-red-500",
+    "bg-indigo-500",
+    "bg-rose-500",
+    "bg-orange-500",
+    "bg-teal-500",
+    "bg-pink-500",
+    "bg-violet-500",
+    "bg-cyan-500",
+  ],
   theme: {
     container: {
       center: true,

@@ -10,7 +10,7 @@ import { GAME_TEMPLATES, getTemplateName, getTemplateColor } from '@/lib/game-te
 import { GameType } from '@/types/game'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
@@ -30,7 +30,7 @@ export default function GamesPage() {
   const { mutateAsync: unshareGame, isPending: isUnsharing } = useUnshareGame()
   const { isPro } = usePlan()
   const [search, setSearch] = useState('')
-  const [typeFilter, setTypeFilter] = useState<GameType | 'all'>('all')
+  const [activeTab, setActiveTab] = useState<GameType | 'all'>('all')
   const [shareModal, setShareModal] = useState<ShareModalState | null>(null)
 
   if (isLoading) {
@@ -52,11 +52,20 @@ export default function GamesPage() {
   const gamesList = games ?? []
 
   const filtered = gamesList.filter((g) =>
-    (typeFilter === 'all' || g.gameType === typeFilter) &&
+    (activeTab === 'all' || g.gameType === activeTab) &&
     g.name.toLowerCase().includes(search.toLowerCase())
   )
 
-  const isFiltering = search.trim() !== '' || typeFilter !== 'all'
+  // Compute counts per game type for tab labels
+  const counts = GAME_TEMPLATES.reduce<Record<string, number>>(
+    (acc, t) => {
+      acc[t.type] = gamesList.filter((g) => g.gameType === t.type).length
+      return acc
+    },
+    {}
+  )
+
+  const isFiltering = search.trim() !== '' || activeTab !== 'all'
 
   return (
     <div className="p-6 max-w-6xl mx-auto">
@@ -83,29 +92,30 @@ export default function GamesPage() {
         </div>
       ) : (
         <>
-          {/* Search + filter bar */}
-          <div className="flex flex-col sm:flex-row gap-3 mb-5">
-            <div className="relative flex-1">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              <Input
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                placeholder="Search games…"
-                className="pl-9"
-              />
-            </div>
-            <Select value={typeFilter} onValueChange={(v) => setTypeFilter(v as GameType | 'all')}>
-              <SelectTrigger className="w-full sm:w-44">
-                <SelectValue placeholder="All types" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="all">All types</SelectItem>
-                {GAME_TEMPLATES.map((t) => (
-                  <SelectItem key={t.type} value={t.type}>{t.name}</SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
+          {/* Search bar */}
+          <div className="relative mb-4">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+            <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder="Search games…"
+              className="pl-9"
+            />
           </div>
+
+          {/* Tab filter with counts */}
+          <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as GameType | 'all')} className="mb-5">
+            <TabsList className="h-auto flex-wrap justify-start gap-1 bg-muted p-1">
+              <TabsTrigger value="all" className="text-xs">
+                All ({gamesList.length})
+              </TabsTrigger>
+              {GAME_TEMPLATES.filter((t) => counts[t.type] > 0).map((t) => (
+                <TabsTrigger key={t.type} value={t.type} className="text-xs">
+                  {t.name} ({counts[t.type]})
+                </TabsTrigger>
+              ))}
+            </TabsList>
+          </Tabs>
 
           {isFiltering && (
             <p className="text-sm text-muted-foreground mb-4">

@@ -62,7 +62,7 @@ export default function LibraryPage() {
   return (
     <div className="p-6 max-w-4xl mx-auto">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold mb-2">Revision Library</h1>
+        <h1 className="font-display text-3xl font-bold mb-2">Revision Library</h1>
         <p className="text-muted-foreground">
           Pre-built revision decks across popular GCSE subjects. Play in place or clone to your library.
         </p>
@@ -82,7 +82,7 @@ export default function LibraryPage() {
                 key={subject.id}
                 onClick={() => handleSubjectClick(subject)}
                 className={cn(
-                  'relative rounded-2xl border bg-card p-5 text-left transition-all hover:shadow-md hover:-translate-y-0.5 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                  'group relative rounded-2xl border bg-card p-5 text-left transition-all hover:shadow-md hover:-translate-y-0.5 hover:border-primary/30 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
                   locked && 'opacity-80',
                 )}
               >
@@ -97,7 +97,7 @@ export default function LibraryPage() {
 
                 <div
                   className={cn(
-                    'w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-sm',
+                    'w-10 h-10 rounded-xl flex items-center justify-center mb-3 shadow-sm transition-transform group-hover:scale-110',
                     subject.color,
                   )}
                 >

@@ -2,9 +2,8 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library, BookOpen } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -76,7 +75,10 @@ export function Sidebar({ user }: SidebarProps) {
     <aside className="flex h-full w-64 flex-col border-r bg-card">
       {/* Logo */}
       <div className="flex h-16 items-center border-b px-6">
-        <Link href="/dashboard" className="flex items-center gap-2">
+        <Link href="/dashboard" className="flex items-center gap-2.5">
+          <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary shrink-0">
+            <BookOpen className="h-4 w-4 text-primary-foreground" />
+          </div>
           <span className="text-lg font-bold text-foreground">StudyBug</span>
         </Link>
       </div>
@@ -94,7 +96,7 @@ export function Sidebar({ user }: SidebarProps) {
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isActive
-                  ? "bg-primary text-primary-foreground"
+                  ? "bg-primary/10 text-primary font-semibold"
                   : "text-muted-foreground hover:bg-accent hover:text-accent-foreground"
               )}
             >
@@ -113,10 +115,10 @@ export function Sidebar({ user }: SidebarProps) {
         <DropdownMenu>
           <DropdownMenuTrigger className="w-full">
             <div className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-accent transition-colors cursor-pointer">
-              <Avatar className="h-8 w-8">
-                <AvatarImage src={user.image ?? undefined} alt={user.name ?? "User"} />
-                <AvatarFallback className="text-xs">{initials}</AvatarFallback>
-              </Avatar>
+              {/* Gradient avatar */}
+              <div className="h-8 w-8 shrink-0 rounded-full bg-gradient-to-br from-secondary to-primary flex items-center justify-center">
+                <span className="text-xs font-bold text-white">{initials}</span>
+              </div>
               <div className="flex-1 min-w-0 text-left">
                 <p className="text-sm font-medium text-foreground truncate">
                   {user.name ?? "User"}

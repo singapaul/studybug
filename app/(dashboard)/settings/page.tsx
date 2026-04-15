@@ -120,7 +120,7 @@ function SettingsContent() {
   return (
     <div className="p-8 max-w-3xl">
       <div className="mb-8">
-        <h1 className="text-2xl font-bold text-foreground">Settings</h1>
+        <h1 className="font-display text-3xl font-bold text-foreground">Settings</h1>
         <p className="text-muted-foreground mt-1">
           Manage your account settings and billing.
         </p>
@@ -142,10 +142,17 @@ function SettingsContent() {
         <TabsContent value="profile">
           <Card>
             <CardHeader>
-              <CardTitle>Profile information</CardTitle>
-              <CardDescription>
-                Update your name and email address.
-              </CardDescription>
+              <div className="flex items-center gap-3">
+                <div className="p-2 rounded-lg bg-blue-100">
+                  <User className="h-5 w-5 text-blue-600" />
+                </div>
+                <div>
+                  <CardTitle>Profile information</CardTitle>
+                  <CardDescription>
+                    Update your name and email address.
+                  </CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <form onSubmit={handleProfileSave} className="space-y-6">
@@ -205,10 +212,17 @@ function SettingsContent() {
           <div className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Current plan</CardTitle>
-                <CardDescription>
-                  Your current subscription and billing details.
-                </CardDescription>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-purple-100">
+                    <CreditCard className="h-5 w-5 text-purple-600" />
+                  </div>
+                  <div>
+                    <CardTitle>Current plan</CardTitle>
+                    <CardDescription>
+                      Your current subscription and billing details.
+                    </CardDescription>
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
                 <div className="flex items-center justify-between">

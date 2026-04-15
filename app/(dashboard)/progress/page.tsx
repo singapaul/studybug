@@ -40,16 +40,16 @@ export default async function ProgressPage() {
   if (!isPro) {
     return (
       <div className="p-8 max-w-2xl mx-auto">
-        <h1 className="text-2xl font-bold mb-2">Progress</h1>
+        <h1 className="font-display text-3xl font-bold mb-2">Progress</h1>
         <p className="text-muted-foreground mb-8">Track your performance over time.</p>
 
         <div className="rounded-xl border border-dashed p-12 text-center">
           <div className="flex justify-center mb-4">
-            <div className="flex h-14 w-14 items-center justify-center rounded-full bg-muted">
-              <Lock className="h-6 w-6 text-muted-foreground" />
+            <div className="rounded-full bg-muted p-6">
+              <Lock className="h-12 w-12 text-muted-foreground/50" />
             </div>
           </div>
-          <h2 className="text-lg font-semibold mb-2">Progress Tracking is a Pro Feature</h2>
+          <h2 className="text-xl font-semibold mb-2">Progress Tracking is a Pro Feature</h2>
           <p className="text-sm text-muted-foreground mb-6 max-w-sm mx-auto">
             Upgrade to Pro to unlock your personal bests, score trends, and full
             attempt history across all your games.
@@ -77,8 +77,12 @@ export default async function ProgressPage() {
         <h1 className="text-2xl font-bold mb-2">Progress</h1>
         <p className="text-muted-foreground mb-8">Track your performance over time.</p>
         <div className="rounded-xl border border-dashed p-12 text-center">
-          <TrendingUp className="h-10 w-10 text-muted-foreground mx-auto mb-4" />
-          <h2 className="text-lg font-semibold mb-2">No data yet</h2>
+          <div className="flex justify-center mb-4">
+            <div className="rounded-full bg-muted p-6">
+              <TrendingUp className="h-12 w-12 text-muted-foreground/50" />
+            </div>
+          </div>
+          <h2 className="text-xl font-semibold mb-2">No data yet</h2>
           <p className="text-sm text-muted-foreground mb-6">
             Play some games to start tracking your progress.
           </p>
@@ -96,7 +100,7 @@ export default async function ProgressPage() {
 
   return (
     <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="text-2xl font-bold mb-2">Progress</h1>
+      <h1 className="font-display text-3xl font-bold mb-2">Progress</h1>
       <p className="text-muted-foreground mb-8">Your performance across all games.</p>
 
       {/* Summary cards */}
@@ -106,7 +110,9 @@ export default async function ProgressPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Total Attempts
             </CardTitle>
-            <Target className="h-4 w-4 text-muted-foreground" />
+            <div className="p-1.5 rounded-lg bg-blue-100">
+              <Target className="h-4 w-4 text-blue-600" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summary.totalAttempts}</div>
@@ -121,7 +127,9 @@ export default async function ProgressPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Average Score
             </CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
+            <div className="p-1.5 rounded-lg bg-green-100">
+              <TrendingUp className="h-4 w-4 text-green-600" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summary.averageScore}%</div>
@@ -134,7 +142,9 @@ export default async function ProgressPage() {
             <CardTitle className="text-sm font-medium text-muted-foreground">
               Games Played
             </CardTitle>
-            <Trophy className="h-4 w-4 text-muted-foreground" />
+            <div className="p-1.5 rounded-lg bg-yellow-100">
+              <Trophy className="h-4 w-4 text-yellow-600" />
+            </div>
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold">{summary.gamesPlayed}</div>
@@ -148,8 +158,15 @@ export default async function ProgressPage() {
         {trend.length > 1 && (
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">Score Trend</CardTitle>
-              <CardDescription>Your last {trend.length} attempts</CardDescription>
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-green-100">
+                  <TrendingUp className="h-4 w-4 text-green-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">Score Trend</CardTitle>
+                  <CardDescription>Your last {trend.length} attempts</CardDescription>
+                </div>
+              </div>
             </CardHeader>
             <CardContent>
               <div className="flex items-end gap-1 h-24">
@@ -173,8 +190,15 @@ export default async function ProgressPage() {
         {/* Personal bests */}
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">Personal Bests</CardTitle>
-            <CardDescription>Highest score achieved per game</CardDescription>
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-yellow-100">
+                <Trophy className="h-4 w-4 text-yellow-600" />
+              </div>
+              <div>
+                <CardTitle className="text-base">Personal Bests</CardTitle>
+                <CardDescription>Highest score achieved per game</CardDescription>
+              </div>
+            </div>
           </CardHeader>
           <CardContent>
             {personalBests.length === 0 ? (
@@ -206,8 +230,15 @@ export default async function ProgressPage() {
       {/* Recent attempts table */}
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">Recent Attempts</CardTitle>
-          <CardDescription>Your last {recentAttempts.length} game sessions</CardDescription>
+          <div className="flex items-center gap-2">
+            <div className="p-1.5 rounded-lg bg-blue-100">
+              <Clock className="h-4 w-4 text-blue-600" />
+            </div>
+            <div>
+              <CardTitle className="text-base">Recent Attempts</CardTitle>
+              <CardDescription>Your last {recentAttempts.length} game sessions</CardDescription>
+            </div>
+          </div>
         </CardHeader>
         <CardContent>
           <div className="overflow-x-auto">
