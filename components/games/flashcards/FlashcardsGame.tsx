@@ -149,7 +149,7 @@ export default function FlashcardsGame({ gameData, gameName, onComplete, onExit 
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-4 mt-6">
             <Button onClick={() => handleAssessment(false)} variant="outline" size="lg" className="flex-1 border-red-200 hover:bg-red-50">
               <XCircle className="mr-2 h-5 w-5 text-red-600" />
-              Didn't know
+              Didn&apos;t know
             </Button>
             <Button onClick={() => handleAssessment(true)} variant="outline" size="lg" className="flex-1 border-green-200 hover:bg-green-50">
               <CheckCircle2 className="mr-2 h-5 w-5 text-green-600" />

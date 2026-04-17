@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import {
   getAuthenticatedUser,
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest, { params }: Params) {
         userId,
         name: `${game.name} (copy)`,
         gameType: game.gameType,
-        gameData: game.gameData,
+        gameData: game.gameData as Prisma.InputJsonValue,
       },
     });
 

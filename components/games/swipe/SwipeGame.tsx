@@ -24,7 +24,7 @@ export default function SwipeGame({ gameData, gameName, onComplete, onExit }: Sw
   const [currentIndex, setCurrentIndex] = useState(0)
   const [records, setRecords] = useState<SwipeRecord[]>([])
   const [isComplete, setIsComplete] = useState(false)
-  const [startTime] = useState(Date.now)
+  const [startTime] = useState(() => Date.now())
   const [cardKey, setCardKey] = useState(0)
 
   const handleSwipe = useCallback((direction: 'left' | 'right') => {
@@ -38,7 +38,7 @@ export default function SwipeGame({ gameData, gameName, onComplete, onExit }: Sw
     if (nextIndex >= items.length) {
       setIsComplete(true)
       const { scorePercentage } = computeSwipeScore(newRecords)
-      onComplete({ scorePercentage, timeTaken: Math.floor((Date.now() - startTime()) / 1000) })
+      onComplete({ scorePercentage, timeTaken: Math.floor((Date.now() - startTime) / 1000) })
     } else {
       setCurrentIndex(nextIndex)
       setCardKey((k) => k + 1)

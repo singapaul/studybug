@@ -6,7 +6,7 @@ import {
   FREE_GAME_LIMIT,
   FREE_GAME_TYPES,
 } from "@/lib/api-helpers";
-import { GameType } from "@prisma/client";
+import { GameType, Prisma } from "@prisma/client";
 import { withLogging } from "@/lib/with-logging";
 
 async function getHandler(req: NextRequest) {
@@ -74,7 +74,7 @@ async function postHandler(req: NextRequest) {
     }
 
     const game = await db.game.create({
-      data: { userId, name, gameType, gameData, subject: subject ?? null },
+      data: { userId, name, gameType, gameData: gameData as Prisma.InputJsonValue, subject: subject ?? null },
     });
 
     return NextResponse.json(

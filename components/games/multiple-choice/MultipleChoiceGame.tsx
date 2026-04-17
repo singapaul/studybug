@@ -24,7 +24,7 @@ export default function MultipleChoiceGame({ gameData, gameName, onComplete, onE
   const [selectedOption, setSelectedOption] = useState<string | null>(null)
   const [correctCount, setCorrectCount] = useState(0)
   const [isComplete, setIsComplete] = useState(false)
-  const [startTime] = useState(Date.now)
+  const [startTime] = useState(() => Date.now())
 
   const currentQuestion = questions[currentIndex]
   const hasAnswered = selectedOption !== null
@@ -42,7 +42,7 @@ export default function MultipleChoiceGame({ gameData, gameName, onComplete, onE
         setIsComplete(true)
         onComplete({
           scorePercentage: (newCorrect / questions.length) * 100,
-          timeTaken: Math.floor((Date.now() - startTime()) / 1000),
+          timeTaken: Math.floor((Date.now() - startTime) / 1000),
         })
       } else {
         setCurrentIndex(nextIndex)

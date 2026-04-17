@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { getAuthenticatedUser, enforceOwnership, isPro } from "@/lib/api-helpers";
 import { withLogging } from "@/lib/with-logging";
@@ -50,7 +51,7 @@ async function postHandler(req: NextRequest, { params }: Params) {
         gameId,
         scorePercentage,
         timeTaken,
-        ...(attemptData !== undefined && { attemptData }),
+        ...(attemptData != null && { attemptData: attemptData as Prisma.InputJsonValue }),
       },
     });
 

@@ -8,11 +8,6 @@ export default defineConfig({
     environment: 'jsdom',
     globals: true,
     setupFiles: ['./vitest.setup.ts'],
-    environmentMatchGlobs: [
-      ['__tests__/api/**', 'node'],
-      ['__tests__/integration/**', 'jsdom'],
-      ['__tests__/unit/**', 'jsdom'],
-    ],
   },
   resolve: {
     alias: { '@': path.resolve(__dirname, '.') },

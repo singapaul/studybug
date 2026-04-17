@@ -1,13 +1,16 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { axiom, AXIOM_DATASET } from './logger'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-type Handler = (req: NextRequest, ctx?: any) => Promise<NextResponse>
+type Handler<C = never> = [C] extends [never]
+  ? (req: NextRequest) => Promise<NextResponse>
+  : (req: NextRequest, ctx: C) => Promise<NextResponse>
 
-export function withLogging(handler: Handler, routeName: string): Handler {
-  return async (req: NextRequest, ctx?: unknown) => {
+type AnyHandler = (req: NextRequest, ctx?: Record<string, unknown>) => Promise<NextResponse>
+
+export function withLogging<C>(handler: Handler<C>, routeName: string): Handler<C> {
+  const wrapped: AnyHandler = async (req, ctx) => {
     const start = Date.now()
-    const response = await handler(req, ctx)
+    const response = await (handler as AnyHandler)(req, ctx)
 
     if (process.env.AXIOM_TOKEN) {
       axiom.ingest(AXIOM_DATASET, [{
@@ -22,4 +25,5 @@ export function withLogging(handler: Handler, routeName: string): Handler {
 
     return response
   }
+  return wrapped as Handler<C>
 }

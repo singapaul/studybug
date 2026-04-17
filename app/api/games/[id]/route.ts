@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { Prisma } from "@prisma/client";
 import { db } from "@/lib/db";
 import { getAuthenticatedUser, enforceOwnership } from "@/lib/api-helpers";
 import { withLogging } from "@/lib/with-logging";
@@ -48,7 +49,7 @@ async function patchHandler(req: NextRequest, { params }: Params) {
       where: { id },
       data: {
         ...(name !== undefined && { name }),
-        ...(gameData !== undefined && { gameData }),
+        ...(gameData != null && { gameData: gameData as Prisma.InputJsonValue }),
       },
     });
 
