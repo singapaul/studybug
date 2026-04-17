@@ -2,5 +2,8 @@
   command = "prisma generate && next build"
   publish = ".next"
 
+[build.environment]
+  SECRETS_SCAN_OMIT_KEYS = "BETTER_AUTH_URL"
+
 [[plugins]]
   package = "@netlify/plugin-nextjs"
