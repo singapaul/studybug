@@ -2,8 +2,9 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/lib/db";
+import { withLogging } from "@/lib/with-logging";
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   try {
     const session = await auth.api.getSession({ headers: req.headers });
 
@@ -71,3 +72,5 @@ export async function POST(req: NextRequest) {
     );
   }
 }
+
+export const POST = withLogging(postHandler, "POST /api/stripe/checkout");

@@ -1,6 +1,7 @@
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 generator client {
@@ -42,6 +43,7 @@ model Game {
   name      String
   gameType  GameType
   gameData   Json
+  subject             String?
   shareToken          String?       @unique
   sourceLibraryDeckId String?
   createdAt           DateTime      @default(now())

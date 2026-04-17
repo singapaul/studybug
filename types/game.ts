@@ -15,6 +15,7 @@ export interface Game {
   name: string
   gameType: GameType
   gameData: string // JSON string of type-specific data
+  subject?: string | null
   shareToken?: string | null
   sourceLibraryDeckId?: string | null
   createdAt: Date
@@ -140,6 +141,7 @@ export interface CreateGameInput {
   name: string
   gameType: GameType
   gameData: GameData
+  subject?: string
 }
 
 export interface GameTemplate {

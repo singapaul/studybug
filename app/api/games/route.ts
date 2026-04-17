@@ -7,8 +7,9 @@ import {
   FREE_GAME_TYPES,
 } from "@/lib/api-helpers";
 import { GameType } from "@prisma/client";
+import { withLogging } from "@/lib/with-logging";
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   try {
     const { userId } = await getAuthenticatedUser(req);
 
@@ -30,15 +31,16 @@ export async function GET(req: NextRequest) {
   }
 }
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   try {
     const { userId, plan } = await getAuthenticatedUser(req);
 
     const body = await req.json();
-    const { name, gameType, gameData } = body as {
+    const { name, gameType, gameData, subject } = body as {
       name: string;
       gameType: GameType;
       gameData: unknown;
+      subject?: string;
     };
 
     if (!name || !gameType || gameData === undefined) {
@@ -72,7 +74,7 @@ export async function POST(req: NextRequest) {
     }
 
     const game = await db.game.create({
-      data: { userId, name, gameType, gameData },
+      data: { userId, name, gameType, gameData, subject: subject ?? null },
     });
 
     return NextResponse.json(
@@ -85,3 +87,6 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+export const GET = withLogging(getHandler, "GET /api/games");
+export const POST = withLogging(postHandler, "POST /api/games");

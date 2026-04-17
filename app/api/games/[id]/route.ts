@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAuthenticatedUser, enforceOwnership } from "@/lib/api-helpers";
+import { withLogging } from "@/lib/with-logging";
 
 type Params = { params: Promise<{ id: string }> };
 
-export async function GET(req: NextRequest, { params }: Params) {
+async function getHandler(req: NextRequest, { params }: Params) {
   try {
     const { userId } = await getAuthenticatedUser(req);
     const { id } = await params;
@@ -27,7 +28,7 @@ export async function GET(req: NextRequest, { params }: Params) {
   }
 }
 
-export async function PATCH(req: NextRequest, { params }: Params) {
+async function patchHandler(req: NextRequest, { params }: Params) {
   try {
     const { userId } = await getAuthenticatedUser(req);
     const { id } = await params;
@@ -61,7 +62,7 @@ export async function PATCH(req: NextRequest, { params }: Params) {
   }
 }
 
-export async function DELETE(req: NextRequest, { params }: Params) {
+async function deleteHandler(req: NextRequest, { params }: Params) {
   try {
     const { userId } = await getAuthenticatedUser(req);
     const { id } = await params;
@@ -83,3 +84,7 @@ export async function DELETE(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+export const GET = withLogging(getHandler, "GET /api/games/[id]");
+export const PATCH = withLogging(patchHandler, "PATCH /api/games/[id]");
+export const DELETE = withLogging(deleteHandler, "DELETE /api/games/[id]");

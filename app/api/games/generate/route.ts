@@ -4,42 +4,52 @@ import { PDFParse } from 'pdf-parse'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getAuthenticatedUser, isPro } from '@/lib/api-helpers'
+import { withLogging } from '@/lib/with-logging'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const MAX_TEXT_LENGTH = 50_000
 const DAILY_LIMIT = 10
 const MODEL = 'claude-haiku-4-5-20251001'
 
-const SYSTEM_PROMPT = `You are a study game generator. Given source text, extract key knowledge and return structured study content as JSON.
+const ALL_GAME_TYPES = ['flashcards', 'pairs', 'multipleChoice', 'fillInTheBlank', 'speedRound'] as const
+type GameTypeKey = typeof ALL_GAME_TYPES[number]
+
+const TYPE_SCHEMA: Record<GameTypeKey, string> = {
+  flashcards: `"flashcards": [{ "id": "1", "front": "...", "back": "..." }]`,
+  pairs: `"pairs": [{ "id": "1", "leftText": "...", "rightText": "..." }]`,
+  multipleChoice: `"multipleChoice": [{ "id": "1", "question": "...", "options": [{ "id": "o1", "text": "...", "isCorrect": true }, { "id": "o2", "text": "...", "isCorrect": false }, { "id": "o3", "text": "...", "isCorrect": false }, { "id": "o4", "text": "...", "isCorrect": false }] }]`,
+  fillInTheBlank: `"fillInTheBlank": [{ "id": "1", "sentence": "The [blank] is ...", "answer": "..." }]`,
+  speedRound: `"speedRound": [{ "id": "1", "question": "...", "answer": "..." }]`,
+}
+
+const TYPE_RULES: Record<GameTypeKey, string> = {
+  flashcards: '- flashcards: front = question/term, back = answer/definition',
+  pairs: '- pairs: leftText = term, rightText = matching definition or translation',
+  multipleChoice: '- multipleChoice: exactly 4 options, exactly one isCorrect:true',
+  fillInTheBlank: '- fillInTheBlank: every sentence MUST contain exactly one [blank] marker; answer = the word that fills the blank',
+  speedRound: '- speedRound: short question, concise 1-5 word answer',
+}
+
+function buildSystemPrompt(selectedTypes: GameTypeKey[]): string {
+  const selected = new Set(selectedTypes)
+  const schemaLines = ALL_GAME_TYPES.map(t =>
+    selected.has(t) ? `  ${TYPE_SCHEMA[t]}` : `  "${t}": []`
+  )
+  const rules = selectedTypes.map(t => TYPE_RULES[t])
+  return `You are a study game generator. Given source text, extract key knowledge and return structured study content as JSON.
 
 Return ONLY valid JSON with this exact shape (no markdown, no explanation):
 {
-  "flashcards": [{ "id": "1", "front": "...", "back": "..." }],
-  "pairs": [{ "id": "1", "leftText": "...", "rightText": "..." }],
-  "multipleChoice": [{
-    "id": "1",
-    "question": "...",
-    "options": [
-      { "id": "o1", "text": "...", "isCorrect": true },
-      { "id": "o2", "text": "...", "isCorrect": false },
-      { "id": "o3", "text": "...", "isCorrect": false },
-      { "id": "o4", "text": "...", "isCorrect": false }
-    ]
-  }],
-  "fillInTheBlank": [{ "id": "1", "sentence": "The [blank] is ...", "answer": "..." }],
-  "speedRound": [{ "id": "1", "question": "...", "answer": "..." }]
+${schemaLines.join(',\n')}
 }
 
 Rules:
 - Aim for 10+ items per type where the content supports it
-- flashcards: front = question/term, back = answer/definition
-- pairs: leftText = term, rightText = matching definition or translation
-- multipleChoice: exactly 4 options, exactly one isCorrect:true
-- fillInTheBlank: every sentence MUST contain exactly one [blank] marker; answer = the word that fills the blank
-- speedRound: short question, concise 1-5 word answer
+${rules.join('\n')}
 - Return empty array [] for any type that the content cannot support`
+}
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   let userId: string
   let plan: string
   try {
@@ -71,10 +81,18 @@ export async function POST(req: NextRequest) {
   // Parse multipart form
   let file: File | null = null
   let topic = ''
+  let selectedGameTypes: GameTypeKey[]
   try {
     const form = await req.formData()
     file = form.get('file') as File | null
     topic = (form.get('topic') as string | null) ?? ''
+    const gameTypesParam = (form.get('gameTypes') as string | null) ?? ''
+    const requested = gameTypesParam
+      ? gameTypesParam.split(',').map(s => s.trim()).filter((s): s is GameTypeKey =>
+          (ALL_GAME_TYPES as readonly string[]).includes(s)
+        )
+      : [...ALL_GAME_TYPES]
+    selectedGameTypes = requested.length > 0 ? requested : [...ALL_GAME_TYPES]
   } catch {
     return NextResponse.json({ error: 'Invalid form data' }, { status: 400 })
   }
@@ -124,13 +142,15 @@ export async function POST(req: NextRequest) {
 
   // Call Claude Haiku
   const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
+  const systemPrompt = buildSystemPrompt(selectedGameTypes)
+  console.log('[generate] Selected game types:', selectedGameTypes)
 
   let generatedContent: string
   try {
     const message = await client.messages.create({
       model: MODEL,
       max_tokens: 8000,
-      system: SYSTEM_PROMPT,
+      system: systemPrompt,
       messages: [{ role: 'user', content: userMessage }],
     })
     const block = message.content[0]
@@ -168,7 +188,7 @@ export async function POST(req: NextRequest) {
 }
 
 // GET — return today's usage count
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   let userId: string
   let plan: string
   try {
@@ -247,7 +267,7 @@ function parseItems<T>(items: unknown[], schema: z.ZodType<T>, label: string): T
   return items.flatMap((item, i) => {
     const result = schema.safeParse(item)
     if (!result.success) {
-      console.warn(`[generate] Skipping malformed ${label}[${i}]:`, result.error.format())
+      console.warn(`[generate] Skipping malformed ${label}[${i}]:`, result.error.issues)
       return []
     }
     return [result.data]
@@ -273,3 +293,6 @@ function parseGeneratedContent(json: string) {
     speedRound: parseItems(topLevel.speedRound, SpeedRoundSchema, 'speedRound'),
   }
 }
+
+export const POST = withLogging(postHandler, 'POST /api/games/generate')
+export const GET = withLogging(getHandler, 'GET /api/games/generate')

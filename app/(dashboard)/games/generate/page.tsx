@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useRef } from 'react'
+import { useState, useRef, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import {
@@ -8,19 +8,20 @@ import {
   Sparkles,
   Upload,
   Loader2,
-  ChevronDown,
-  ChevronRight,
   CheckCircle,
-  AlertTriangle,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
 import { Card, CardContent } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
+import { Checkbox } from '@/components/ui/checkbox'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useGenerateGames, useCreateGame, GeneratedGameData } from '@/hooks/use-games'
+import { useLibrarySubjects } from '@/hooks/use-library'
 import {
   GameType,
   GameData,
@@ -41,52 +42,43 @@ type Phase = 'upload' | 'loading' | 'review'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 
-function SectionHeader({
-  type,
-  itemCount,
-  expanded,
-  saved,
-  onToggle,
-}: {
-  type: GameType
-  itemCount: number
-  expanded: boolean
-  saved: boolean
-  onToggle: () => void
-}) {
-  const name = getTemplateName(type)
-  const canExpand = itemCount > 0 && !saved
+const ALL_TYPES = ['flashcards', 'pairs', 'multipleChoice', 'fillInTheBlank', 'speedRound'] as const
+type GameTypeKey = typeof ALL_TYPES[number]
 
+const TYPE_LABELS: Record<GameTypeKey, string> = {
+  flashcards: 'Flashcards',
+  pairs: 'Pairs',
+  multipleChoice: 'Multiple Choice',
+  fillInTheBlank: 'Fill in the Blank',
+  speedRound: 'Speed Round',
+}
+
+const LOADING_MESSAGES = [
+  'Reading your document…',
+  'Extracting key concepts…',
+  'Building flashcards…',
+  'Creating matching pairs…',
+  'Writing multiple choice questions…',
+  'Generating fill-in-the-blank sentences…',
+  'Putting together speed round questions…',
+  'Almost there…',
+]
+
+function LoadingPhase() {
+  const [msgIndex, setMsgIndex] = useState(0)
+  useEffect(() => {
+    const id = setInterval(() => setMsgIndex(i => (i + 1) % LOADING_MESSAGES.length), 4000)
+    return () => clearInterval(id)
+  }, [])
   return (
-    <div
-      className={cn(
-        'flex items-center justify-between p-4 select-none',
-        canExpand && 'cursor-pointer hover:bg-muted/40',
-        saved && 'bg-green-50 dark:bg-green-950/20',
-        !canExpand && !saved && 'opacity-50',
-      )}
-      onClick={canExpand ? onToggle : undefined}
-    >
-      <div className="flex items-center gap-3">
-        {saved ? (
-          <CheckCircle className="h-5 w-5 text-green-600 shrink-0" />
-        ) : canExpand ? (
-          expanded
-            ? <ChevronDown className="h-5 w-5 shrink-0 text-muted-foreground" />
-            : <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
-        ) : (
-          <ChevronRight className="h-5 w-5 shrink-0 text-muted-foreground" />
-        )}
-        <span className="font-medium">{name}</span>
-        {saved ? (
-          <Badge variant="outline" className="text-green-700 border-green-300 text-xs">Saved</Badge>
-        ) : (
-          <Badge variant="secondary" className="text-xs">{itemCount} items</Badge>
-        )}
+    <div className="p-6 flex flex-col items-center justify-center min-h-[400px] gap-4">
+      <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
+        <Loader2 className="h-8 w-8 text-primary animate-spin" />
       </div>
-      {itemCount === 0 && (
-        <span className="text-xs text-muted-foreground">Not enough content</span>
-      )}
+      <div className="text-center">
+        <p className="font-semibold text-lg">Generating your games…</p>
+        <p className="text-sm text-muted-foreground mt-1">{LOADING_MESSAGES[msgIndex]}</p>
+      </div>
     </div>
   )
 }
@@ -97,12 +89,15 @@ export default function GeneratePage() {
   const [phase, setPhase] = useState<Phase>('upload')
   const [file, setFile] = useState<File | null>(null)
   const [topic, setTopic] = useState('')
+  const [subject, setSubject] = useState<string>('')
+  const [selectedTypes, setSelectedTypes] = useState<Set<GameTypeKey>>(new Set(ALL_TYPES))
   const [generated, setGenerated] = useState<GeneratedGameData | null>(null)
-  const [expanded, setExpanded] = useState<Record<string, boolean>>({})
   const [saved, setSaved] = useState<Record<string, boolean>>({})
+  const [resetKeys, setResetKeys] = useState<Record<string, number>>({})
 
   const { mutate: generateGames } = useGenerateGames()
   const { mutateAsync: createGame } = useCreateGame()
+  const { data: subjects = [] } = useLibrarySubjects()
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0] ?? null
@@ -113,22 +108,28 @@ export default function GeneratePage() {
     setFile(selected)
   }
 
+  const toggleType = (key: GameTypeKey) => {
+    setSelectedTypes(prev => {
+      const next = new Set(prev)
+      if (next.has(key)) {
+        next.delete(key)
+      } else {
+        next.add(key)
+      }
+      return next
+    })
+  }
+
   const handleGenerate = () => {
-    if (!file) return
+    if (!file || selectedTypes.size === 0 || !subject) return
     setPhase('loading')
     generateGames(
-      { file, topic: topic.trim() || undefined },
+      { file, topic: topic.trim() || undefined, gameTypes: Array.from(selectedTypes) },
       {
         onSuccess: (data) => {
           setGenerated(data)
           setSaved({})
-          setExpanded({
-            flashcards: data.flashcards.length > 0,
-            pairs: data.pairs.length > 0,
-            multipleChoice: data.multipleChoice.length > 0,
-            fillInTheBlank: data.fillInTheBlank.length > 0,
-            speedRound: data.speedRound.length > 0,
-          })
+          setResetKeys({})
           setPhase('review')
         },
         onError: (err: unknown) => {
@@ -150,9 +151,10 @@ export default function GeneratePage() {
     setPhase('upload')
     setFile(null)
     setTopic('')
+    setSubject('')
     setGenerated(null)
     setSaved({})
-    setExpanded({})
+    setResetKeys({})
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -163,10 +165,9 @@ export default function GeneratePage() {
     gameType: GameType,
   ) => {
     try {
-      await createGame({ name, gameType, gameData })
+      await createGame({ name, gameType, gameData, subject: subject || undefined })
       toast.success(`${getTemplateName(gameType)} game saved!`)
       setSaved((prev) => ({ ...prev, [key]: true }))
-      setExpanded((prev) => ({ ...prev, [key]: false }))
     } catch (err: unknown) {
       const e = err as { code?: string }
       if (e.code === 'GAME_LIMIT_REACHED') {
@@ -200,8 +201,7 @@ export default function GeneratePage() {
             <h1 className="text-2xl font-bold font-display">Generate from Document</h1>
           </div>
           <p className="text-muted-foreground text-sm">
-            Upload a PDF or text file and AI will generate flashcards, pairs, multiple choice,
-            fill-in-the-blank, and speed round questions.
+            Upload a PDF or text file and AI will generate the game types you select.
           </p>
         </div>
 
@@ -258,7 +258,54 @@ export default function GeneratePage() {
               </p>
             </div>
 
-            <Button className="w-full" onClick={handleGenerate} disabled={!file}>
+            <div className="space-y-2">
+              <Label htmlFor="subject">Subject</Label>
+              <Select value={subject} onValueChange={setSubject}>
+                <SelectTrigger id="subject">
+                  <SelectValue placeholder="Select a subject…" />
+                </SelectTrigger>
+                <SelectContent>
+                  {subjects.map(s => (
+                    <SelectItem key={s.slug} value={s.slug}>
+                      {s.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              {!subject && (
+                <p className="text-xs text-muted-foreground">Required — helps organise your games</p>
+              )}
+            </div>
+
+            <div className="space-y-2">
+              <Label>Game types to generate</Label>
+              <div className="space-y-2">
+                {ALL_TYPES.map(key => (
+                  <div key={key} className="flex items-center gap-2">
+                    <Checkbox
+                      id={`type-${key}`}
+                      checked={selectedTypes.has(key)}
+                      onCheckedChange={() => toggleType(key)}
+                    />
+                    <label
+                      htmlFor={`type-${key}`}
+                      className="text-sm cursor-pointer select-none"
+                    >
+                      {TYPE_LABELS[key]}
+                    </label>
+                  </div>
+                ))}
+              </div>
+              {selectedTypes.size === 0 && (
+                <p className="text-xs text-destructive">Select at least one game type</p>
+              )}
+            </div>
+
+            <Button
+              className="w-full"
+              onClick={handleGenerate}
+              disabled={!file || selectedTypes.size === 0 || !subject}
+            >
               <Sparkles className="mr-2 h-4 w-4" />
               Generate Games
             </Button>
@@ -271,19 +318,7 @@ export default function GeneratePage() {
   // ─── Loading phase ────────────────────────────────────────────────────────
 
   if (phase === 'loading') {
-    return (
-      <div className="p-6 flex flex-col items-center justify-center min-h-[400px] gap-4">
-        <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-primary/10">
-          <Loader2 className="h-8 w-8 text-primary animate-spin" />
-        </div>
-        <div className="text-center">
-          <p className="font-semibold text-lg">Generating your games…</p>
-          <p className="text-sm text-muted-foreground mt-1">
-            Reading your document and creating study content
-          </p>
-        </div>
-      </div>
-    )
+    return <LoadingPhase />
   }
 
   // ─── Review phase ─────────────────────────────────────────────────────────
@@ -344,7 +379,7 @@ export default function GeneratePage() {
         <h1 className="text-2xl font-bold font-display mb-1">Review Generated Games</h1>
         <div className="flex flex-wrap items-center gap-3">
           <p className="text-muted-foreground text-sm">
-            {savableSections.length} game types generated
+            {savableSections.length} game type{savableSections.length !== 1 ? 's' : ''} generated
           </p>
           <Badge variant="outline" className="text-xs">
             {generated.remainingToday} of 10 generations remaining today
@@ -353,7 +388,7 @@ export default function GeneratePage() {
       </div>
 
       {allSaved ? (
-        <Card className="mb-6">
+        <Card>
           <CardContent className="pt-8 pb-8 text-center space-y-4">
             <CheckCircle className="h-12 w-12 text-green-600 mx-auto" />
             <div>
@@ -363,103 +398,92 @@ export default function GeneratePage() {
             <Button onClick={() => router.push('/games')}>View My Games</Button>
           </CardContent>
         </Card>
+      ) : savableSections.length === 0 ? (
+        <Card>
+          <CardContent className="pt-8 pb-8 text-center space-y-4">
+            <p className="text-muted-foreground text-sm">
+              No game content could be generated from this document.
+            </p>
+            <Button variant="outline" onClick={handleReset}>Try another document</Button>
+          </CardContent>
+        </Card>
       ) : (
-        <p className="text-sm text-muted-foreground mb-4">
-          Expand each section to review and edit the generated content, then save individual game types.
-        </p>
+        <Tabs defaultValue={savableSections[0].key}>
+          <TabsList className="mb-4 flex-wrap h-auto">
+            {savableSections.map(s => (
+              <TabsTrigger key={s.key} value={s.key} className="gap-1.5">
+                {getTemplateName(s.type)}
+                {saved[s.key] && <CheckCircle className="h-3.5 w-3.5 text-green-600" />}
+              </TabsTrigger>
+            ))}
+          </TabsList>
+
+          {savableSections.map(s => (
+            <TabsContent key={s.key} value={s.key}>
+              {saved[s.key] ? (
+                <div className="flex items-center gap-3 p-6 rounded-lg border bg-green-50 dark:bg-green-950/20 text-green-700 dark:text-green-400">
+                  <CheckCircle className="h-5 w-5 shrink-0" />
+                  <p className="font-medium">{getTemplateName(s.type)} saved successfully.</p>
+                </div>
+              ) : (
+                <>
+                  {s.itemCount < s.minItems && (
+                    <p className="text-sm text-amber-700 dark:text-amber-400 bg-amber-50 dark:bg-amber-950/30 p-3 rounded-lg mb-4">
+                      Only {s.itemCount} items generated — you can add more manually before saving.
+                    </p>
+                  )}
+
+                  {s.key === 'flashcards' && (
+                    <FlashcardsBuilder
+                      key={resetKeys[s.key] ?? 0}
+                      initialName={suggestedName}
+                      initialData={s.gameData as FlashcardsGameData}
+                      onSave={(name, data) => handleSaveSection(s.key, name, data, s.type)}
+                      onCancel={() => setResetKeys(prev => ({ ...prev, [s.key]: (prev[s.key] ?? 0) + 1 }))}
+                    />
+                  )}
+                  {s.key === 'pairs' && (
+                    <PairsBuilder
+                      key={resetKeys[s.key] ?? 0}
+                      initialName={suggestedName}
+                      initialData={s.gameData as PairsGameData}
+                      onSave={(name, data) => handleSaveSection(s.key, name, data, s.type)}
+                      onCancel={() => setResetKeys(prev => ({ ...prev, [s.key]: (prev[s.key] ?? 0) + 1 }))}
+                    />
+                  )}
+                  {s.key === 'multipleChoice' && (
+                    <MultipleChoiceBuilder
+                      key={resetKeys[s.key] ?? 0}
+                      initialName={suggestedName}
+                      initialData={s.gameData as MultipleChoiceGameData}
+                      onSave={(name, data) => handleSaveSection(s.key, name, data, s.type)}
+                      onCancel={() => setResetKeys(prev => ({ ...prev, [s.key]: (prev[s.key] ?? 0) + 1 }))}
+                    />
+                  )}
+                  {s.key === 'fillInTheBlank' && (
+                    <FillInTheBlankBuilder
+                      key={resetKeys[s.key] ?? 0}
+                      initialName={suggestedName}
+                      initialData={s.gameData as FillInTheBlankGameData}
+                      onSave={(name, data) => handleSaveSection(s.key, name, data, s.type)}
+                      onCancel={() => setResetKeys(prev => ({ ...prev, [s.key]: (prev[s.key] ?? 0) + 1 }))}
+                    />
+                  )}
+                  {s.key === 'speedRound' && (
+                    <SpeedRoundBuilder
+                      key={resetKeys[s.key] ?? 0}
+                      initialName={suggestedName}
+                      initialData={s.gameData as SpeedRoundGameData}
+                      onSave={(name, data) => handleSaveSection(s.key, name, data, s.type)}
+                      onCancel={() => setResetKeys(prev => ({ ...prev, [s.key]: (prev[s.key] ?? 0) + 1 }))}
+                    />
+                  )}
+                </>
+              )}
+            </TabsContent>
+          ))}
+        </Tabs>
       )}
-
-      <div className="space-y-3">
-        {sections.map((section) => (
-          <div key={section.key} className="border rounded-lg overflow-hidden">
-            <SectionHeader
-              type={section.type}
-              itemCount={section.itemCount}
-              expanded={!!expanded[section.key]}
-              saved={!!saved[section.key]}
-              onToggle={() =>
-                setExpanded((prev) => ({ ...prev, [section.key]: !prev[section.key] }))
-              }
-            />
-
-            {!!expanded[section.key] && !saved[section.key] && (
-              <div className="p-4 border-t bg-background">
-                {section.itemCount < section.minItems && section.itemCount > 0 && (
-                  <div className="flex items-start gap-2 p-3 rounded-lg bg-amber-50 dark:bg-amber-950/30 text-amber-800 dark:text-amber-300 text-sm mb-4">
-                    <AlertTriangle className="h-4 w-4 shrink-0 mt-0.5" />
-                    Only {section.itemCount} items generated — you can add more manually before saving
-                  </div>
-                )}
-
-                {section.key === 'flashcards' && (
-                  <FlashcardsBuilder
-                    initialName={suggestedName}
-                    initialData={section.gameData as FlashcardsGameData}
-                    onSave={(name, data) =>
-                      handleSaveSection(section.key, name, data, section.type)
-                    }
-                    onCancel={() =>
-                      setExpanded((prev) => ({ ...prev, [section.key]: false }))
-                    }
-                  />
-                )}
-
-                {section.key === 'pairs' && (
-                  <PairsBuilder
-                    initialName={suggestedName}
-                    initialData={section.gameData as PairsGameData}
-                    onSave={(name, data) =>
-                      handleSaveSection(section.key, name, data, section.type)
-                    }
-                    onCancel={() =>
-                      setExpanded((prev) => ({ ...prev, [section.key]: false }))
-                    }
-                  />
-                )}
-
-                {section.key === 'multipleChoice' && (
-                  <MultipleChoiceBuilder
-                    initialName={suggestedName}
-                    initialData={section.gameData as MultipleChoiceGameData}
-                    onSave={(name, data) =>
-                      handleSaveSection(section.key, name, data, section.type)
-                    }
-                    onCancel={() =>
-                      setExpanded((prev) => ({ ...prev, [section.key]: false }))
-                    }
-                  />
-                )}
-
-                {section.key === 'fillInTheBlank' && (
-                  <FillInTheBlankBuilder
-                    initialName={suggestedName}
-                    initialData={section.gameData as FillInTheBlankGameData}
-                    onSave={(name, data) =>
-                      handleSaveSection(section.key, name, data, section.type)
-                    }
-                    onCancel={() =>
-                      setExpanded((prev) => ({ ...prev, [section.key]: false }))
-                    }
-                  />
-                )}
-
-                {section.key === 'speedRound' && (
-                  <SpeedRoundBuilder
-                    initialName={suggestedName}
-                    initialData={section.gameData as SpeedRoundGameData}
-                    onSave={(name, data) =>
-                      handleSaveSection(section.key, name, data, section.type)
-                    }
-                    onCancel={() =>
-                      setExpanded((prev) => ({ ...prev, [section.key]: false }))
-                    }
-                  />
-                )}
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
     </div>
   )
 }

@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/lib/db";
 import { getAuthenticatedUser, isPro } from "@/lib/api-helpers";
+import { withLogging } from "@/lib/with-logging";
 
-export async function GET(req: NextRequest) {
+async function getHandler(req: NextRequest) {
   try {
     const { userId, plan } = await getAuthenticatedUser(req);
 
@@ -65,3 +66,5 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+export const GET = withLogging(getHandler, "GET /api/progress");

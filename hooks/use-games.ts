@@ -217,10 +217,11 @@ export function useSharedGame(token: string) {
 
 export function useGenerateGames() {
   return useMutation({
-    mutationFn: async ({ file, topic }: { file: File; topic?: string }) => {
+    mutationFn: async ({ file, topic, gameTypes }: { file: File; topic?: string; gameTypes?: string[] }) => {
       const form = new FormData()
       form.append("file", file)
       if (topic) form.append("topic", topic)
+      if (gameTypes && gameTypes.length > 0) form.append("gameTypes", gameTypes.join(","))
       // Use raw fetch — apiFetch sets Content-Type: application/json which breaks multipart
       const res = await fetch("/api/games/generate", {
         method: "POST",
