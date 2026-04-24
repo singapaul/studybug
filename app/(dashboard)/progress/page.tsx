@@ -39,8 +39,8 @@ export default async function ProgressPage() {
 
   if (!isPro) {
     return (
-      <div className="p-8 max-w-2xl mx-auto">
-        <h1 className="font-display text-3xl font-bold mb-2">Progress</h1>
+      <div className="p-4 sm:p-8 max-w-2xl mx-auto">
+        <h1 className="font-display text-2xl sm:text-3xl font-bold mb-2">Progress</h1>
         <p className="text-muted-foreground mb-8">Track your performance over time.</p>
 
         <div className="rounded-xl border border-dashed p-12 text-center">
@@ -73,7 +73,7 @@ export default async function ProgressPage() {
 
   if (summary.totalAttempts === 0) {
     return (
-      <div className="p-8 max-w-2xl mx-auto">
+      <div className="p-4 sm:p-8 max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold mb-2">Progress</h1>
         <p className="text-muted-foreground mb-8">Track your performance over time.</p>
         <div className="rounded-xl border border-dashed p-12 text-center">
@@ -99,12 +99,12 @@ export default async function ProgressPage() {
   const trendMax = Math.max(...trend.map((t) => t.scorePercentage), 1);
 
   return (
-    <div className="p-8 max-w-5xl mx-auto">
-      <h1 className="font-display text-3xl font-bold mb-2">Progress</h1>
+    <div className="p-4 sm:p-8 max-w-5xl mx-auto">
+      <h1 className="font-display text-2xl sm:text-3xl font-bold mb-2">Progress</h1>
       <p className="text-muted-foreground mb-8">Your performance across all games.</p>
 
       {/* Summary cards */}
-      <div className="grid gap-4 md:grid-cols-3 mb-8">
+      <div className="grid gap-4 grid-cols-1 sm:grid-cols-3 mb-8">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-muted-foreground">
@@ -241,7 +241,31 @@ export default async function ProgressPage() {
           </div>
         </CardHeader>
         <CardContent>
-          <div className="overflow-x-auto">
+          {/* Mobile card view */}
+          <div className="md:hidden space-y-3">
+            {recentAttempts.map((attempt) => (
+              <div key={attempt.id} className="rounded-lg border p-3 space-y-2">
+                <div className="flex items-start justify-between gap-2">
+                  <p className="text-sm font-medium leading-snug">{attempt.gameName}</p>
+                  <Badge
+                    variant={attempt.scorePercentage >= 80 ? "default" : "secondary"}
+                    className="text-xs shrink-0"
+                  >
+                    {attempt.scorePercentage}%
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                  <span className="flex items-center gap-1">
+                    <Clock className="h-3 w-3" />
+                    {formatTime(attempt.timeTaken)}
+                  </span>
+                  <span>{new Date(attempt.createdAt).toLocaleDateString()}</span>
+                </div>
+              </div>
+            ))}
+          </div>
+          {/* Desktop table view */}
+          <div className="hidden md:block overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b">

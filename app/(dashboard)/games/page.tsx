@@ -35,7 +35,7 @@ export default function GamesPage() {
 
   if (isLoading) {
     return (
-      <div className="p-6 flex items-center justify-center min-h-[200px]">
+      <div className="p-4 sm:p-6 flex items-center justify-center min-h-[200px]">
         <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
       </div>
     )
@@ -43,7 +43,7 @@ export default function GamesPage() {
 
   if (isError) {
     return (
-      <div className="p-6 text-center">
+      <div className="p-4 sm:p-6 text-center">
         <p className="text-muted-foreground">Failed to load games. Please refresh.</p>
       </div>
     )
@@ -68,7 +68,7 @@ export default function GamesPage() {
   const isFiltering = search.trim() !== '' || activeTab !== 'all'
 
   return (
-    <div className="p-6 max-w-6xl mx-auto">
+    <div className="p-4 sm:p-6 max-w-6xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-2xl font-bold font-display">My Games</h1>
         <Button asChild>
@@ -168,7 +168,7 @@ export default function GamesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 px-2 text-xs"
+                        className="h-9 px-2 text-xs"
                         onClick={(e) => {
                           e.preventDefault()
                           router.push(`/games/edit/${game.id}`)
@@ -180,7 +180,7 @@ export default function GamesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 px-2 text-xs"
+                        className="h-9 px-2 text-xs"
                         onClick={(e) => {
                           e.preventDefault()
                           duplicateGame(game.id, {
@@ -203,7 +203,7 @@ export default function GamesPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 px-2 text-xs"
+                          className="h-9 px-2 text-xs"
                           onClick={async (e) => {
                             e.preventDefault()
                             if (game.shareToken) {
@@ -234,7 +234,7 @@ export default function GamesPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="h-7 px-2 text-xs"
+                          className="h-9 px-2 text-xs"
                           onClick={async (e) => {
                             e.preventDefault()
                             const res = await fetch(`/api/games/${game.id}/export`, { credentials: 'include' })
@@ -255,7 +255,7 @@ export default function GamesPage() {
                       <Button
                         variant="ghost"
                         size="sm"
-                        className="h-7 px-2 text-xs text-destructive hover:text-destructive"
+                        className="h-9 px-2 text-xs text-destructive hover:text-destructive"
                         onClick={(e) => {
                           e.preventDefault()
                           if (confirm(`Delete "${game.name}"?`)) {

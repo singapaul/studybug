@@ -43,7 +43,7 @@ export default function VerifyEmailPage() {
           <Link href="/" className="inline-block">
             <span className="text-2xl font-bold text-foreground">StudyBug</span>
           </Link>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="mt-6 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             Check your email
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -57,7 +57,7 @@ export default function VerifyEmailPage() {
           </p>
         </div>
 
-        <div className="bg-card border rounded-xl p-8 shadow-sm space-y-5">
+        <div className="bg-card border rounded-xl p-5 sm:p-8 shadow-sm space-y-5">
           <p className="text-sm text-muted-foreground text-center">
             Click the link in the email to verify your account. Check your spam
             folder if you don&apos;t see it.

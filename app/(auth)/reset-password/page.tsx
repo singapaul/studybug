@@ -180,7 +180,7 @@ function ResetPasswordContent() {
           <Link href="/" className="inline-block">
             <span className="text-2xl font-bold text-foreground">StudyBug</span>
           </Link>
-          <h1 className="mt-6 text-3xl font-bold tracking-tight text-foreground">
+          <h1 className="mt-6 text-2xl sm:text-3xl font-bold tracking-tight text-foreground">
             {token ? "Set new password" : "Forgot your password?"}
           </h1>
           <p className="mt-2 text-sm text-muted-foreground">
@@ -189,7 +189,7 @@ function ResetPasswordContent() {
               : "Enter your email and we'll send you a reset link."}
           </p>
         </div>
-        <div className="bg-card border rounded-xl p-8 shadow-sm">
+        <div className="bg-card border rounded-xl p-5 sm:p-8 shadow-sm">
           {token ? (
             <SetNewPasswordForm token={token} />
           ) : (

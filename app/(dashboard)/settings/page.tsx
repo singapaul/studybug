@@ -118,9 +118,9 @@ function SettingsContent() {
   const isPro = plan === "pro";
 
   return (
-    <div className="p-8 max-w-3xl">
+    <div className="p-4 sm:p-8 max-w-3xl">
       <div className="mb-8">
-        <h1 className="font-display text-3xl font-bold text-foreground">Settings</h1>
+        <h1 className="font-display text-2xl sm:text-3xl font-bold text-foreground">Settings</h1>
         <p className="text-muted-foreground mt-1">
           Manage your account settings and billing.
         </p>
@@ -225,7 +225,7 @@ function SettingsContent() {
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center justify-between">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                   <div className="flex items-center gap-3">
                     <div>
                       <div className="flex items-center gap-2">
@@ -294,7 +294,7 @@ function SettingsContent() {
                     ))}
                   </ul>
                   <Separator />
-                  <div className="flex items-center justify-between">
+                  <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                       <p className="font-semibold text-foreground">
                         $29 / month

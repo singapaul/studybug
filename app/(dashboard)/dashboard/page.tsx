@@ -44,7 +44,7 @@ export default async function DashboardPage({
   const nearLimit = !isPro && stats.totalGames >= FREE_GAME_LIMIT - 1;
 
   return (
-    <div className="p-8">
+    <div className="p-4 sm:p-8">
       {/* Email verification banner */}
       {!session.user.emailVerified && (
         <div className="mb-6 rounded-lg border border-yellow-200 bg-yellow-50 p-4 text-sm text-yellow-800 flex items-center justify-between">
@@ -65,11 +65,11 @@ export default async function DashboardPage({
       {/* Hero gradient section */}
       <div className="relative overflow-hidden rounded-2xl bg-gradient-to-br from-secondary to-primary p-8 text-white mb-8">
         {/* Decorative circles */}
-        <div className="absolute -top-6 -right-6 h-36 w-36 rounded-full bg-white/10 pointer-events-none" />
-        <div className="absolute -bottom-8 -left-8 h-52 w-52 rounded-full bg-white/10 pointer-events-none" />
+        <div className="hidden sm:block absolute -top-6 -right-6 h-36 w-36 rounded-full bg-white/10 pointer-events-none" />
+        <div className="hidden sm:block absolute -bottom-8 -left-8 h-52 w-52 rounded-full bg-white/10 pointer-events-none" />
 
         <div className="relative">
-          <h1 className="font-display text-3xl font-bold mb-1">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold mb-1">
             Welcome back, {firstName}! 👋
           </h1>
           <p className="text-white/80 text-sm mb-6">Ready to create something great?</p>
@@ -94,7 +94,7 @@ export default async function DashboardPage({
 
       {/* Contextual upgrade banner for free users at/near game limit */}
       {nearLimit && (
-        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 flex items-center justify-between">
+        <div className="mb-6 rounded-lg border border-amber-200 bg-amber-50 p-4 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <div>
             <p className="font-medium text-amber-900">
               {stats.totalGames >= FREE_GAME_LIMIT
@@ -112,7 +112,7 @@ export default async function DashboardPage({
       )}
 
       {/* Quick action cards */}
-      <div className="grid gap-6 md:grid-cols-3 mb-8">
+      <div className="grid gap-4 sm:gap-6 grid-cols-1 md:grid-cols-3 mb-8">
         <Link
           href="/games/create"
           className="group block rounded-xl border-2 border-transparent bg-card p-6 shadow-sm hover:shadow-lg hover:border-primary transition-all cursor-pointer"

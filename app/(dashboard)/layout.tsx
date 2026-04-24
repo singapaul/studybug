@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { Sidebar } from "@/components/layout/sidebar";
+import { MobileHeader } from "@/components/layout/mobile-header";
 
 export default async function DashboardLayout({
   children,
@@ -25,7 +26,8 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className="flex h-screen overflow-hidden bg-background">
+    <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-background">
+      <MobileHeader user={user} />
       <Sidebar user={user} />
       <main className="flex-1 overflow-y-auto">
         <div className="h-full">{children}</div>

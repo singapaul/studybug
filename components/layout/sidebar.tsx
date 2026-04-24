@@ -15,14 +15,21 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
 
+interface UserProps {
+  id: string;
+  name?: string | null;
+  email?: string | null;
+  image?: string | null;
+  plan: string;
+}
+
 interface SidebarProps {
-  user: {
-    id: string;
-    name?: string | null;
-    email?: string | null;
-    image?: string | null;
-    plan: string;
-  };
+  user: UserProps;
+}
+
+interface SidebarNavProps {
+  user: UserProps;
+  onNavigate?: () => void;
 }
 
 const navItems = [
@@ -58,7 +65,7 @@ const navItems = [
   },
 ];
 
-export function Sidebar({ user }: SidebarProps) {
+export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
   const pathname = usePathname();
   const router = useRouter();
 
@@ -72,10 +79,10 @@ export function Sidebar({ user }: SidebarProps) {
     : user.email?.slice(0, 2).toUpperCase() ?? "??";
 
   return (
-    <aside className="flex h-full w-64 flex-col border-r bg-card">
+    <>
       {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6">
-        <Link href="/dashboard" className="flex items-center gap-2.5">
+      <div className="flex h-16 items-center border-b px-6 shrink-0">
+        <Link href="/dashboard" className="flex items-center gap-2.5" onClick={onNavigate}>
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary shrink-0">
             <BookOpen className="h-4 w-4 text-primary-foreground" />
           </div>
@@ -84,7 +91,7 @@ export function Sidebar({ user }: SidebarProps) {
       </div>
 
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 p-4">
+      <nav className="flex-1 space-y-1 p-4 overflow-y-auto">
         {navItems.map((item) => {
           const Icon = item.icon;
           const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
@@ -93,6 +100,7 @@ export function Sidebar({ user }: SidebarProps) {
             <Link
               key={item.href}
               href={item.href}
+              onClick={onNavigate}
               className={cn(
                 "flex items-center gap-3 rounded-md px-3 py-2 text-sm font-medium transition-colors",
                 isActive
@@ -111,7 +119,7 @@ export function Sidebar({ user }: SidebarProps) {
       </nav>
 
       {/* User section */}
-      <div className="border-t p-4">
+      <div className="border-t p-4 shrink-0">
         <DropdownMenu>
           <DropdownMenuTrigger className="w-full">
             <div className="flex items-center gap-3 rounded-md px-2 py-2 hover:bg-accent transition-colors cursor-pointer">
@@ -148,7 +156,7 @@ export function Sidebar({ user }: SidebarProps) {
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <Link href="/settings" className="cursor-pointer">
+              <Link href="/settings" className="cursor-pointer" onClick={onNavigate}>
                 <Settings className="mr-2 h-4 w-4" />
                 Settings
               </Link>
@@ -164,6 +172,14 @@ export function Sidebar({ user }: SidebarProps) {
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
+    </>
+  );
+}
+
+export function Sidebar({ user }: SidebarProps) {
+  return (
+    <aside className="hidden md:flex h-full w-64 flex-col border-r bg-card">
+      <SidebarNav user={user} />
     </aside>
   );
 }
