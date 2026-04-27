@@ -1,8 +1,9 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
 import { db } from "@/lib/db";
+import { withLogging } from "@/lib/with-logging";
 
-export async function PATCH(req: NextRequest) {
+async function patchHandler(req: NextRequest) {
   try {
     const session = await auth.api.getSession({ headers: req.headers });
 
@@ -64,3 +65,5 @@ export async function PATCH(req: NextRequest) {
     );
   }
 }
+
+export const PATCH = withLogging(patchHandler, 'PATCH /api/user')

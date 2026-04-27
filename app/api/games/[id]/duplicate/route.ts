@@ -7,10 +7,11 @@ import {
   isPro,
   FREE_GAME_LIMIT,
 } from "@/lib/api-helpers";
+import { withLogging } from "@/lib/with-logging";
 
 type Params = { params: Promise<{ id: string }> };
 
-export async function POST(req: NextRequest, { params }: Params) {
+async function postHandler(req: NextRequest, { params }: Params) {
   try {
     const { userId, plan } = await getAuthenticatedUser(req);
     const { id } = await params;
@@ -52,3 +53,5 @@ export async function POST(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: "Internal server error" }, { status: 500 });
   }
 }
+
+export const POST = withLogging(postHandler, 'POST /api/games/:id/duplicate')

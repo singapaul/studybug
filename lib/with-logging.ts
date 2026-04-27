@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { axiom, AXIOM_DATASET } from './logger'
 
 type Handler<C = never> = [C] extends [never]
-  ? (req: NextRequest) => Promise<NextResponse>
-  : (req: NextRequest, ctx: C) => Promise<NextResponse>
+  ? (req: NextRequest) => Promise<Response>
+  : (req: NextRequest, ctx: C) => Promise<Response>
 
-type AnyHandler = (req: NextRequest, ctx?: Record<string, unknown>) => Promise<NextResponse>
+type AnyHandler = (req: NextRequest, ctx?: Record<string, unknown>) => Promise<Response>
 
 export function withLogging<C>(handler: Handler<C>, routeName: string): Handler<C> {
   const wrapped: AnyHandler = async (req, ctx) => {

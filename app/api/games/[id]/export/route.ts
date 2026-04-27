@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
 import { getAuthenticatedUser, enforceOwnership } from '@/lib/api-helpers'
+import { withLogging } from '@/lib/with-logging'
 import { GameType } from '@prisma/client'
 import type {
   FlashcardsGameData,
@@ -24,7 +25,7 @@ function buildCsv(rows: string[][]): string {
   return rows.map((row) => row.map(csvCell).join(',')).join('\n')
 }
 
-export async function GET(req: NextRequest, { params }: Params) {
+async function getHandler(req: NextRequest, { params }: Params) {
   try {
     const { userId } = await getAuthenticatedUser(req)
     const { id } = await params
@@ -120,3 +121,5 @@ export async function GET(req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
+
+export const GET = withLogging(getHandler, 'GET /api/games/:id/export')

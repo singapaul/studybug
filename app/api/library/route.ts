@@ -1,9 +1,10 @@
-import { NextResponse } from 'next/server'
+import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { withLogging } from '@/lib/with-logging'
 
 export const dynamic = 'force-dynamic'
 
-export async function GET() {
+async function getHandler(_req: NextRequest) {
   const subjects = await db.librarySubject.findMany({
     orderBy: { sortOrder: 'asc' },
     include: {
@@ -24,3 +25,5 @@ export async function GET() {
     })),
   })
 }
+
+export const GET = withLogging(getHandler, 'GET /api/library')

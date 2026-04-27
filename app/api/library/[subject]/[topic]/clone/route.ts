@@ -6,6 +6,7 @@ import {
   FREE_GAME_LIMIT,
   FREE_GAME_TYPES,
 } from '@/lib/api-helpers'
+import { withLogging } from '@/lib/with-logging'
 import { GameType } from '@prisma/client'
 import { LibraryItem } from '@/lib/library-utils'
 import {
@@ -17,7 +18,7 @@ import {
   toFillInTheBlankData,
 } from '@/lib/library-utils'
 
-export async function POST(
+async function postHandler(
   req: NextRequest,
   { params }: { params: { subject: string; topic: string } },
 ) {
@@ -120,3 +121,5 @@ export async function POST(
     { status: 201 },
   )
 }
+
+export const POST = withLogging(postHandler, 'POST /api/library/:subject/:topic/clone')

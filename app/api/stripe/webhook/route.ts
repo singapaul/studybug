@@ -2,13 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { stripe } from "@/lib/stripe";
 import { db } from "@/lib/db";
 import Stripe from "stripe";
+import { withLogging } from "@/lib/with-logging";
 
 export const runtime = "nodejs";
 
 // Disable body parsing — we need the raw body for signature verification
 export const dynamic = "force-dynamic";
 
-export async function POST(req: NextRequest) {
+async function postHandler(req: NextRequest) {
   const body = await req.text();
   const signature = req.headers.get("stripe-signature");
 
@@ -87,6 +88,8 @@ export async function POST(req: NextRequest) {
 
   return NextResponse.json({ received: true });
 }
+
+export const POST = withLogging(postHandler, 'POST /api/stripe/webhook')
 
 async function getUserByCustomerId(customerId: string) {
   return db.user.findFirst({

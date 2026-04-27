@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { withLogging } from '@/lib/with-logging'
 
 type Params = { params: Promise<{ token: string }> }
 
-export async function GET(_req: NextRequest, { params }: Params) {
+async function getHandler(_req: NextRequest, { params }: Params) {
   try {
     const { token } = await params
 
@@ -20,3 +21,5 @@ export async function GET(_req: NextRequest, { params }: Params) {
     return NextResponse.json({ error: 'Internal server error' }, { status: 500 })
   }
 }
+
+export const GET = withLogging(getHandler, 'GET /api/games/share/:token')

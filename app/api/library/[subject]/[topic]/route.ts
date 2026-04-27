@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { db } from '@/lib/db'
+import { withLogging } from '@/lib/with-logging'
 
-export async function GET(
+async function getHandler(
   _req: NextRequest,
   { params }: { params: { subject: string; topic: string } },
 ) {
@@ -53,3 +54,5 @@ export async function GET(
       : null,
   })
 }
+
+export const GET = withLogging(getHandler, 'GET /api/library/:subject/:topic')
