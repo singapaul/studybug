@@ -4,6 +4,7 @@ import { withLogging } from '@/lib/with-logging'
 
 type Params = { params: Promise<{ token: string }> }
 
+// note
 async function getHandler(_req: NextRequest, { params }: Params) {
   try {
     const { token } = await params
