@@ -166,3 +166,9 @@
     @apply opacity-100;
   }
 }
+
+@media print {
+  aside, .print\:hidden { display: none !important; }
+  main, body { padding: 0 !important; }
+  body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+}

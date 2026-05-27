@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library, BookOpen } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library, BookOpen, FileText } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -50,6 +50,12 @@ const navItems = [
     href: "/library",
     icon: Library,
     proOnly: false,
+  },
+  {
+    label: "Worksheets",
+    href: "/worksheets",
+    icon: FileText,
+    proOnly: true,
   },
   {
     label: "Progress",

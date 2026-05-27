@@ -1,0 +1,150 @@
+import { z } from 'zod'
+
+export const QUESTION_TYPES = [
+  'multipleChoice',
+  'shortAnswer',
+  'extendedResponse',
+  'trueFalse',
+  'fillInTheBlank',
+] as const
+export type QuestionType = (typeof QUESTION_TYPES)[number]
+
+export const DIFFICULTY_TIERS = ['support', 'core', 'stretch'] as const
+export type DifficultyTier = (typeof DIFFICULTY_TIERS)[number]
+
+export const MARKING_MODES = [
+  'markSchemeWithPoints',
+  'answersOnly',
+  'detailedExemplar',
+  'none',
+] as const
+export type MarkingMode = (typeof MARKING_MODES)[number]
+
+export const DIFFERENTIATION_MODES = ['mixedAbility', 'threeTier'] as const
+export type DifferentiationMode = (typeof DIFFERENTIATION_MODES)[number]
+
+export const QuestionSchema = z
+  .object({
+    id: z.string().min(1),
+    type: z.enum(QUESTION_TYPES),
+    text: z.string().min(1),
+    marks: z.number().int().min(0).max(20),
+    answer: z.string().min(1),
+    difficulty: z.enum(DIFFICULTY_TIERS),
+    options: z.array(z.string().min(1)).min(2).max(6).optional(),
+    hint: z.string().optional(),
+  })
+  .refine(
+    (q) => q.type !== 'multipleChoice' || (q.options && q.options.length >= 2),
+    { message: 'multipleChoice questions must have at least 2 options' },
+  )
+
+export type Question = z.infer<typeof QuestionSchema>
+
+export const VocabularyItemSchema = z.object({
+  term: z.string().min(1),
+  definition: z.string().min(1),
+})
+export type VocabularyItem = z.infer<typeof VocabularyItemSchema>
+
+export const SectionSchema = z.object({
+  title: z.string().min(1),
+  instructions: z.string().default(''),
+  questions: z.array(z.unknown()).default([]),
+})
+
+export const TeacherOverviewSchema = z.object({
+  intendedUse: z.string().default(''),
+  timeEstimate: z.string().default(''),
+  equipmentNeeded: z.array(z.string()).default([]),
+  differentiationNotes: z
+    .object({
+      support: z.string().default(''),
+      stretch: z.string().default(''),
+    })
+    .default({ support: '', stretch: '' }),
+  misconceptions: z.array(z.string()).default([]),
+  assumptions: z.array(z.string()).default([]),
+  optionalChallenge: z.string().default(''),
+  challengeAnswer: z.string().default(''),
+})
+export type TeacherOverview = z.infer<typeof TeacherOverviewSchema>
+
+export const GeneratedWorksheetSchema = z.object({
+  title: z.string().min(1),
+  topic: z.string().min(1),
+  subject: z.string().default(''),
+  yearGroup: z.string().min(1),
+  level: z.string().min(1),
+  teacherOverview: TeacherOverviewSchema,
+  vocabularyBox: z.array(z.unknown()).default([]),
+  sections: z.array(SectionSchema).default([]),
+  extensionTask: z.string().default(''),
+  totalMarks: z.number().int().min(0).default(0),
+})
+
+/** Output of `parseGeneratedWorksheet` after per-item filtering — distinct from the schema input where `vocabularyBox` and `questions` are `unknown[]`. */
+export interface GeneratedWorksheet {
+  title: string
+  topic: string
+  subject: string
+  yearGroup: string
+  level: string
+  teacherOverview: TeacherOverview
+  vocabularyBox: VocabularyItem[]
+  sections: { title: string; instructions: string; questions: Question[] }[]
+  extensionTask: string
+  totalMarks: number
+}
+
+function parseItems<T>(items: unknown[], schema: z.ZodType<T>, label: string): T[] {
+  return items.flatMap((item, i) => {
+    const result = schema.safeParse(item)
+    if (!result.success) {
+      console.warn(`[worksheet] Skipping malformed ${label}[${i}]:`, result.error.issues)
+      return []
+    }
+    return [result.data]
+  })
+}
+
+export function parseGeneratedWorksheet(json: string): GeneratedWorksheet {
+  const raw = JSON.parse(json)
+  const top = GeneratedWorksheetSchema.parse(raw)
+
+  const vocabularyBox = parseItems(top.vocabularyBox, VocabularyItemSchema, 'vocabularyItem')
+  const sections = top.sections.map((s) => ({
+    title: s.title,
+    instructions: s.instructions,
+    questions: parseItems(s.questions, QuestionSchema, 'question'),
+  }))
+
+  return {
+    title: top.title,
+    topic: top.topic,
+    subject: top.subject,
+    yearGroup: top.yearGroup,
+    level: top.level,
+    teacherOverview: top.teacherOverview,
+    vocabularyBox,
+    sections,
+    extensionTask: top.extensionTask,
+    totalMarks: top.totalMarks,
+  }
+}
+
+export interface WorksheetSummary {
+  id: string
+  title: string
+  topic: string
+  subject: string | null
+  yearGroup: string
+  level: string
+  shareToken: string | null
+  createdAt: string
+  updatedAt: string
+}
+
+export interface SavedWorksheet extends WorksheetSummary {
+  content: GeneratedWorksheet
+}
