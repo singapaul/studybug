@@ -68,7 +68,7 @@ async function postHandler(req: NextRequest) {
   todayMidnight.setHours(0, 0, 0, 0)
 
   const usedToday = await db.generationLog.count({
-    where: { userId, createdAt: { gte: todayMidnight } },
+    where: { userId, kind: 'game', createdAt: { gte: todayMidnight } },
   })
 
   if (usedToday >= DAILY_LIMIT) {
@@ -178,7 +178,7 @@ async function postHandler(req: NextRequest) {
   }
 
   // Log the generation
-  await db.generationLog.create({ data: { userId } })
+  await db.generationLog.create({ data: { userId, kind: 'game' } })
 
   return NextResponse.json({
     ...parsed,
@@ -205,7 +205,7 @@ async function getHandler(req: NextRequest) {
   const todayMidnight = new Date()
   todayMidnight.setHours(0, 0, 0, 0)
   const usedToday = await db.generationLog.count({
-    where: { userId, createdAt: { gte: todayMidnight } },
+    where: { userId, kind: 'game', createdAt: { gte: todayMidnight } },
   })
 
   return NextResponse.json({
