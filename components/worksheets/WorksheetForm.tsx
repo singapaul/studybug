@@ -96,20 +96,20 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
           />
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="space-y-1.5">
+        <div className="grid grid-cols-2 gap-3 min-w-0">
+          <div className="space-y-1.5 min-w-0">
             <Label htmlFor="year">Year group <span className="text-destructive">*</span></Label>
             <Select value={yearGroup} onValueChange={setYearGroup} disabled={isGenerating}>
-              <SelectTrigger id="year"><SelectValue /></SelectTrigger>
+              <SelectTrigger id="year" className="w-full"><SelectValue /></SelectTrigger>
               <SelectContent>
                 {YEAR_GROUPS.map((y) => (<SelectItem key={y} value={y}>{y}</SelectItem>))}
               </SelectContent>
             </Select>
           </div>
-          <div className="space-y-1.5">
+          <div className="space-y-1.5 min-w-0">
             <Label htmlFor="level">Level <span className="text-destructive">*</span></Label>
             <Select value={level} onValueChange={setLevel} disabled={isGenerating}>
-              <SelectTrigger id="level"><SelectValue /></SelectTrigger>
+              <SelectTrigger id="level" className="w-full"><SelectValue /></SelectTrigger>
               <SelectContent>
                 {KEY_STAGES.map((k) => (<SelectItem key={k} value={k}>{k}</SelectItem>))}
               </SelectContent>
@@ -163,7 +163,7 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
         </div>
       </fieldset>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
         <div className="space-y-1.5">
           <Label htmlFor="num">Approx. # of questions</Label>
           <Input
@@ -179,7 +179,7 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
         <div className="space-y-1.5">
           <Label htmlFor="marking">Marking style</Label>
           <Select value={markingMode} onValueChange={(v) => setMarkingMode(v as MarkingMode)} disabled={isGenerating}>
-            <SelectTrigger id="marking"><SelectValue /></SelectTrigger>
+            <SelectTrigger id="marking" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>
               {MARKING_MODE_OPTIONS.map((m) => (
                 <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
@@ -187,10 +187,10 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
             </SelectContent>
           </Select>
         </div>
-        <div className="space-y-1.5">
+        <div className="space-y-1.5 sm:col-span-2 lg:col-span-1">
           <Label htmlFor="diff">Differentiation</Label>
           <Select value={differentiation} onValueChange={(v) => setDifferentiation(v as DifferentiationMode)} disabled={isGenerating}>
-            <SelectTrigger id="diff"><SelectValue /></SelectTrigger>
+            <SelectTrigger id="diff" className="w-full"><SelectValue /></SelectTrigger>
             <SelectContent>
               {DIFFERENTIATION_OPTIONS.map((m) => (
                 <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
@@ -211,7 +211,7 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
           disabled={isGenerating}
           maxLength={50000}
         />
-        <div className="flex items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2">
           <input
             id="file"
             type="file"
@@ -227,9 +227,9 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
             </label>
           </Button>
           {file && (
-            <div className="flex items-center gap-2 text-sm text-muted-foreground">
-              <span>{file.name}</span>
-              <button type="button" onClick={() => setFile(null)} aria-label="Remove file">
+            <div className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
+              <span className="truncate max-w-[14rem]">{file.name}</span>
+              <button type="button" onClick={() => setFile(null)} aria-label="Remove file" className="shrink-0">
                 <X className="h-4 w-4" />
               </button>
             </div>
@@ -237,8 +237,8 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
         </div>
       </div>
 
-      <div className="flex justify-end">
-        <Button type="submit" disabled={isGenerating}>
+      <div className="flex">
+        <Button type="submit" disabled={isGenerating} className="w-full sm:ml-auto sm:w-auto">
           {isGenerating ? (
             <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating...</>
           ) : (
