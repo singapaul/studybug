@@ -22,7 +22,7 @@ export default function WelcomeEmail({
   userName,
   userEmail,
 }: WelcomeEmailProps) {
-  const appUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const displayName = userName ?? userEmail;
 
   return (

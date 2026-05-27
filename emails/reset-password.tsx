@@ -24,7 +24,7 @@ export default function ResetPasswordEmail({
   resetLink,
   expiresInHours = 1,
 }: ResetPasswordEmailProps) {
-  const appUrl = process.env.NEXTAUTH_URL ?? "http://localhost:3000";
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
 
   return (
     <Html>

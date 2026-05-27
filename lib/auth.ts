@@ -2,6 +2,7 @@ import { betterAuth } from "better-auth";
 import { prismaAdapter } from "better-auth/adapters/prisma";
 import * as React from "react";
 import { db } from "./db";
+import { sendEmail } from "./email";
 
 export const auth = betterAuth({
   database: prismaAdapter(db, {
@@ -13,14 +14,11 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
     sendResetPassword: async ({ user, url }) => {
-      const { resend, EMAIL_FROM } = await import("./email");
-      if (!resend) return;
       try {
         const { default: ResetPasswordEmail } = await import(
           "@/emails/reset-password"
         );
-        await resend.emails.send({
-          from: EMAIL_FROM,
+        await sendEmail({
           to: user.email,
           subject: "Reset your StudyBug password",
           react: React.createElement(ResetPasswordEmail, {
@@ -57,14 +55,11 @@ export const auth = betterAuth({
   },
   emailVerification: {
     sendVerificationEmail: async ({ user, url }: { user: { email: string }; url: string }) => {
-      const { resend, EMAIL_FROM } = await import("./email");
-      if (!resend) return;
       try {
         const { default: VerifyEmailTemplate } = await import(
           "@/emails/verify-email"
         );
-        await resend.emails.send({
-          from: EMAIL_FROM,
+        await sendEmail({
           to: user.email,
           subject: "Verify your StudyBug email",
           react: React.createElement(VerifyEmailTemplate, {
@@ -83,12 +78,9 @@ export const auth = betterAuth({
     user: {
       create: {
         after: async (user) => {
-          const { resend, EMAIL_FROM } = await import("./email");
-          if (!resend) return;
           try {
             const { default: WelcomeEmail } = await import("@/emails/welcome");
-            await resend.emails.send({
-              from: EMAIL_FROM,
+            await sendEmail({
               to: user.email,
               subject: "Welcome to StudyBug",
               react: React.createElement(WelcomeEmail, {

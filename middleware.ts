@@ -23,6 +23,7 @@ const publicRoutes = [
   "/privacy",
   "/terms",
   "/cookies",
+  "/admin/emails",
 ];
 
 const publicApiPrefixes = ["/api/auth", "/api/stripe/webhook", "/api/games/share", "/api/library"];
