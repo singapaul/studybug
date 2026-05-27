@@ -75,17 +75,18 @@ async function postHandler(req: NextRequest) {
   }
 
   const questionTypesRaw = (form.get('questionTypes') as string | null) ?? ''
+  const field = (name: string) => form.get(name) ?? undefined
   const rawFields: Record<string, unknown> = {
-    topic: form.get('topic'),
-    subject: form.get('subject'),
-    yearGroup: form.get('yearGroup'),
-    level: form.get('level'),
-    learningObjectives: form.get('learningObjectives'),
-    priorKnowledge: form.get('priorKnowledge'),
-    numQuestions: form.get('numQuestions'),
-    markingMode: form.get('markingMode'),
-    differentiation: form.get('differentiation'),
-    pastedText: form.get('pastedText'),
+    topic: field('topic'),
+    subject: field('subject'),
+    yearGroup: field('yearGroup'),
+    level: field('level'),
+    learningObjectives: field('learningObjectives'),
+    priorKnowledge: field('priorKnowledge'),
+    numQuestions: field('numQuestions'),
+    markingMode: field('markingMode'),
+    differentiation: field('differentiation'),
+    pastedText: field('pastedText'),
     questionTypes: questionTypesRaw
       .split(',')
       .map((s) => s.trim())
