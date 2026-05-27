@@ -30,7 +30,7 @@ export default function SharedWorksheetPage({ params }: PageProps) {
 
   return (
     <div className="p-4 sm:p-8 max-w-5xl mx-auto">
-      <WorksheetPreview worksheet={worksheet.content} readOnly />
+      <WorksheetPreview worksheet={worksheet.content} />
     </div>
   )
 }

@@ -7,8 +7,6 @@ import type { GeneratedWorksheet, Question } from '@/types/worksheet'
 
 interface WorksheetPreviewProps {
   worksheet: GeneratedWorksheet
-  /** Show only the worksheet/answers/teacher tabs but no editing actions — used on the share page. */
-  readOnly?: boolean
 }
 
 function QuestionView({ q, index }: { q: Question; index: number }) {
