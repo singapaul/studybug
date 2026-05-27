@@ -179,7 +179,7 @@ async function postHandler(req: NextRequest) {
     worksheet = parseGeneratedWorksheet(json)
   } catch (err) {
     console.error('[worksheets/generate] JSON parse failed:', err)
-    console.error('[worksheets/generate] Raw response:', generatedContent)
+    console.error('[worksheets/generate] Raw response (truncated):', generatedContent.slice(0, 500))
     return NextResponse.json(
       { error: 'AI returned unexpected content. Please try again.' },
       { status: 500 },
