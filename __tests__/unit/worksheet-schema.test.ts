@@ -31,6 +31,30 @@ describe('QuestionSchema', () => {
     })
     expect(result.success).toBe(false)
   })
+
+  it('rejects negative marks', () => {
+    const result = QuestionSchema.safeParse({
+      id: 'q1',
+      type: 'shortAnswer',
+      text: 'X',
+      marks: -1,
+      answer: 'Y',
+      difficulty: 'core',
+    })
+    expect(result.success).toBe(false)
+  })
+
+  it('rejects an invalid difficulty value', () => {
+    const result = QuestionSchema.safeParse({
+      id: 'q1',
+      type: 'shortAnswer',
+      text: 'X',
+      marks: 1,
+      answer: 'Y',
+      difficulty: 'extreme',
+    })
+    expect(result.success).toBe(false)
+  })
 })
 
 describe('parseGeneratedWorksheet', () => {
@@ -78,5 +102,23 @@ describe('parseGeneratedWorksheet', () => {
 
   it('throws if top-level shape is wrong', () => {
     expect(() => parseGeneratedWorksheet('{}')).toThrow()
+  })
+
+  it('returns an empty questions array when every question is malformed', () => {
+    const raw = JSON.stringify({
+      title: 'X', topic: 'Y', subject: '', yearGroup: 'Year 1', level: 'KS1',
+      teacherOverview: {
+        intendedUse: '', timeEstimate: '', equipmentNeeded: [],
+        differentiationNotes: { support: '', stretch: '' },
+        misconceptions: [], assumptions: [],
+        optionalChallenge: '', challengeAnswer: '',
+      },
+      vocabularyBox: [],
+      sections: [{ title: 'S1', instructions: '', questions: [{ id: 'q1', type: 'bogus' }] }],
+      extensionTask: '', totalMarks: 0,
+    })
+
+    const parsed = parseGeneratedWorksheet(raw)
+    expect(parsed.sections[0].questions).toHaveLength(0)
   })
 })

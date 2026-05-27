@@ -83,6 +83,7 @@ export const GeneratedWorksheetSchema = z.object({
   totalMarks: z.number().int().min(0).default(0),
 })
 
+/** Output of `parseGeneratedWorksheet` after per-item filtering — distinct from the schema input where `vocabularyBox` and `questions` are `unknown[]`. */
 export interface GeneratedWorksheet {
   title: string
   topic: string
