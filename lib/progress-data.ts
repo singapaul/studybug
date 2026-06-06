@@ -1,4 +1,14 @@
 import { db } from "@/lib/db";
+import {
+  filterAttemptsByDays,
+  computeSubjectBreakdown,
+  computeTypeBreakdown,
+  deriveInsights,
+  type AttemptRecord,
+  type SubjectBreakdown,
+  type TypeBreakdown,
+  type Insight,
+} from "@/lib/progress-insights";
 
 export interface PersonalBest {
   gameId: string;
@@ -28,6 +38,9 @@ export interface ProgressData {
   personalBests: PersonalBest[];
   trend: TrendPoint[];
   recentAttempts: RecentAttempt[];
+  subjectBreakdown: SubjectBreakdown[];
+  typeBreakdown: TypeBreakdown[];
+  insights: Insight[];
   summary: {
     totalAttempts: number;
     averageScore: number;
@@ -35,12 +48,57 @@ export interface ProgressData {
   };
 }
 
-export async function getProgressData(userId: string): Promise<ProgressData> {
+/** Raw attempt records (date-filtered) for CSV export. */
+export async function getAttemptRecordsForExport(
+  userId: string,
+  days: number | null = null,
+): Promise<AttemptRecord[]> {
   const attempts = await db.gameAttempt.findMany({
     where: { userId },
-    include: { game: { select: { name: true, gameType: true } } },
+    include: { game: { select: { name: true, gameType: true, subject: true } } },
+    orderBy: { createdAt: "desc" },
+  });
+  const records: AttemptRecord[] = attempts.map((a) => ({
+    scorePercentage: a.scorePercentage,
+    timeTaken: a.timeTaken,
+    createdAt: a.createdAt,
+    gameName: a.game.name,
+    gameType: a.game.gameType,
+    subject: a.game.subject,
+  }));
+  return filterAttemptsByDays(records, days);
+}
+
+export async function getProgressData(
+  userId: string,
+  days: number | null = null,
+): Promise<ProgressData> {
+  const allAttempts = await db.gameAttempt.findMany({
+    where: { userId },
+    include: { game: { select: { id: true, name: true, gameType: true, subject: true } } },
     orderBy: { createdAt: "asc" },
   });
+
+  // Date-filter using the tested pure helper, keeping the game relation handy.
+  const records: (AttemptRecord & { id: string; gameId: string })[] = allAttempts.map((a) => ({
+    id: a.id,
+    gameId: a.gameId,
+    scorePercentage: a.scorePercentage,
+    timeTaken: a.timeTaken,
+    createdAt: a.createdAt,
+    gameName: a.game.name,
+    gameType: a.game.gameType,
+    subject: a.game.subject,
+  }));
+  const filtered = filterAttemptsByDays(records, days) as typeof records;
+  const attempts = filtered.map((r) => ({
+    id: r.id,
+    gameId: r.gameId,
+    scorePercentage: r.scorePercentage,
+    timeTaken: r.timeTaken,
+    createdAt: r.createdAt,
+    game: { name: r.gameName, gameType: r.gameType },
+  }));
 
   // Personal bests: max score per game + attempt count
   const gameMap = new Map<
@@ -111,6 +169,9 @@ export async function getProgressData(userId: string): Promise<ProgressData> {
     personalBests,
     trend,
     recentAttempts,
+    subjectBreakdown: computeSubjectBreakdown(filtered),
+    typeBreakdown: computeTypeBreakdown(filtered),
+    insights: deriveInsights(filtered),
     summary: { totalAttempts, averageScore, gamesPlayed },
   };
 }

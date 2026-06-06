@@ -6,8 +6,14 @@ export const QUESTION_TYPES = [
   'extendedResponse',
   'trueFalse',
   'fillInTheBlank',
+  'matching',
+  'ordering',
+  'tableCompletion',
 ] as const
 export type QuestionType = (typeof QUESTION_TYPES)[number]
+
+export const EXAM_BOARDS = ['AQA', 'Edexcel', 'OCR', 'WJEC', 'none'] as const
+export type ExamBoard = (typeof EXAM_BOARDS)[number]
 
 export const DIFFICULTY_TIERS = ['support', 'core', 'stretch'] as const
 export type DifficultyTier = (typeof DIFFICULTY_TIERS)[number]
@@ -23,6 +29,18 @@ export type MarkingMode = (typeof MARKING_MODES)[number]
 export const DIFFERENTIATION_MODES = ['mixedAbility', 'threeTier'] as const
 export type DifferentiationMode = (typeof DIFFERENTIATION_MODES)[number]
 
+export const MatchingPairSchema = z.object({
+  left: z.string().min(1),
+  right: z.string().min(1),
+})
+export type MatchingPair = z.infer<typeof MatchingPairSchema>
+
+export const TableSchema = z.object({
+  headers: z.array(z.string().min(1)).min(1),
+  rows: z.array(z.array(z.string())).min(1),
+})
+export type WorksheetTable = z.infer<typeof TableSchema>
+
 export const QuestionSchema = z
   .object({
     id: z.string().min(1),
@@ -33,11 +51,26 @@ export const QuestionSchema = z
     difficulty: z.enum(DIFFICULTY_TIERS),
     options: z.array(z.string().min(1)).min(2).max(6).optional(),
     hint: z.string().optional(),
+    // matching
+    pairs: z.array(MatchingPairSchema).min(2).optional(),
+    // ordering — items listed in the correct order; rendered shuffled
+    items: z.array(z.string().min(1)).min(2).optional(),
+    // tableCompletion — cells to fill marked with [blank]
+    table: TableSchema.optional(),
   })
   .refine(
     (q) => q.type !== 'multipleChoice' || (q.options && q.options.length >= 2),
     { message: 'multipleChoice questions must have at least 2 options' },
   )
+  .refine((q) => q.type !== 'matching' || (q.pairs && q.pairs.length >= 2), {
+    message: 'matching questions must have at least 2 pairs',
+  })
+  .refine((q) => q.type !== 'ordering' || (q.items && q.items.length >= 2), {
+    message: 'ordering questions must have at least 2 items',
+  })
+  .refine((q) => q.type !== 'tableCompletion' || !!q.table, {
+    message: 'tableCompletion questions must have a table',
+  })
 
 export type Question = z.infer<typeof QuestionSchema>
 
@@ -81,6 +114,34 @@ export const GeneratedWorksheetSchema = z.object({
   sections: z.array(SectionSchema).default([]),
   extensionTask: z.string().default(''),
   totalMarks: z.number().int().min(0).default(0),
+  examBoard: z.enum(EXAM_BOARDS).optional(),
+  specPoints: z.array(z.string()).optional(),
+})
+
+/**
+ * Strict counterpart to {@link GeneratedWorksheetSchema}: every question and
+ * vocabulary item is fully validated (no `z.unknown()` placeholders, no
+ * silent filtering). Used to validate user edits before persisting them.
+ */
+export const StrictSectionSchema = z.object({
+  title: z.string().min(1),
+  instructions: z.string().default(''),
+  questions: z.array(QuestionSchema).default([]),
+})
+
+export const SavedWorksheetContentSchema = z.object({
+  title: z.string().min(1),
+  topic: z.string().min(1),
+  subject: z.string().default(''),
+  yearGroup: z.string().min(1),
+  level: z.string().min(1),
+  teacherOverview: TeacherOverviewSchema,
+  vocabularyBox: z.array(VocabularyItemSchema).default([]),
+  sections: z.array(StrictSectionSchema).default([]),
+  extensionTask: z.string().default(''),
+  totalMarks: z.number().int().min(0).default(0),
+  examBoard: z.enum(EXAM_BOARDS).optional(),
+  specPoints: z.array(z.string()).optional(),
 })
 
 /** Output of `parseGeneratedWorksheet` after per-item filtering — distinct from the schema input where `vocabularyBox` and `questions` are `unknown[]`. */
@@ -95,6 +156,8 @@ export interface GeneratedWorksheet {
   sections: { title: string; instructions: string; questions: Question[] }[]
   extensionTask: string
   totalMarks: number
+  examBoard?: ExamBoard
+  specPoints?: string[]
 }
 
 function parseItems<T>(items: unknown[], schema: z.ZodType<T>, label: string): T[] {
@@ -130,6 +193,8 @@ export function parseGeneratedWorksheet(json: string): GeneratedWorksheet {
     sections,
     extensionTask: top.extensionTask,
     totalMarks: top.totalMarks,
+    examBoard: top.examBoard,
+    specPoints: top.specPoints,
   }
 }
 
@@ -141,8 +206,15 @@ export interface WorksheetSummary {
   yearGroup: string
   level: string
   shareToken: string | null
+  folderId: string | null
   createdAt: string
   updatedAt: string
+}
+
+export interface WorksheetFolder {
+  id: string
+  name: string
+  createdAt: string
 }
 
 export interface SavedWorksheet extends WorksheetSummary {

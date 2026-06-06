@@ -6,10 +6,11 @@ export interface DashboardStats {
   recentGames: Pick<Game, "id" | "name" | "gameType" | "updatedAt">[];
   totalAttempts: number;
   averageScore: number;
+  totalWorksheets: number;
 }
 
 export async function getDashboardStats(userId: string): Promise<DashboardStats> {
-  const [totalGames, recentGames, attemptStats] = await Promise.all([
+  const [totalGames, recentGames, attemptStats, totalWorksheets] = await Promise.all([
     db.game.count({ where: { userId } }),
     db.game.findMany({
       where: { userId },
@@ -22,6 +23,7 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
       _count: { id: true },
       _avg: { scorePercentage: true },
     }),
+    db.worksheet.count({ where: { userId } }),
   ]);
 
   return {
@@ -29,5 +31,6 @@ export async function getDashboardStats(userId: string): Promise<DashboardStats>
     recentGames,
     totalAttempts: attemptStats._count.id,
     averageScore: Math.round(attemptStats._avg.scorePercentage ?? 0),
+    totalWorksheets,
   };
 }

@@ -18,12 +18,18 @@ const SaveSchema = z.object({
 async function getHandler(req: NextRequest) {
   try {
     const { userId } = await getAuthenticatedUser(req)
+
+    const folderId = req.nextUrl.searchParams.get('folderId')
+    const where: { userId: string; folderId?: string | null } = { userId }
+    if (folderId === 'unfiled') where.folderId = null
+    else if (folderId) where.folderId = folderId
+
     const worksheets = await db.worksheet.findMany({
-      where: { userId },
+      where,
       orderBy: { createdAt: 'desc' },
       select: {
         id: true, title: true, topic: true, subject: true,
-        yearGroup: true, level: true, shareToken: true,
+        yearGroup: true, level: true, shareToken: true, folderId: true,
         createdAt: true, updatedAt: true,
       },
     })

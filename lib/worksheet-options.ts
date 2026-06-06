@@ -2,6 +2,8 @@ import {
   QuestionType,
   MarkingMode,
   DifferentiationMode,
+  EXAM_BOARDS,
+  ExamBoard,
 } from '@/types/worksheet'
 
 export const YEAR_GROUPS = [
@@ -23,7 +25,25 @@ export const QUESTION_TYPE_OPTIONS: QuestionTypeOption[] = [
   { value: 'extendedResponse', label: 'Extended Response', description: 'Paragraph with mark scheme.' },
   { value: 'trueFalse', label: 'True / False', description: 'Statement with T/F.' },
   { value: 'fillInTheBlank', label: 'Fill in the Blank', description: 'Sentence with [blank] markers.' },
+  { value: 'matching', label: 'Matching', description: 'Match terms to definitions.' },
+  { value: 'ordering', label: 'Ordering', description: 'Put items in the correct sequence.' },
+  { value: 'tableCompletion', label: 'Table Completion', description: 'Fill in missing cells in a table.' },
 ]
+
+interface ExamBoardOption {
+  value: ExamBoard
+  label: string
+}
+
+export const EXAM_BOARD_OPTIONS: ExamBoardOption[] = [
+  { value: 'none', label: 'No specific board' },
+  { value: 'AQA', label: 'AQA' },
+  { value: 'Edexcel', label: 'Edexcel' },
+  { value: 'OCR', label: 'OCR' },
+  { value: 'WJEC', label: 'WJEC' },
+]
+
+export { EXAM_BOARDS }
 
 interface MarkingModeOption {
   value: MarkingMode

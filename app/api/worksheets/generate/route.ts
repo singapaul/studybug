@@ -11,9 +11,11 @@ import {
   QUESTION_TYPES,
   MARKING_MODES,
   DIFFERENTIATION_MODES,
+  EXAM_BOARDS,
   type QuestionType,
   type MarkingMode,
   type DifferentiationMode,
+  type ExamBoard,
 } from '@/types/worksheet'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
@@ -33,6 +35,7 @@ const RequestSchema = z.object({
   questionTypes: z.array(z.enum(QUESTION_TYPES)).min(1).default(['shortAnswer']),
   markingMode: z.enum(MARKING_MODES).default('markSchemeWithPoints'),
   differentiation: z.enum(DIFFERENTIATION_MODES).default('mixedAbility'),
+  examBoard: z.enum(EXAM_BOARDS).optional().default('none'),
   pastedText: z.string().max(MAX_TEXT_LENGTH).optional().default(''),
 })
 
@@ -86,6 +89,7 @@ async function postHandler(req: NextRequest) {
     numQuestions: field('numQuestions'),
     markingMode: field('markingMode'),
     differentiation: field('differentiation'),
+    examBoard: field('examBoard'),
     pastedText: field('pastedText'),
     questionTypes: questionTypesRaw
       .split(',')
@@ -139,6 +143,7 @@ async function postHandler(req: NextRequest) {
     differentiation: body.differentiation as DifferentiationMode,
     yearGroup: body.yearGroup,
     hasSource,
+    examBoard: body.examBoard as ExamBoard,
   })
 
   const userMessage = [

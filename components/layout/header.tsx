@@ -31,8 +31,9 @@ export function Header() {
 
   const resourceLinks = [
     { href: '/help', label: 'Help Center' },
+    { href: '/about', label: 'About' },
+    { href: '/changelog', label: "What's New" },
     { href: '/contact', label: 'Contact' },
-    { href: '/blog', label: 'Blog' },
   ];
 
   return (

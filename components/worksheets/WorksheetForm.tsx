@@ -12,19 +12,20 @@ import {
 import { Checkbox } from '@/components/ui/checkbox'
 import { toast } from 'sonner'
 import {
-  YEAR_GROUPS, KEY_STAGES, QUESTION_TYPE_OPTIONS, MARKING_MODE_OPTIONS, DIFFERENTIATION_OPTIONS,
+  YEAR_GROUPS, KEY_STAGES, QUESTION_TYPE_OPTIONS, MARKING_MODE_OPTIONS, DIFFERENTIATION_OPTIONS, EXAM_BOARD_OPTIONS,
 } from '@/lib/worksheet-options'
-import type { QuestionType, MarkingMode, DifferentiationMode } from '@/types/worksheet'
+import type { QuestionType, MarkingMode, DifferentiationMode, ExamBoard } from '@/types/worksheet'
 import type { GenerateInput } from '@/hooks/use-worksheets'
 
 interface WorksheetFormProps {
   isGenerating: boolean
   onSubmit: (input: GenerateInput) => void
+  initialValues?: { topic?: string; subject?: string; pastedText?: string }
 }
 
-export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
-  const [topic, setTopic] = useState('')
-  const [subject, setSubject] = useState('')
+export function WorksheetForm({ isGenerating, onSubmit, initialValues }: WorksheetFormProps) {
+  const [topic, setTopic] = useState(initialValues?.topic ?? '')
+  const [subject, setSubject] = useState(initialValues?.subject ?? '')
   const [yearGroup, setYearGroup] = useState<string>('Year 8')
   const [level, setLevel] = useState<string>('KS3')
   const [learningObjectives, setLearningObjectives] = useState('')
@@ -33,7 +34,8 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
   const [questionTypes, setQuestionTypes] = useState<QuestionType[]>(['shortAnswer'])
   const [markingMode, setMarkingMode] = useState<MarkingMode>('markSchemeWithPoints')
   const [differentiation, setDifferentiation] = useState<DifferentiationMode>('mixedAbility')
-  const [pastedText, setPastedText] = useState('')
+  const [examBoard, setExamBoard] = useState<ExamBoard>('none')
+  const [pastedText, setPastedText] = useState(initialValues?.pastedText ?? '')
   const [file, setFile] = useState<File | null>(null)
 
   function toggleType(t: QuestionType) {
@@ -63,6 +65,7 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
       questionTypes,
       markingMode,
       differentiation,
+      examBoard,
       pastedText: pastedText.trim() || undefined,
       file,
     })
@@ -194,6 +197,17 @@ export function WorksheetForm({ isGenerating, onSubmit }: WorksheetFormProps) {
             <SelectContent>
               {DIFFERENTIATION_OPTIONS.map((m) => (
                 <SelectItem key={m.value} value={m.value}>{m.label}</SelectItem>
+              ))}
+            </SelectContent>
+          </Select>
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="board">Exam board</Label>
+          <Select value={examBoard} onValueChange={(v) => setExamBoard(v as ExamBoard)} disabled={isGenerating}>
+            <SelectTrigger id="board" className="w-full"><SelectValue /></SelectTrigger>
+            <SelectContent>
+              {EXAM_BOARD_OPTIONS.map((b) => (
+                <SelectItem key={b.value} value={b.value}>{b.label}</SelectItem>
               ))}
             </SelectContent>
           </Select>

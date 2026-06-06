@@ -2,6 +2,7 @@ import {
   QuestionType,
   MarkingMode,
   DifferentiationMode,
+  ExamBoard,
 } from '@/types/worksheet'
 
 const FORBIDDEN_PHRASES = [
@@ -27,6 +28,9 @@ const TYPE_RULES: Record<QuestionType, string> = {
   extendedResponse: '- extendedResponse: paragraph-length. Mark scheme lists discrete creditable points.',
   trueFalse: '- trueFalse: statement to assess; answer is "True" or "False" with one-sentence justification.',
   fillInTheBlank: '- fillInTheBlank: sentence must contain exactly one [blank] marker; answer = the word(s) that fill it.',
+  matching: '- matching: provide a "pairs" array of at least 2 { "left", "right" } objects (e.g. term → definition). The "answer" summarises the correct pairing. Omit "options".',
+  ordering: '- ordering: provide an "items" array of at least 2 strings IN THE CORRECT ORDER; they are displayed shuffled to the student. The "answer" states the correct sequence. Omit "options".',
+  tableCompletion: '- tableCompletion: provide a "table" object { "headers": [...], "rows": [[...]] }; mark each cell the student must fill with the literal token "[blank]". The "answer" lists the missing cell values in order. Omit "options".',
 }
 
 interface BuildSystemPromptInput {
@@ -35,11 +39,16 @@ interface BuildSystemPromptInput {
   differentiation: DifferentiationMode
   yearGroup: string
   hasSource: boolean
+  examBoard?: ExamBoard
 }
 
 export function buildSystemPrompt(input: BuildSystemPromptInput): string {
   const typeRules = input.questionTypes.map((t) => TYPE_RULES[t]).join('\n')
   const depth = yearGroupDepthGuidance(input.yearGroup)
+  const examBoardRule =
+    input.examBoard && input.examBoard !== 'none'
+      ? `Align questions to the ${input.examBoard} specification. Set "examBoard" to "${input.examBoard}" and populate "specPoints" with the specific spec reference points covered (e.g. "3.1.2 Photosynthesis"). Use ${input.examBoard} terminology and assessment style.`
+      : 'No specific exam board. Omit "examBoard" and "specPoints".'
   const groundingRule = input.hasSource
     ? 'You have been supplied with source material. Generate ONLY from that material — never invent facts beyond it. If the source does not cover something, omit it.'
     : 'No source material has been supplied. Generate only low-stakes recall / define questions on commonly-taught curriculum content. Keep total marks ≤12.'
@@ -82,17 +91,22 @@ Return ONLY valid JSON — no markdown, no commentary. Use this exact shape:
     "instructions": "string",
     "questions": [{
       "id": "string",
-      "type": "multipleChoice | shortAnswer | extendedResponse | trueFalse | fillInTheBlank",
+      "type": "multipleChoice | shortAnswer | extendedResponse | trueFalse | fillInTheBlank | matching | ordering | tableCompletion",
       "text": "string",
       "marks": 1,
       "answer": "string",
       "difficulty": "support | core | stretch",
       "options": ["string"],
+      "pairs": [{ "left": "string", "right": "string" }],
+      "items": ["string"],
+      "table": { "headers": ["string"], "rows": [["string"]] },
       "hint": "string"
     }]
   }],
   "extensionTask": "string",
-  "totalMarks": 0
+  "totalMarks": 0,
+  "examBoard": "AQA | Edexcel | OCR | WJEC",
+  "specPoints": ["string"]
 }
 
 Year-group depth:
@@ -110,6 +124,9 @@ ${markingRule}
 Grounding:
 ${groundingRule}
 
+Exam board alignment:
+${examBoardRule}
+
 Mark scheme discipline (when marks > 0):
 - One idea per mark. No padding.
 - DO NOT use judgement words: ${NO_JUDGEMENT_TERMS.map((t) => `"${t}"`).join(', ')}.
@@ -121,6 +138,6 @@ Language discipline:
 
 totalMarks MUST equal the sum of all question marks across sections.
 Question ids are simple strings like "q1", "q2".
-Set "options" only for multipleChoice questions; omit on other types.
+Set "options" only for multipleChoice questions; "pairs" only for matching; "items" only for ordering; "table" only for tableCompletion. Omit fields that do not apply to a question's type.
 Set "hint" only when it materially helps a struggling student; otherwise omit.`
 }

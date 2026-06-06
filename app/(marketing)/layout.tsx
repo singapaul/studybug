@@ -6,7 +6,7 @@ import { MarketingProviders } from "@/components/providers/marketing-providers";
 export default function MarketingLayout({ children }: { children: React.ReactNode }) {
   return (
     <MarketingProviders>
-      <div className="flex min-h-screen flex-col">
+      <div className="force-light flex min-h-screen flex-col bg-background text-foreground">
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />

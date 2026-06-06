@@ -3,9 +3,12 @@
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2 } from 'lucide-react'
+import { BarChart3, FileText, Loader2 } from 'lucide-react'
 import { useGame, useGameAttempts, useSubmitAttempt } from '@/hooks/use-games'
 import { usePlan } from '@/hooks/use-plan'
+import { Button } from '@/components/ui/button'
+import { gameToSeed, stashWorksheetSeed } from '@/lib/worksheet-seed'
+import type { GameData } from '@/types/game'
 import {
   GameType,
   FlashcardsGameData,
@@ -83,6 +86,34 @@ export default function PlayGamePage() {
         game={game}
         onPlay={() => setPhase('playing')}
         onBack={() => router.push('/games')}
+        extraAction={
+          isPro ? (
+            <div className="flex flex-col gap-2 sm:flex-row">
+              <Button variant="outline" className="flex-1" asChild>
+                <Link href={`/games/${id}/stats`}>
+                  <BarChart3 className="h-4 w-4 mr-2" /> View stats
+                </Link>
+              </Button>
+              <Button
+                variant="outline"
+                className="flex-1"
+                onClick={() => {
+                  stashWorksheetSeed(
+                    gameToSeed({
+                      name: game.name,
+                      subject: game.subject,
+                      gameType: game.gameType,
+                      gameData: JSON.parse(game.gameData) as GameData,
+                    }),
+                  )
+                  router.push('/worksheets/new')
+                }}
+              >
+                <FileText className="h-4 w-4 mr-2" /> Create worksheet
+              </Button>
+            </div>
+          ) : undefined
+        }
       />
     )
   }

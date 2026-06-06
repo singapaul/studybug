@@ -1,7 +1,7 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft, Loader2, RefreshCw, Save, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -14,6 +14,7 @@ import {
   type GenerateInput,
 } from '@/hooks/use-worksheets'
 import type { GeneratedWorksheet } from '@/types/worksheet'
+import { takeWorksheetSeed, type WorksheetSeed } from '@/lib/worksheet-seed'
 
 type Phase = 'form' | 'loading' | 'preview'
 
@@ -23,6 +24,13 @@ export default function NewWorksheetPage() {
   const [lastInput, setLastInput] = useState<GenerateInput | null>(null)
   const [worksheet, setWorksheet] = useState<GeneratedWorksheet | null>(null)
   const [editableTitle, setEditableTitle] = useState('')
+  const [seed, setSeed] = useState<WorksheetSeed | null>(null)
+
+  // Seeds are stashed in sessionStorage by "Create worksheet" entry points
+  // (library decks / games). Read on the client to avoid SSR hydration issues.
+  useEffect(() => {
+    setSeed(takeWorksheetSeed())
+  }, [])
 
   const { mutateAsync: generate, isPending: isGenerating } = useGenerateWorksheet()
   const { mutateAsync: save, isPending: isSaving } = useSaveWorksheet()
@@ -98,7 +106,19 @@ export default function NewWorksheetPage() {
       </div>
 
       {phase === 'form' && (
-        <WorksheetForm isGenerating={isGenerating} onSubmit={handleGenerate} />
+        <>
+          {seed && (
+            <p className="mb-4 rounded-md border bg-muted/40 px-3 py-2 text-sm text-muted-foreground">
+              Pre-filled from <span className="font-medium text-foreground">{seed.topic}</span>. Review and adjust, then generate.
+            </p>
+          )}
+          <WorksheetForm
+            key={seed ? 'seeded' : 'empty'}
+            isGenerating={isGenerating}
+            onSubmit={handleGenerate}
+            initialValues={seed ?? undefined}
+          />
+        </>
       )}
 
       {phase === 'loading' && (

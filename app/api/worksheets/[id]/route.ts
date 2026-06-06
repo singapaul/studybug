@@ -1,14 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { Prisma } from '@prisma/client'
 import { db } from '@/lib/db'
 import { z } from 'zod'
 import { getAuthenticatedUser, enforceOwnership } from '@/lib/api-helpers'
 import { withLogging } from '@/lib/with-logging'
+import { SavedWorksheetContentSchema } from '@/types/worksheet'
 
 type Params = { params: Promise<{ id: string }> }
 
-const PatchSchema = z.object({
-  title: z.string().min(1).max(200),
-})
+const PatchSchema = z
+  .object({
+    title: z.string().min(1).max(200).optional(),
+    content: z.unknown().optional(),
+    // null moves the worksheet out of any folder ("unfiled").
+    folderId: z.string().min(1).nullable().optional(),
+  })
+  .refine((d) => d.title !== undefined || d.content !== undefined || d.folderId !== undefined, {
+    message: 'Provide a title, content, or folderId to update',
+  })
 
 async function getHandler(req: NextRequest, { params }: Params) {
   try {
@@ -47,10 +56,43 @@ async function patchHandler(req: NextRequest, { params }: Params) {
       return NextResponse.json({ error: 'Invalid payload', issues: parsed.error.issues }, { status: 400 })
     }
 
-    const worksheet = await db.worksheet.update({
-      where: { id },
-      data: { title: parsed.data.title },
-    })
+    const data: Prisma.WorksheetUpdateInput = {}
+
+    if (parsed.data.content !== undefined) {
+      const contentResult = SavedWorksheetContentSchema.safeParse(parsed.data.content)
+      if (!contentResult.success) {
+        return NextResponse.json(
+          { error: 'Invalid worksheet content', issues: contentResult.error.issues },
+          { status: 400 },
+        )
+      }
+      const content = contentResult.data
+      // Recompute totalMarks server-side so it always reflects the questions.
+      content.totalMarks = content.sections.reduce(
+        (sum, section) => sum + section.questions.reduce((s, q) => s + q.marks, 0),
+        0,
+      )
+      data.content = content as unknown as Prisma.InputJsonValue
+      // Keep the denormalized list columns in sync with the edited content.
+      data.title = content.title
+      data.topic = content.topic
+      data.subject = content.subject || null
+      data.yearGroup = content.yearGroup
+      data.level = content.level
+    }
+
+    // An explicit title override (e.g. inline rename) wins over content.title.
+    if (parsed.data.title !== undefined) {
+      data.title = parsed.data.title
+    }
+
+    if (parsed.data.folderId !== undefined) {
+      data.folder = parsed.data.folderId
+        ? { connect: { id: parsed.data.folderId } }
+        : { disconnect: true }
+    }
+
+    const worksheet = await db.worksheet.update({ where: { id }, data })
 
     return NextResponse.json({ worksheet })
   } catch (err) {

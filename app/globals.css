@@ -99,6 +99,109 @@
     --sidebar-border: 0 0% 90%;
     --sidebar-ring: 96 58% 61%;
   }
+
+  /* Re-asserts the light palette for a subtree even when <html> carries `.dark`.
+     Used to keep marketing + auth pages bright (they are viewed logged-out, where
+     there is no theme toggle, and are designed for a light background). */
+  .force-light {
+    --background: 0 0% 100%;
+    --foreground: 0 0% 13%;
+    --card: 0 0% 100%;
+    --card-foreground: 0 0% 13%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 13%;
+    --primary: 96 58% 61%;
+    --primary-foreground: 0 0% 100%;
+    --secondary: 207 100% 58%;
+    --secondary-foreground: 0 0% 100%;
+    --muted: 47 50% 93%;
+    --muted-foreground: 0 0% 40%;
+    --accent: 284 100% 88%;
+    --accent-foreground: 0 0% 100%;
+    --success: 96 58% 61%;
+    --success-foreground: 0 0% 100%;
+    --warning: 54 93% 51%;
+    --warning-foreground: 0 0% 100%;
+    --destructive: 7 100% 68%;
+    --destructive-foreground: 0 0% 100%;
+    --coral: 7 100% 68%;
+    --coral-foreground: 0 0% 100%;
+    --cream: 47 50% 93%;
+    --cream-foreground: 72 7% 17%;
+    --border: 0 0% 90%;
+    --input: 0 0% 90%;
+    --ring: 96 58% 61%;
+    --shadow-sm: 0 1px 2px 0 hsl(72 7% 17% / 0.05);
+    --shadow-md: 0 4px 6px -1px hsl(72 7% 17% / 0.08), 0 2px 4px -2px hsl(72 7% 17% / 0.06);
+    --shadow-lg: 0 10px 25px -3px hsl(72 7% 17% / 0.1), 0 4px 10px -4px hsl(72 7% 17% / 0.06);
+    --shadow-xl: 0 20px 40px -5px hsl(72 7% 17% / 0.12), 0 8px 16px -6px hsl(72 7% 17% / 0.08);
+    --sidebar-background: 0 0% 100%;
+    --sidebar-foreground: 72 7% 17%;
+    --sidebar-primary: 96 58% 61%;
+    --sidebar-primary-foreground: 72 7% 17%;
+    --sidebar-accent: 284 100% 88%;
+    --sidebar-accent-foreground: 72 7% 17%;
+    --sidebar-border: 0 0% 90%;
+    --sidebar-ring: 96 58% 61%;
+  }
+
+  .dark {
+    --background: 0 0% 9%;
+    --foreground: 0 0% 95%;
+
+    --card: 0 0% 12%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 0 0% 12%;
+    --popover-foreground: 0 0% 95%;
+
+    /* Brand colours stay vivid against the dark surface */
+    --primary: 96 58% 61%;
+    --primary-foreground: 0 0% 9%;
+
+    --secondary: 207 100% 58%;
+    --secondary-foreground: 0 0% 100%;
+
+    --muted: 0 0% 16%;
+    --muted-foreground: 0 0% 64%;
+
+    --accent: 284 35% 28%;
+    --accent-foreground: 0 0% 96%;
+
+    --success: 96 58% 61%;
+    --success-foreground: 0 0% 9%;
+
+    --warning: 54 93% 51%;
+    --warning-foreground: 0 0% 9%;
+
+    --destructive: 7 100% 68%;
+    --destructive-foreground: 0 0% 9%;
+
+    --coral: 7 100% 68%;
+    --coral-foreground: 0 0% 9%;
+
+    --cream: 0 0% 16%;
+    --cream-foreground: 0 0% 90%;
+
+    --border: 0 0% 20%;
+    --input: 0 0% 22%;
+    --ring: 96 58% 61%;
+
+    /* Shadows need more opacity to read on dark surfaces */
+    --shadow-sm: 0 1px 2px 0 hsl(0 0% 0% / 0.4);
+    --shadow-md: 0 4px 6px -1px hsl(0 0% 0% / 0.45), 0 2px 4px -2px hsl(0 0% 0% / 0.4);
+    --shadow-lg: 0 10px 25px -3px hsl(0 0% 0% / 0.5), 0 4px 10px -4px hsl(0 0% 0% / 0.4);
+    --shadow-xl: 0 20px 40px -5px hsl(0 0% 0% / 0.55), 0 8px 16px -6px hsl(0 0% 0% / 0.45);
+
+    --sidebar-background: 0 0% 11%;
+    --sidebar-foreground: 0 0% 92%;
+    --sidebar-primary: 96 58% 61%;
+    --sidebar-primary-foreground: 0 0% 9%;
+    --sidebar-accent: 284 35% 28%;
+    --sidebar-accent-foreground: 0 0% 96%;
+    --sidebar-border: 0 0% 20%;
+    --sidebar-ring: 96 58% 61%;
+  }
 }
 
 @layer base {

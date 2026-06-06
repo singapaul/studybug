@@ -3,8 +3,9 @@
 import { useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, Play, BookOpen, Copy, Check } from 'lucide-react'
+import { Loader2, Play, BookOpen, Copy, Check, FileText } from 'lucide-react'
 import { useLibraryTopic, useCloneLibraryDeck, LibraryItem } from '@/hooks/use-library'
+import { libraryDeckToSeed, stashWorksheetSeed } from '@/lib/worksheet-seed'
 import { usePlan } from '@/hooks/use-plan'
 import { GameCompleteModal } from '@/components/games/GameCompleteModal'
 import { availableGameTypes, toFlashcardsData, toPairsData, toMultipleChoiceData, toSpeedRoundData, toAnagramData, toFillInTheBlankData } from '@/lib/library-utils'
@@ -142,6 +143,19 @@ export default function LibraryTopicPage() {
 
             {topic.description && (
               <p className="text-sm text-muted-foreground mb-6">{topic.description}</p>
+            )}
+
+            {isPro && (
+              <Button
+                variant="outline"
+                className="mb-6"
+                onClick={() => {
+                  stashWorksheetSeed(libraryDeckToSeed(deck, subject.name))
+                  router.push('/worksheets/new')
+                }}
+              >
+                <FileText className="h-4 w-4 mr-2" /> Create worksheet from this deck
+              </Button>
             )}
 
             <h2 className="text-sm font-semibold text-foreground mb-3">Choose a game type</h2>

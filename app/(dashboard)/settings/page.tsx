@@ -1,8 +1,9 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { useSession } from "@/lib/auth-client";
+import { useSession, authClient, signOut } from "@/lib/auth-client";
 import { useSearchParams } from "next/navigation";
+import { ThemeToggle } from "@/components/theme-toggle";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -16,8 +17,9 @@ import {
 } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
-import { Check, CreditCard, User } from "lucide-react";
+import { Check, CreditCard, User, Palette, KeyRound, ShieldAlert } from "lucide-react";
 import { Suspense } from "react";
+import { toast } from "sonner";
 
 function SettingsContent() {
   const { data: session } = useSession();
@@ -34,6 +36,49 @@ function SettingsContent() {
 
   const [billingLoading, setBillingLoading] = useState(false);
   const [checkoutLoading, setCheckoutLoading] = useState(false);
+
+  const [pwd, setPwd] = useState({ current: "", next: "" });
+  const [pwdLoading, setPwdLoading] = useState(false);
+  const [deleting, setDeleting] = useState(false);
+
+  async function handleChangePassword(e: React.FormEvent) {
+    e.preventDefault();
+    setPwdLoading(true);
+    try {
+      const { error } = await authClient.changePassword({
+        currentPassword: pwd.current,
+        newPassword: pwd.next,
+        revokeOtherSessions: true,
+      });
+      if (error) {
+        toast.error(error.message ?? "Could not change password");
+        return;
+      }
+      toast.success("Password updated");
+      setPwd({ current: "", next: "" });
+    } catch {
+      toast.error("Could not change password");
+    } finally {
+      setPwdLoading(false);
+    }
+  }
+
+  async function handleDeleteAccount() {
+    if (!confirm("Delete your account and all your data? This cannot be undone.")) return;
+    setDeleting(true);
+    try {
+      const res = await fetch("/api/user", { method: "DELETE" });
+      if (!res.ok) {
+        toast.error("Could not delete account");
+        return;
+      }
+      await signOut({ fetchOptions: { onSuccess: () => { window.location.href = "/"; } } });
+    } catch {
+      toast.error("Could not delete account");
+    } finally {
+      setDeleting(false);
+    }
+  }
 
   useEffect(() => {
     if (session?.user) {
@@ -135,6 +180,10 @@ function SettingsContent() {
           <TabsTrigger value="billing" className="flex items-center gap-2">
             <CreditCard className="h-4 w-4" />
             Billing
+          </TabsTrigger>
+          <TabsTrigger value="account" className="flex items-center gap-2">
+            <ShieldAlert className="h-4 w-4" />
+            Account
           </TabsTrigger>
         </TabsList>
 
@@ -313,6 +362,97 @@ function SettingsContent() {
                 </CardContent>
               </Card>
             )}
+          </div>
+        </TabsContent>
+
+        {/* Account tab */}
+        <TabsContent value="account">
+          <div className="space-y-6">
+            {/* Appearance */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-accent/40">
+                    <Palette className="h-5 w-5 text-foreground" />
+                  </div>
+                  <div>
+                    <CardTitle>Appearance</CardTitle>
+                    <CardDescription>Choose how StudyBug looks to you.</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <ThemeToggle variant="inline" />
+              </CardContent>
+            </Card>
+
+            {/* Change password */}
+            <Card>
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-blue-100">
+                    <KeyRound className="h-5 w-5 text-blue-600" />
+                  </div>
+                  <div>
+                    <CardTitle>Change password</CardTitle>
+                    <CardDescription>Update the password you use to sign in.</CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <form onSubmit={handleChangePassword} className="space-y-4 max-w-sm">
+                  <div className="space-y-2">
+                    <Label htmlFor="current-password">Current password</Label>
+                    <Input
+                      id="current-password"
+                      type="password"
+                      autoComplete="current-password"
+                      value={pwd.current}
+                      onChange={(e) => setPwd((s) => ({ ...s, current: e.target.value }))}
+                      required
+                    />
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="new-password">New password</Label>
+                    <Input
+                      id="new-password"
+                      type="password"
+                      autoComplete="new-password"
+                      minLength={8}
+                      value={pwd.next}
+                      onChange={(e) => setPwd((s) => ({ ...s, next: e.target.value }))}
+                      required
+                    />
+                    <p className="text-xs text-muted-foreground">At least 8 characters.</p>
+                  </div>
+                  <Button type="submit" disabled={pwdLoading || !pwd.current || pwd.next.length < 8}>
+                    {pwdLoading ? "Updating…" : "Update password"}
+                  </Button>
+                </form>
+              </CardContent>
+            </Card>
+
+            {/* Danger zone */}
+            <Card className="border-destructive/30">
+              <CardHeader>
+                <div className="flex items-center gap-3">
+                  <div className="p-2 rounded-lg bg-destructive/10">
+                    <ShieldAlert className="h-5 w-5 text-destructive" />
+                  </div>
+                  <div>
+                    <CardTitle>Delete account</CardTitle>
+                    <CardDescription>
+                      Permanently delete your account and all your games, worksheets, and progress.
+                    </CardDescription>
+                  </div>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <Button variant="destructive" onClick={handleDeleteAccount} disabled={deleting}>
+                  {deleting ? "Deleting…" : "Delete my account"}
+                </Button>
+              </CardContent>
+            </Card>
           </div>
         </TabsContent>
       </Tabs>

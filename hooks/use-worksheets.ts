@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { GeneratedWorksheet, SavedWorksheet, WorksheetSummary, QuestionType, MarkingMode, DifferentiationMode } from '@/types/worksheet'
+import type { GeneratedWorksheet, SavedWorksheet, WorksheetSummary, WorksheetFolder, QuestionType, MarkingMode, DifferentiationMode, ExamBoard } from '@/types/worksheet'
 
 async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -31,6 +31,7 @@ export interface GenerateInput {
   questionTypes: QuestionType[]
   markingMode: MarkingMode
   differentiation: DifferentiationMode
+  examBoard?: ExamBoard
   pastedText?: string
   file?: File | null
 }
@@ -55,6 +56,7 @@ export function useGenerateWorksheet() {
       form.append('questionTypes', input.questionTypes.join(','))
       form.append('markingMode', input.markingMode)
       form.append('differentiation', input.differentiation)
+      if (input.examBoard) form.append('examBoard', input.examBoard)
       if (input.pastedText) form.append('pastedText', input.pastedText)
       if (input.file) form.append('file', input.file)
 
@@ -84,13 +86,93 @@ export function useWorksheetUsage() {
   })
 }
 
-export function useWorksheets() {
+export function useWorksheets(folderId?: string) {
   return useQuery<WorksheetSummary[]>({
-    queryKey: ['worksheets'],
+    queryKey: ['worksheets', { folderId: folderId ?? 'all' }],
     queryFn: async () => {
-      const data = await apiFetch<{ worksheets: WorksheetSummary[] }>('/api/worksheets')
+      const query = folderId ? `?folderId=${encodeURIComponent(folderId)}` : ''
+      const data = await apiFetch<{ worksheets: WorksheetSummary[] }>(`/api/worksheets${query}`)
       return data.worksheets
     },
+  })
+}
+
+export function useWorksheetFolders() {
+  return useQuery<WorksheetFolder[]>({
+    queryKey: ['worksheet-folders'],
+    queryFn: async () => {
+      const data = await apiFetch<{ folders: WorksheetFolder[] }>('/api/worksheet-folders')
+      return data.folders
+    },
+  })
+}
+
+export function useCreateFolder() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (name: string) => {
+      const data = await apiFetch<{ folder: WorksheetFolder }>('/api/worksheet-folders', {
+        method: 'POST',
+        body: JSON.stringify({ name }),
+      })
+      return data.folder
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['worksheet-folders'] }),
+  })
+}
+
+export function useRenameFolder() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, name }: { id: string; name: string }) => {
+      const data = await apiFetch<{ folder: WorksheetFolder }>(`/api/worksheet-folders/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ name }),
+      })
+      return data.folder
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['worksheet-folders'] }),
+  })
+}
+
+export function useDeleteFolder() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      await apiFetch(`/api/worksheet-folders/${id}`, { method: 'DELETE' })
+      return id
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['worksheet-folders'] })
+      queryClient.invalidateQueries({ queryKey: ['worksheets'] })
+    },
+  })
+}
+
+export function useMoveWorksheet() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, folderId }: { id: string; folderId: string | null }) => {
+      const data = await apiFetch<{ worksheet: SavedWorksheet }>(`/api/worksheets/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ folderId }),
+      })
+      return data.worksheet
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['worksheets'] }),
+  })
+}
+
+export function useDuplicateWorksheet() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async (id: string) => {
+      const data = await apiFetch<{ worksheet: SavedWorksheet }>(`/api/worksheets/${id}/duplicate`, {
+        method: 'POST',
+      })
+      return data.worksheet
+    },
+    onSuccess: () => queryClient.invalidateQueries({ queryKey: ['worksheets'] }),
   })
 }
 
@@ -137,6 +219,23 @@ export function useRenameWorksheet() {
       const data = await apiFetch<{ worksheet: SavedWorksheet }>(`/api/worksheets/${id}`, {
         method: 'PATCH',
         body: JSON.stringify({ title }),
+      })
+      return data.worksheet
+    },
+    onSuccess: (worksheet) => {
+      queryClient.invalidateQueries({ queryKey: ['worksheets'] })
+      queryClient.invalidateQueries({ queryKey: ['worksheets', worksheet.id] })
+    },
+  })
+}
+
+export function useUpdateWorksheetContent() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, content }: { id: string; content: GeneratedWorksheet }) => {
+      const data = await apiFetch<{ worksheet: SavedWorksheet }>(`/api/worksheets/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ content }),
       })
       return data.worksheet
     },

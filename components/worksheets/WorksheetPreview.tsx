@@ -3,10 +3,42 @@
 import { Printer } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
-import type { GeneratedWorksheet, Question } from '@/types/worksheet'
+import type { GeneratedWorksheet, Question, WorksheetTable } from '@/types/worksheet'
 
 interface WorksheetPreviewProps {
   worksheet: GeneratedWorksheet
+}
+
+/** Stable, deterministic display order that avoids revealing the answer sequence/pairing. */
+function sortedForDisplay(items: string[]): string[] {
+  return [...items].sort((a, b) => a.localeCompare(b))
+}
+
+function TableView({ table }: { table: WorksheetTable }) {
+  return (
+    <div className="ml-6 overflow-x-auto">
+      <table className="w-full border-collapse text-sm">
+        <thead>
+          <tr>
+            {table.headers.map((h, i) => (
+              <th key={i} className="border px-2 py-1 text-left font-semibold">{h}</th>
+            ))}
+          </tr>
+        </thead>
+        <tbody>
+          {table.rows.map((row, ri) => (
+            <tr key={ri}>
+              {row.map((cell, ci) => (
+                <td key={ci} className="border px-2 py-1">
+                  {cell === '[blank]' ? <span className="inline-block min-w-[6rem] border-b border-dotted">&nbsp;</span> : cell}
+                </td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )
 }
 
 function QuestionView({ q, index }: { q: Question; index: number }) {
@@ -34,6 +66,24 @@ function QuestionView({ q, index }: { q: Question; index: number }) {
       {q.type === 'trueFalse' && (
         <p className="ml-6 text-sm text-muted-foreground">Circle: TRUE / FALSE — then justify.</p>
       )}
+      {q.type === 'matching' && q.pairs && (
+        <div className="ml-6 grid grid-cols-2 gap-4 text-sm">
+          <ol className="list-decimal space-y-1 pl-4">
+            {q.pairs.map((p, i) => (<li key={i}>{p.left}</li>))}
+          </ol>
+          <ol className="list-[upper-alpha] space-y-1 pl-4">
+            {sortedForDisplay(q.pairs.map((p) => p.right)).map((right, i) => (
+              <li key={i}>{right}</li>
+            ))}
+          </ol>
+        </div>
+      )}
+      {q.type === 'ordering' && q.items && (
+        <ol className="ml-6 list-[upper-alpha] space-y-1 text-sm">
+          {sortedForDisplay(q.items).map((item, i) => (<li key={i}>{item}</li>))}
+        </ol>
+      )}
+      {q.type === 'tableCompletion' && q.table && <TableView table={q.table} />}
       {q.hint && <p className="ml-6 text-xs italic text-muted-foreground">Hint: {q.hint}</p>}
     </div>
   )
@@ -121,6 +171,16 @@ export function WorksheetPreview({ worksheet }: WorksheetPreviewProps) {
         </TabsContent>
 
         <TabsContent value="teacher" className="space-y-4 print:hidden">
+          {worksheet.examBoard && worksheet.examBoard !== 'none' && (
+            <Card title="Exam board alignment">
+              <p className="font-medium">{worksheet.examBoard}</p>
+              {worksheet.specPoints && worksheet.specPoints.length > 0 && (
+                <ul className="list-disc ml-5 mt-1">
+                  {worksheet.specPoints.map((sp) => <li key={sp}>{sp}</li>)}
+                </ul>
+              )}
+            </Card>
+          )}
           <div className="grid gap-4 sm:grid-cols-2">
             <Card title="Intended use">{worksheet.teacherOverview.intendedUse || '—'}</Card>
             <Card title="Time estimate">{worksheet.teacherOverview.timeEstimate || '—'}</Card>

@@ -2,7 +2,8 @@
 
 import { use, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { ArrowLeft, Loader2, Share2, Trash2 } from 'lucide-react'
+import { ArrowLeft, Loader2, Pencil, Share2, Trash2 } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import { toast } from 'sonner'
 import {
@@ -11,6 +12,7 @@ import {
 } from '@/hooks/use-worksheets'
 import { WorksheetPreview } from '@/components/worksheets/WorksheetPreview'
 import { WorksheetShareModal } from '@/components/worksheets/WorksheetShareModal'
+import { WorksheetDownloadButton } from '@/components/worksheets/WorksheetDownloadButton'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -58,6 +60,12 @@ export default function WorksheetDetailPage({ params }: PageProps) {
           <span className="sr-only">Back</span>
         </Button>
         <h1 className="text-2xl font-bold flex-1">{worksheet.title}</h1>
+        <Button variant="outline" asChild>
+          <Link href={`/worksheets/${worksheet.id}/edit`}>
+            <Pencil className="h-4 w-4 mr-2" /> Edit
+          </Link>
+        </Button>
+        <WorksheetDownloadButton worksheet={worksheet.content} filenameBase={worksheet.title} />
         <Button variant="outline" onClick={() => setShareOpen(true)}>
           <Share2 className="h-4 w-4 mr-2" /> Share
         </Button>

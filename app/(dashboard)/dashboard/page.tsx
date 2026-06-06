@@ -244,13 +244,21 @@ export default async function DashboardPage({
                   href: "/games",
                   done: stats.totalAttempts > 0,
                 },
-                {
-                  step: 3,
-                  title: "Track your progress",
-                  desc: "Review your personal bests and trends.",
-                  href: "/progress",
-                  done: false,
-                },
+                isPro
+                  ? {
+                      step: 3,
+                      title: "Generate a worksheet",
+                      desc: "Turn any topic into a printable worksheet.",
+                      href: "/worksheets/new",
+                      done: stats.totalWorksheets > 0,
+                    }
+                  : {
+                      step: 3,
+                      title: "Unlock Pro features",
+                      desc: "Worksheets, progress tracking, and every game type.",
+                      href: "/#pricing",
+                      done: false,
+                    },
               ].map(({ step, title, desc, href, done }) => (
                 <Link
                   key={step}

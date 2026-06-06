@@ -14,6 +14,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/theme-toggle";
 
 interface UserProps {
   id: string;
@@ -87,13 +88,14 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
   return (
     <>
       {/* Logo */}
-      <div className="flex h-16 items-center border-b px-6 shrink-0">
+      <div className="flex h-16 items-center justify-between border-b px-6 shrink-0">
         <Link href="/dashboard" className="flex items-center gap-2.5" onClick={onNavigate}>
           <div className="flex h-8 w-8 items-center justify-center rounded-xl bg-primary shrink-0">
             <BookOpen className="h-4 w-4 text-primary-foreground" />
           </div>
           <span className="text-lg font-bold text-foreground">StudyBug</span>
         </Link>
+        <ThemeToggle />
       </div>
 
       {/* Navigation */}

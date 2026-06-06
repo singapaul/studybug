@@ -1,18 +1,25 @@
 'use client'
 
 import Link from 'next/link'
-import { FileText, MoreHorizontal, Pencil, Share2, Trash2 } from 'lucide-react'
+import { Copy, FileText, FolderInput, MoreHorizontal, Pencil, Share2, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { Checkbox } from '@/components/ui/checkbox'
 import {
-  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator,
+  DropdownMenuSub, DropdownMenuSubContent, DropdownMenuSubTrigger, DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu'
-import type { WorksheetSummary } from '@/types/worksheet'
+import type { WorksheetSummary, WorksheetFolder } from '@/types/worksheet'
 
 interface WorksheetCardProps {
   worksheet: WorksheetSummary
+  folders: WorksheetFolder[]
   onRename: () => void
   onShare: () => void
   onDelete: () => void
+  onDuplicate: () => void
+  onMove: (folderId: string | null) => void
+  selected: boolean
+  onSelectChange: (checked: boolean) => void
 }
 
 function relativeTime(iso: string): string {
@@ -28,11 +35,20 @@ function relativeTime(iso: string): string {
   return date.toLocaleDateString()
 }
 
-export function WorksheetCard({ worksheet, onRename, onShare, onDelete }: WorksheetCardProps) {
+export function WorksheetCard({
+  worksheet, folders, onRename, onShare, onDelete, onDuplicate, onMove, selected, onSelectChange,
+}: WorksheetCardProps) {
   return (
     <div className="rounded-xl border bg-card p-4 hover:shadow-sm transition">
       <div className="flex items-start justify-between gap-2 mb-2">
-        <FileText className="h-5 w-5 text-primary shrink-0" />
+        <div className="flex items-center gap-2">
+          <Checkbox
+            checked={selected}
+            onCheckedChange={(c) => onSelectChange(!!c)}
+            aria-label={`Select ${worksheet.title}`}
+          />
+          <FileText className="h-5 w-5 text-primary shrink-0" />
+        </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="ghost" size="icon" className="h-7 w-7 -mr-1 -mt-1">
@@ -44,9 +60,36 @@ export function WorksheetCard({ worksheet, onRename, onShare, onDelete }: Worksh
             <DropdownMenuItem onSelect={onRename}>
               <Pencil className="h-4 w-4 mr-2" /> Rename
             </DropdownMenuItem>
+            <DropdownMenuItem onSelect={onDuplicate}>
+              <Copy className="h-4 w-4 mr-2" /> Duplicate
+            </DropdownMenuItem>
+            <DropdownMenuSub>
+              <DropdownMenuSubTrigger>
+                <FolderInput className="h-4 w-4 mr-2" /> Move to
+              </DropdownMenuSubTrigger>
+              <DropdownMenuSubContent>
+                <DropdownMenuItem
+                  onSelect={() => onMove(null)}
+                  disabled={worksheet.folderId === null}
+                >
+                  Unfiled
+                </DropdownMenuItem>
+                {folders.length > 0 && <DropdownMenuSeparator />}
+                {folders.map((f) => (
+                  <DropdownMenuItem
+                    key={f.id}
+                    onSelect={() => onMove(f.id)}
+                    disabled={worksheet.folderId === f.id}
+                  >
+                    {f.name}
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuSubContent>
+            </DropdownMenuSub>
             <DropdownMenuItem onSelect={onShare}>
               <Share2 className="h-4 w-4 mr-2" /> Share
             </DropdownMenuItem>
+            <DropdownMenuSeparator />
             <DropdownMenuItem onSelect={onDelete} className="text-destructive focus:text-destructive">
               <Trash2 className="h-4 w-4 mr-2" /> Delete
             </DropdownMenuItem>

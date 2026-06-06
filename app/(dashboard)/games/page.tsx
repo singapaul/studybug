@@ -12,6 +12,8 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog'
+import { EmptyState } from '@/components/ui/empty-state'
+import { CardGridSkeleton } from '@/components/skeletons'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 
@@ -35,8 +37,11 @@ export default function GamesPage() {
 
   if (isLoading) {
     return (
-      <div className="p-4 sm:p-6 flex items-center justify-center min-h-[200px]">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="p-4 sm:p-6 max-w-6xl mx-auto">
+        <div className="flex items-center justify-between mb-6">
+          <h1 className="text-2xl font-bold font-display">My Games</h1>
+        </div>
+        <CardGridSkeleton />
       </div>
     )
   }
@@ -80,16 +85,16 @@ export default function GamesPage() {
       </div>
 
       {gamesList.length === 0 ? (
-        <div className="flex flex-col items-center justify-center rounded-xl border border-dashed p-16 text-center">
-          <Gamepad2 className="h-12 w-12 text-muted-foreground mb-4" />
-          <h2 className="text-lg font-semibold mb-1">No games yet</h2>
-          <p className="text-sm text-muted-foreground mb-4">
-            Create your first game to get started
-          </p>
-          <Button asChild>
-            <Link href="/games/create">Create Game</Link>
-          </Button>
-        </div>
+        <EmptyState
+          icon={Gamepad2}
+          title="No games yet"
+          description="Create your first game to get started."
+          action={
+            <Button asChild>
+              <Link href="/games/create">Create Game</Link>
+            </Button>
+          }
+        />
       ) : (
         <>
           {/* Search bar */}

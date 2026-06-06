@@ -66,4 +66,26 @@ async function patchHandler(req: NextRequest) {
   }
 }
 
+async function deleteHandler(req: NextRequest) {
+  try {
+    const session = await auth.api.getSession({ headers: req.headers });
+
+    if (!session?.user?.id) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    // Cascades to the user's games, attempts, worksheets, folders, sessions, etc.
+    await db.user.delete({ where: { id: session.user.id } });
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting user:", error);
+    return NextResponse.json(
+      { error: "Failed to delete account" },
+      { status: 500 }
+    );
+  }
+}
+
 export const PATCH = withLogging(patchHandler, 'PATCH /api/user')
+export const DELETE = withLogging(deleteHandler, 'DELETE /api/user')

@@ -34,6 +34,7 @@ model user {
   gameAttempts     GameAttempt[]
   generationLogs   GenerationLog[]
   worksheets       Worksheet[]
+  worksheetFolders WorksheetFolder[]
 }
 
 model Game {
@@ -75,8 +76,22 @@ model Worksheet {
   level           String
   content         Json
   shareToken      String?  @unique
+  folderId        String?
+  folder          WorksheetFolder? @relation(fields: [folderId], references: [id], onDelete: SetNull)
   createdAt       DateTime @default(now())
   updatedAt       DateTime @updatedAt
+
+  @@index([userId])
+  @@index([folderId])
+}
+
+model WorksheetFolder {
+  id         String      @id @default(cuid())
+  userId     String
+  user       user        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name       String
+  worksheets Worksheet[]
+  createdAt  DateTime    @default(now())
 
   @@index([userId])
 }

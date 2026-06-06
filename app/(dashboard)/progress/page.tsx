@@ -2,8 +2,11 @@ import { Metadata } from "next";
 import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
-import { Lock, Trophy, TrendingUp, Clock, Target } from "lucide-react";
+import { Lock, Trophy, TrendingUp, Clock, Target, Lightbulb, Download, BookOpen, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { getTemplateName } from "@/lib/game-templates";
+import { GameType } from "@/types/game";
+import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
@@ -27,7 +30,17 @@ function formatTime(ms: number): string {
   return `${minutes}m ${rem}s`;
 }
 
-export default async function ProgressPage() {
+const RANGES = [
+  { value: "7", label: "7 days" },
+  { value: "30", label: "30 days" },
+  { value: "all", label: "All time" },
+] as const;
+
+export default async function ProgressPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ days?: string }>;
+}) {
   const session = await auth.api.getSession({ headers: await headers() });
 
   if (!session?.user) {
@@ -36,6 +49,10 @@ export default async function ProgressPage() {
 
   const plan = (session.user as { plan?: string }).plan ?? "free";
   const isPro = plan === "pro";
+
+  const { days: daysParam } = await searchParams;
+  const activeRange = daysParam === "7" || daysParam === "30" ? daysParam : "all";
+  const days = activeRange === "all" ? null : Number(activeRange);
 
   if (!isPro) {
     return (
@@ -67,11 +84,10 @@ export default async function ProgressPage() {
     );
   }
 
-  const { personalBests, trend, recentAttempts, summary } = await getProgressData(
-    session.user.id
-  );
+  const { personalBests, trend, recentAttempts, summary, subjectBreakdown, typeBreakdown, insights } =
+    await getProgressData(session.user.id, days);
 
-  if (summary.totalAttempts === 0) {
+  if (summary.totalAttempts === 0 && activeRange === "all") {
     return (
       <div className="p-4 sm:p-8 max-w-2xl mx-auto">
         <h1 className="text-2xl font-bold mb-2">Progress</h1>
@@ -100,8 +116,70 @@ export default async function ProgressPage() {
 
   return (
     <div className="p-4 sm:p-8 max-w-5xl mx-auto">
-      <h1 className="font-display text-2xl sm:text-3xl font-bold mb-2">Progress</h1>
-      <p className="text-muted-foreground mb-8">Your performance across all games.</p>
+      <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-6">
+        <div>
+          <h1 className="font-display text-2xl sm:text-3xl font-bold mb-1">Progress</h1>
+          <p className="text-muted-foreground">Your performance across all games.</p>
+        </div>
+        <div className="flex items-center gap-2">
+          {/* Date range filter (server-rendered via query param) */}
+          <div className="inline-flex rounded-lg border p-1" role="group" aria-label="Date range">
+            {RANGES.map((r) => (
+              <Button
+                key={r.value}
+                asChild
+                size="sm"
+                variant="ghost"
+                className={cn("h-8 px-3 text-xs", activeRange === r.value && "bg-primary/10 text-primary")}
+              >
+                <Link href={`/progress?days=${r.value}`}>{r.label}</Link>
+              </Button>
+            ))}
+          </div>
+          <Button asChild variant="outline" size="sm">
+            <a href={`/api/progress/export?days=${activeRange}`}>
+              <Download className="h-4 w-4 mr-2" /> Export
+            </a>
+          </Button>
+        </div>
+      </div>
+
+      {summary.totalAttempts === 0 && (
+        <div className="rounded-xl border border-dashed p-8 text-center text-muted-foreground mb-8">
+          No attempts in this range. Try a wider date range.
+        </div>
+      )}
+
+      {/* Insights */}
+      {insights.length > 0 && (
+        <Card className="mb-8">
+          <CardHeader className="pb-3">
+            <div className="flex items-center gap-2">
+              <div className="p-1.5 rounded-lg bg-accent/40">
+                <Lightbulb className="h-4 w-4 text-foreground" />
+              </div>
+              <CardTitle className="text-base">Insights</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent>
+            <ul className="space-y-2">
+              {insights.map((insight, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm">
+                  <span
+                    className={cn(
+                      "mt-1.5 h-1.5 w-1.5 shrink-0 rounded-full",
+                      insight.type === "strength" && "bg-primary",
+                      insight.type === "weakness" && "bg-destructive",
+                      insight.type === "trend" && "bg-secondary",
+                    )}
+                  />
+                  {insight.message}
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Summary cards */}
       <div className="grid gap-4 grid-cols-1 sm:grid-cols-3 mb-8">
@@ -169,7 +247,11 @@ export default async function ProgressPage() {
               </div>
             </CardHeader>
             <CardContent>
-              <div className="flex items-end gap-1 h-24">
+              <div
+                className="flex items-end gap-1 h-24"
+                role="img"
+                aria-label={`Score trend across your last ${trend.length} attempts`}
+              >
                 {trend.map((point, i) => (
                   <div
                     key={i}
@@ -226,6 +308,81 @@ export default async function ProgressPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Breakdowns by subject and game type */}
+      {(subjectBreakdown.length > 0 || typeBreakdown.length > 0) && (
+        <div className="grid gap-6 md:grid-cols-2 mb-8">
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-purple-100">
+                  <BookOpen className="h-4 w-4 text-purple-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">By Subject</CardTitle>
+                  <CardDescription>Average score per subject</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {subjectBreakdown.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No data yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {subjectBreakdown.map((s) => (
+                    <div key={s.subject}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="font-medium truncate">{s.subject}</span>
+                        <span className="text-muted-foreground shrink-0">
+                          {s.averageScore}% · {s.attempts} attempt{s.attempts !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-primary" style={{ width: `${s.averageScore}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+
+          <Card>
+            <CardHeader>
+              <div className="flex items-center gap-2">
+                <div className="p-1.5 rounded-lg bg-blue-100">
+                  <Gamepad2 className="h-4 w-4 text-blue-600" />
+                </div>
+                <div>
+                  <CardTitle className="text-base">By Game Type</CardTitle>
+                  <CardDescription>Average score per game type</CardDescription>
+                </div>
+              </div>
+            </CardHeader>
+            <CardContent>
+              {typeBreakdown.length === 0 ? (
+                <p className="text-sm text-muted-foreground">No data yet.</p>
+              ) : (
+                <div className="space-y-3">
+                  {typeBreakdown.map((t) => (
+                    <div key={t.gameType}>
+                      <div className="flex items-center justify-between text-sm mb-1">
+                        <span className="font-medium truncate">{getTemplateName(t.gameType as GameType)}</span>
+                        <span className="text-muted-foreground shrink-0">
+                          {t.averageScore}% · {t.attempts} attempt{t.attempts !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+                      <div className="h-2 rounded-full bg-muted overflow-hidden">
+                        <div className="h-full rounded-full bg-secondary" style={{ width: `${t.averageScore}%` }} />
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
+      )}
 
       {/* Recent attempts table */}
       <Card>

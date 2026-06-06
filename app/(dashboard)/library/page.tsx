@@ -2,11 +2,14 @@
 
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Loader2, Lock, BookOpen } from 'lucide-react'
+import { Lock, BookOpen, Search } from 'lucide-react'
 import { SubjectIcon } from '@/components/library/SubjectIcon'
 import { useLibrarySubjects } from '@/hooks/use-library'
 import { usePlan } from '@/hooks/use-plan'
 import { Badge } from '@/components/ui/badge'
+import { Input } from '@/components/ui/input'
+import { CardGridSkeleton } from '@/components/skeletons'
+import { filterLibrarySubjects, type AccessFilter } from '@/lib/library-filter'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
 import {
@@ -23,11 +26,16 @@ export default function LibraryPage() {
   const { isPro } = usePlan()
   const router = useRouter()
   const [upgradeOpen, setUpgradeOpen] = useState(false)
+  const [query, setQuery] = useState('')
+  const [access, setAccess] = useState<AccessFilter>('all')
 
   if (isLoading) {
     return (
-      <div className="p-4 sm:p-6 flex items-center justify-center min-h-[300px]">
-        <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+      <div className="p-4 sm:p-6 max-w-4xl mx-auto">
+        <div className="mb-8 space-y-2">
+          <h1 className="font-display text-2xl sm:text-3xl font-bold">Revision Library</h1>
+        </div>
+        <CardGridSkeleton count={8} className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4" />
       </div>
     )
   }
@@ -39,6 +47,8 @@ export default function LibraryPage() {
       </div>
     )
   }
+
+  const filtered = filterLibrarySubjects(subjects, query, access)
 
   const handleSubjectClick = (subject: { slug: string; isFree: boolean }) => {
     if (!subject.isFree && !isPro) {
@@ -74,8 +84,42 @@ export default function LibraryPage() {
           <p className="text-muted-foreground">No subjects available yet.</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {subjects.map((subject) => {
+        <>
+          {/* Search + access filter */}
+          <div className="flex flex-col sm:flex-row gap-2 mb-6">
+            <div className="relative flex-1">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              <Input
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
+                placeholder="Search subjects…"
+                className="pl-9"
+                aria-label="Search subjects"
+              />
+            </div>
+            <div className="inline-flex rounded-lg border p-1" role="group" aria-label="Access filter">
+              {(['all', 'free', 'pro'] as const).map((a) => (
+                <button
+                  key={a}
+                  type="button"
+                  onClick={() => setAccess(a)}
+                  aria-pressed={access === a}
+                  className={cn(
+                    'rounded-md px-3 py-1.5 text-sm font-medium capitalize transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary',
+                    access === a ? 'bg-primary/10 text-primary' : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground',
+                  )}
+                >
+                  {a}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {filtered.length === 0 ? (
+            <p className="text-sm text-muted-foreground text-center py-12">No subjects match your search.</p>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+              {filtered.map((subject) => {
             const locked = !subject.isFree && !isPro
             return (
               <button
@@ -110,14 +154,16 @@ export default function LibraryPage() {
                 </p>
 
                 {subject.isFree && (
-                  <span className="mt-2 inline-block text-xs font-medium text-green-700 bg-green-50 px-2 py-0.5 rounded-full">
+                  <span className="mt-2 inline-block text-xs font-medium text-green-700 dark:text-green-400 bg-green-50 dark:bg-green-950/40 px-2 py-0.5 rounded-full">
                     Free
                   </span>
                 )}
               </button>
             )
-          })}
-        </div>
+              })}
+            </div>
+          )}
+        </>
       )}
 
       {/* Upgrade modal for locked subjects */}
