@@ -56,7 +56,7 @@ async function postHandler(req: NextRequest) {
           quantity: 1,
         },
       ],
-      success_url: `${appUrl}/dashboard?upgrade=success`,
+      success_url: `${appUrl}/api/stripe/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/dashboard?upgrade=cancelled`,
       subscription_data: {
         metadata: { userId: user.id },

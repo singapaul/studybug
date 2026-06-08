@@ -55,10 +55,10 @@ export default async function DashboardPage({
         </div>
       )}
 
-      {/* Post-upgrade success banner */}
-      {resolvedParams.upgrade === "success" && (
+      {/* Post-checkout banner (success or cancelled) */}
+      {(resolvedParams.upgrade === "success" || resolvedParams.upgrade === "cancelled") && (
         <Suspense>
-          <UpgradeBanner currentPlan={plan} />
+          <UpgradeBanner currentPlan={plan} status={resolvedParams.upgrade as "success" | "cancelled"} />
         </Suspense>
       )}
 
