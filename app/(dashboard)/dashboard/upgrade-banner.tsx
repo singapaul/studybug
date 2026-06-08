@@ -16,21 +16,23 @@ export function UpgradeBanner({
 }) {
   const { data: session, refetch } = useSession();
   const [dismissed, setDismissed] = useState(false);
-  const [refreshing, setRefreshing] = useState(status === "success");
+  const [refreshing, setRefreshing] = useState(
+    status === "success" && currentPlan !== "pro"
+  );
 
-  // The client session store is populated from before the upgrade, so it can
-  // still say "free" even though the DB (and the server-rendered page) say
-  // "pro". Refetch once on mount to sync the shared store — this unlocks every
-  // usePlan() consumer (worksheets gate, header, premium-gate) without a reload.
   useEffect(() => {
+    // Strip the upgrade param without a navigation, so the banner shows once
+    // for this view but never reappears on a later /dashboard visit.
+    window.history.replaceState(null, "", "/dashboard");
     if (status !== "success") return;
     let active = true;
+    // The client session store is populated from before the upgrade, so it can
+    // still say "free" even though the DB (and server-rendered page) say "pro".
+    // Refetch once to sync the shared store — this unlocks every usePlan()
+    // consumer (worksheets gate, header, premium-gate) without a reload.
     Promise.resolve(refetch?.()).finally(() => {
       if (active) setRefreshing(false);
     });
-    // Strip ?upgrade=success from the URL without a navigation, so the banner
-    // stays for this view but never reappears on a later /dashboard visit.
-    window.history.replaceState(null, "", "/dashboard");
     return () => {
       active = false;
     };
@@ -46,10 +48,7 @@ export function UpgradeBanner({
           Checkout cancelled — you can upgrade to Pro anytime.
         </p>
         <button
-          onClick={() => {
-            window.history.replaceState(null, "", "/dashboard");
-            setDismissed(true);
-          }}
+          onClick={() => setDismissed(true)}
           className="text-xs text-amber-800 underline underline-offset-4"
         >
           Dismiss
