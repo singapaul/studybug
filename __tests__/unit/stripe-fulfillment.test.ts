@@ -33,4 +33,14 @@ describe('isPaidAndOwned', () => {
     const session = { payment_status: 'paid', customer: { id: 'cus_123' }, metadata: null }
     expect(isPaidAndOwned(session, USER)).toBe(false)
   })
+
+  it('rejects when payment_status is missing', () => {
+    const session = { customer: 'cus_123', metadata: null }
+    expect(isPaidAndOwned(session, USER)).toBe(false)
+  })
+
+  it('grants on a metadata match even when customer is null', () => {
+    const session = { payment_status: 'paid' as const, customer: null, metadata: { userId: 'user-1' } }
+    expect(isPaidAndOwned(session, USER)).toBe(true)
+  })
 })

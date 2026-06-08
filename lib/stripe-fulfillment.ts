@@ -1,6 +1,7 @@
 export interface FulfillmentCheckoutSession {
-  payment_status?: string | null;
+  payment_status?: "paid" | "unpaid" | "no_payment_required" | null;
   customer?: string | { id: string } | null;
+  // Intentionally narrowed: this predicate only reads metadata.userId.
   metadata?: { userId?: string } | null;
 }
 
