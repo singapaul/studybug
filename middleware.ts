@@ -82,6 +82,9 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
   matcher: [
-    "/((?!_next/static|_next/image|favicon.ico|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
+    // Exclude `.netlify/*` so Netlify Functions (e.g. background workers
+    // triggered server-side without a session cookie) are not redirected to
+    // /sign-in by auth middleware. Those functions enforce their own auth.
+    "/((?!_next/static|_next/image|favicon.ico|\\.netlify|.*\\.(?:svg|png|jpg|jpeg|gif|webp)$).*)",
   ],
 };
