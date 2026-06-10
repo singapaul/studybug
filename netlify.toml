@@ -7,3 +7,14 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+# Standalone Netlify Functions (netlify/functions/*) are bundled separately from
+# the Next.js routes. esbuild won't trace Prisma's native .node query engine, so
+# force it (and the generated client) into the function bundle. Tune the globs
+# from the ping-background result if the engine still can't be found at runtime.
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["node_modules/.prisma/client/**"]
+
+[functions."*-background"]
+  included_files = ["node_modules/.prisma/client/**"]
