@@ -65,7 +65,7 @@ export default function WorksheetDetailPage({ params }: PageProps) {
             <Pencil className="h-4 w-4 mr-2" /> Edit
           </Link>
         </Button>
-        <WorksheetDownloadButton worksheet={worksheet.content} filenameBase={worksheet.title} />
+        <WorksheetDownloadButton worksheet={worksheet.content} filenameBase={worksheet.title} shareToken={worksheet.shareToken} />
         <Button variant="outline" onClick={() => setShareOpen(true)}>
           <Share2 className="h-4 w-4 mr-2" /> Share
         </Button>

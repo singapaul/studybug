@@ -4,7 +4,7 @@ import { useState } from 'react'
 import Link from 'next/link'
 import {
   Plus, FileText, Search, Folder, FolderPlus, Inbox, Layers, Star,
-  MoreHorizontal, Pencil, Trash2, Trash,
+  MoreHorizontal, Pencil, Trash2, Trash, Download, Loader2,
 } from 'lucide-react'
 import {
   useWorksheets, useDeleteWorksheet, useRenameWorksheet,
@@ -29,7 +29,9 @@ import { WorksheetShareModal } from '@/components/worksheets/WorksheetShareModal
 import { EmptyState } from '@/components/ui/empty-state'
 import { CardGridSkeleton } from '@/components/skeletons'
 import { YEAR_GROUPS } from '@/lib/worksheet-options'
-import type { WorksheetSummary, WorksheetFolder } from '@/types/worksheet'
+import type { WorksheetSummary, WorksheetFolder, GeneratedWorksheet } from '@/types/worksheet'
+
+const BATCH_EXPORT_LIMIT = 20
 
 type SortKey = 'newest' | 'title' | 'subject' | 'yearGroup' | 'level'
 
@@ -96,6 +98,7 @@ export default function WorksheetsPage() {
   const [tagFilter, setTagFilter] = useState<string>('all')
   const [tagsTarget, setTagsTarget] = useState<WorksheetSummary | null>(null)
   const [tagsValue, setTagsValue] = useState('')
+  const [exporting, setExporting] = useState(false)
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [renameTarget, setRenameTarget] = useState<WorksheetSummary | null>(null)
   const [renameValue, setRenameValue] = useState('')
@@ -181,6 +184,44 @@ export default function WorksheetsPage() {
       onSuccess: () => toast.success('Worksheet deleted'),
       onError: () => toast.error('Delete failed'),
     })
+  }
+
+  async function handleBulkExport() {
+    const ids = Array.from(selected)
+    if (ids.length > BATCH_EXPORT_LIMIT) {
+      toast.message(`Exporting the first ${BATCH_EXPORT_LIMIT} of ${ids.length} selected.`)
+    }
+    const take = ids.slice(0, BATCH_EXPORT_LIMIT)
+    setExporting(true)
+    try {
+      const contents = await Promise.all(
+        take.map(async (id) => {
+          const res = await fetch(`/api/worksheets/${id}`, { credentials: 'include' })
+          if (!res.ok) throw new Error('Failed to load a worksheet')
+          const body = await res.json()
+          return body.worksheet.content as GeneratedWorksheet
+        }),
+      )
+      const [{ pdf }, { WorksheetBatchPdfDocument }] = await Promise.all([
+        import('@react-pdf/renderer'),
+        import('@/components/worksheets/pdf/WorksheetPdf'),
+      ])
+      const blob = await pdf(<WorksheetBatchPdfDocument worksheets={contents} variant="student" />).toBlob()
+      const url = URL.createObjectURL(blob)
+      const a = document.createElement('a')
+      a.href = url
+      a.download = `worksheets-${take.length}.pdf`
+      document.body.appendChild(a)
+      a.click()
+      a.remove()
+      URL.revokeObjectURL(url)
+      toast.success(`Exported ${take.length} worksheet${take.length === 1 ? '' : 's'}`)
+    } catch (err) {
+      console.error('[worksheets] batch export failed:', err)
+      toast.error('Batch export failed')
+    } finally {
+      setExporting(false)
+    }
   }
 
   async function handleBulkDelete() {
@@ -352,6 +393,10 @@ export default function WorksheetsPage() {
                   <span>{selected.size} selected</span>
                   <div className="flex gap-2">
                     <Button variant="ghost" size="sm" onClick={() => setSelected(new Set())}>Clear</Button>
+                    <Button variant="ghost" size="sm" onClick={handleBulkExport} disabled={exporting}>
+                      {exporting ? <Loader2 className="h-4 w-4 mr-2 animate-spin" /> : <Download className="h-4 w-4 mr-2" />}
+                      Export selected
+                    </Button>
                     <Button variant="ghost" size="sm" className="text-destructive hover:text-destructive" onClick={handleBulkDelete}>
                       <Trash className="h-4 w-4 mr-2" /> Delete selected
                     </Button>

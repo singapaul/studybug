@@ -1,4 +1,4 @@
-import { Document, Page, Text, View, StyleSheet } from '@react-pdf/renderer'
+import { Document, Page, Text, View, StyleSheet, Image } from '@react-pdf/renderer'
 import { buildPdfModel, type PdfQuestion, type PdfVariant } from '@/lib/worksheet-pdf'
 import type { GeneratedWorksheet } from '@/types/worksheet'
 
@@ -33,6 +33,10 @@ const styles = StyleSheet.create({
   tableHeaderCell: { fontFamily: 'Helvetica-Bold', backgroundColor: '#eee' },
   extension: { marginTop: 16, padding: 8, borderWidth: 1, borderColor: '#999', borderStyle: 'dashed', borderRadius: 4 },
   extensionHeading: { fontSize: 10, fontFamily: 'Helvetica-Bold', marginBottom: 2 },
+  headerRow: { flexDirection: 'row', justifyContent: 'space-between', alignItems: 'flex-start' },
+  qrBox: { alignItems: 'center', marginLeft: 8 },
+  qr: { width: 64, height: 64 },
+  qrCaption: { fontSize: 6, color: '#777', marginTop: 1 },
 })
 
 const LETTERS = 'ABCDEFGHIJ'.split('')
@@ -107,18 +111,29 @@ function QuestionBlock({ q, variant }: { q: PdfQuestion; variant: PdfVariant }) 
   )
 }
 
-export function WorksheetPdfDocument({
-  worksheet, variant,
-}: { worksheet: GeneratedWorksheet; variant: PdfVariant }) {
+/** A single worksheet rendered as one (or more) A4 pages — reused for single + batch export. */
+export function WorksheetPage({
+  worksheet, variant, qrDataUrl,
+}: { worksheet: GeneratedWorksheet; variant: PdfVariant; qrDataUrl?: string }) {
   const model = buildPdfModel(worksheet, variant)
 
   return (
-    <Document title={`${model.title}${variant === 'answers' ? ' — Answer Key' : ''}`}>
       <Page size="A4" style={styles.page}>
-        <Text style={styles.title}>{model.title}</Text>
-        <Text style={styles.meta}>{model.metaLine}</Text>
-        {model.examBoardLine && <Text style={styles.examBoard}>{model.examBoardLine}</Text>}
-        {variant === 'answers' && <Text style={styles.keyBadge}>ANSWER KEY</Text>}
+        <View style={styles.headerRow}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title}>{model.title}</Text>
+            <Text style={styles.meta}>{model.metaLine}</Text>
+            {model.examBoardLine && <Text style={styles.examBoard}>{model.examBoardLine}</Text>}
+            {variant === 'answers' && <Text style={styles.keyBadge}>ANSWER KEY</Text>}
+          </View>
+          {variant === 'student' && qrDataUrl && (
+            <View style={styles.qrBox}>
+              {/* eslint-disable-next-line jsx-a11y/alt-text */}
+              <Image style={styles.qr} src={qrDataUrl} />
+              <Text style={styles.qrCaption}>Scan for online version</Text>
+            </View>
+          )}
+        </View>
 
         {variant === 'student' && (
           <View style={styles.nameLine}>
@@ -155,6 +170,28 @@ export function WorksheetPdfDocument({
           </View>
         ) : null}
       </Page>
+  )
+}
+
+export function WorksheetPdfDocument({
+  worksheet, variant, qrDataUrl,
+}: { worksheet: GeneratedWorksheet; variant: PdfVariant; qrDataUrl?: string }) {
+  return (
+    <Document title={`${worksheet.title}${variant === 'answers' ? ' — Answer Key' : ''}`}>
+      <WorksheetPage worksheet={worksheet} variant={variant} qrDataUrl={qrDataUrl} />
+    </Document>
+  )
+}
+
+/** Many worksheets combined into one PDF (one worksheet per page-break) for batch export. */
+export function WorksheetBatchPdfDocument({
+  worksheets, variant,
+}: { worksheets: GeneratedWorksheet[]; variant: PdfVariant }) {
+  return (
+    <Document title={`Worksheets (${worksheets.length})`}>
+      {worksheets.map((w, i) => (
+        <WorksheetPage key={i} worksheet={w} variant={variant} />
+      ))}
     </Document>
   )
 }
