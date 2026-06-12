@@ -30,6 +30,7 @@ async function getHandler(req: NextRequest) {
       select: {
         id: true, title: true, topic: true, subject: true,
         yearGroup: true, level: true, shareToken: true, folderId: true,
+        isFavourite: true, tags: true,
         createdAt: true, updatedAt: true,
       },
     })

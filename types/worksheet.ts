@@ -207,6 +207,8 @@ export interface WorksheetSummary {
   level: string
   shareToken: string | null
   folderId: string | null
+  isFavourite: boolean
+  tags: string[]
   createdAt: string
   updatedAt: string
 }

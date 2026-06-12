@@ -1,8 +1,9 @@
 'use client'
 
 import Link from 'next/link'
-import { Copy, FileText, FolderInput, MoreHorizontal, Pencil, Share2, Trash2 } from 'lucide-react'
+import { Copy, FileText, FolderInput, MoreHorizontal, Pencil, Share2, Star, Tag, Trash2 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { cn } from '@/lib/utils'
 import { Checkbox } from '@/components/ui/checkbox'
 import {
   DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator,
@@ -18,6 +19,8 @@ interface WorksheetCardProps {
   onDelete: () => void
   onDuplicate: () => void
   onMove: (folderId: string | null) => void
+  onToggleFavourite: () => void
+  onEditTags: () => void
   selected: boolean
   onSelectChange: (checked: boolean) => void
 }
@@ -36,7 +39,7 @@ function relativeTime(iso: string): string {
 }
 
 export function WorksheetCard({
-  worksheet, folders, onRename, onShare, onDelete, onDuplicate, onMove, selected, onSelectChange,
+  worksheet, folders, onRename, onShare, onDelete, onDuplicate, onMove, onToggleFavourite, onEditTags, selected, onSelectChange,
 }: WorksheetCardProps) {
   return (
     <div className="rounded-xl border bg-card p-4 hover:shadow-sm transition">
@@ -48,6 +51,16 @@ export function WorksheetCard({
             aria-label={`Select ${worksheet.title}`}
           />
           <FileText className="h-5 w-5 text-primary shrink-0" />
+          <Button
+            variant="ghost"
+            size="icon"
+            className="h-7 w-7"
+            aria-label={worksheet.isFavourite ? 'Remove from favourites' : 'Add to favourites'}
+            aria-pressed={worksheet.isFavourite}
+            onClick={onToggleFavourite}
+          >
+            <Star className={cn('h-4 w-4', worksheet.isFavourite ? 'fill-yellow-400 text-yellow-400' : 'text-muted-foreground')} />
+          </Button>
         </div>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
@@ -86,6 +99,9 @@ export function WorksheetCard({
                 ))}
               </DropdownMenuSubContent>
             </DropdownMenuSub>
+            <DropdownMenuItem onSelect={onEditTags}>
+              <Tag className="h-4 w-4 mr-2" /> Tags
+            </DropdownMenuItem>
             <DropdownMenuItem onSelect={onShare}>
               <Share2 className="h-4 w-4 mr-2" /> Share
             </DropdownMenuItem>
@@ -101,6 +117,15 @@ export function WorksheetCard({
         <p className="text-xs text-muted-foreground">
           {[worksheet.subject, worksheet.yearGroup, worksheet.level].filter(Boolean).join(' · ')}
         </p>
+        {worksheet.tags.length > 0 && (
+          <div className="mt-2 flex flex-wrap gap-1">
+            {worksheet.tags.map((t) => (
+              <span key={t} className="inline-flex items-center rounded bg-muted px-1.5 py-0.5 text-[10px] text-muted-foreground">
+                {t}
+              </span>
+            ))}
+          </div>
+        )}
         <p className="text-xs text-muted-foreground mt-2">
           {relativeTime(worksheet.createdAt)}
           {worksheet.shareToken && <span className="ml-2 inline-flex items-center text-primary"><Share2 className="h-3 w-3 mr-1" />shared</span>}

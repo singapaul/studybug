@@ -14,10 +14,18 @@ const PatchSchema = z
     content: z.unknown().optional(),
     // null moves the worksheet out of any folder ("unfiled").
     folderId: z.string().min(1).nullable().optional(),
+    isFavourite: z.boolean().optional(),
+    tags: z.array(z.string().min(1).max(40)).max(20).optional(),
   })
-  .refine((d) => d.title !== undefined || d.content !== undefined || d.folderId !== undefined, {
-    message: 'Provide a title, content, or folderId to update',
-  })
+  .refine(
+    (d) =>
+      d.title !== undefined ||
+      d.content !== undefined ||
+      d.folderId !== undefined ||
+      d.isFavourite !== undefined ||
+      d.tags !== undefined,
+    { message: 'Provide a field to update' },
+  )
 
 async function getHandler(req: NextRequest, { params }: Params) {
   try {
@@ -91,6 +99,9 @@ async function patchHandler(req: NextRequest, { params }: Params) {
         ? { connect: { id: parsed.data.folderId } }
         : { disconnect: true }
     }
+
+    if (parsed.data.isFavourite !== undefined) data.isFavourite = parsed.data.isFavourite
+    if (parsed.data.tags !== undefined) data.tags = parsed.data.tags
 
     const worksheet = await db.worksheet.update({ where: { id }, data })
 

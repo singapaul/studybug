@@ -259,6 +259,40 @@ export function useDeleteWorksheet() {
   })
 }
 
+export function useToggleFavourite() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, isFavourite }: { id: string; isFavourite: boolean }) => {
+      const data = await apiFetch<{ worksheet: SavedWorksheet }>(`/api/worksheets/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ isFavourite }),
+      })
+      return data.worksheet
+    },
+    onSuccess: (worksheet) => {
+      queryClient.invalidateQueries({ queryKey: ['worksheets'] })
+      queryClient.invalidateQueries({ queryKey: ['worksheets', worksheet.id] })
+    },
+  })
+}
+
+export function useUpdateWorksheetTags() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: async ({ id, tags }: { id: string; tags: string[] }) => {
+      const data = await apiFetch<{ worksheet: SavedWorksheet }>(`/api/worksheets/${id}`, {
+        method: 'PATCH',
+        body: JSON.stringify({ tags }),
+      })
+      return data.worksheet
+    },
+    onSuccess: (worksheet) => {
+      queryClient.invalidateQueries({ queryKey: ['worksheets'] })
+      queryClient.invalidateQueries({ queryKey: ['worksheets', worksheet.id] })
+    },
+  })
+}
+
 export function useShareWorksheet() {
   const queryClient = useQueryClient()
   return useMutation({

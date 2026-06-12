@@ -1,7 +1,14 @@
 'use client'
 
 import { useState } from 'react'
-import { ArrowDown, ArrowUp, Plus, Trash2 } from 'lucide-react'
+import { ArrowDown, ArrowUp, GripVertical, Plus, Trash2 } from 'lucide-react'
+import {
+  DndContext, closestCenter, PointerSensor, useSensor, useSensors, type DragEndEvent,
+} from '@dnd-kit/core'
+import {
+  SortableContext, verticalListSortingStrategy, arrayMove, useSortable,
+} from '@dnd-kit/sortable'
+import { CSS } from '@dnd-kit/utilities'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
@@ -63,9 +70,20 @@ function changeType(q: Question, type: QuestionType): Question {
 
 export function WorksheetEditor({ initial, isSaving, onSave, onCancel }: WorksheetEditorProps) {
   const [content, setContent] = useState<GeneratedWorksheet>(initial)
+  const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
 
   function patch(fields: Partial<GeneratedWorksheet>) {
     setContent((c) => ({ ...c, ...fields }))
+  }
+
+  function handleQuestionDragEnd(si: number, e: DragEndEvent) {
+    const { active, over } = e
+    if (!over || active.id === over.id) return
+    const questions = content.sections[si].questions
+    const oldIndex = questions.findIndex((q) => q.id === active.id)
+    const newIndex = questions.findIndex((q) => q.id === over.id)
+    if (oldIndex < 0 || newIndex < 0) return
+    updateSection(si, { questions: arrayMove(questions, oldIndex, newIndex) })
   }
 
   function updateSection(si: number, fields: Partial<GeneratedWorksheet['sections'][number]>) {
@@ -146,6 +164,14 @@ export function WorksheetEditor({ initial, isSaving, onSave, onCancel }: Workshe
         onChange={(vocabularyBox) => patch({ vocabularyBox })}
       />
 
+      {/* Teacher overview + spec points */}
+      <TeacherOverviewEditor
+        overview={content.teacherOverview}
+        specPoints={content.specPoints ?? []}
+        onOverviewChange={(teacherOverview) => patch({ teacherOverview })}
+        onSpecPointsChange={(specPoints) => patch({ specPoints })}
+      />
+
       {/* Sections */}
       {content.sections.map((section, si) => (
         <section key={si} className="space-y-4 rounded-lg border p-4">
@@ -186,19 +212,24 @@ export function WorksheetEditor({ initial, isSaving, onSave, onCancel }: Workshe
             </div>
           </div>
 
-          <div className="space-y-4">
-            {section.questions.map((q, qi) => (
-              <QuestionEditor
-                key={q.id}
-                q={q}
-                index={qi}
-                onChange={(next) => updateQuestion(si, qi, next)}
-                onMoveUp={() => updateSection(si, { questions: move(section.questions, qi, qi - 1) })}
-                onMoveDown={() => updateSection(si, { questions: move(section.questions, qi, qi + 1) })}
-                onDelete={() => updateSection(si, { questions: section.questions.filter((_, j) => j !== qi) })}
-              />
-            ))}
-          </div>
+          <DndContext sensors={sensors} collisionDetection={closestCenter} onDragEnd={(e) => handleQuestionDragEnd(si, e)}>
+            <SortableContext items={section.questions.map((q) => q.id)} strategy={verticalListSortingStrategy}>
+              <div className="space-y-4">
+                {section.questions.map((q, qi) => (
+                  <SortableQuestion key={q.id} id={q.id}>
+                    <QuestionEditor
+                      q={q}
+                      index={qi}
+                      onChange={(next) => updateQuestion(si, qi, next)}
+                      onMoveUp={() => updateSection(si, { questions: move(section.questions, qi, qi - 1) })}
+                      onMoveDown={() => updateSection(si, { questions: move(section.questions, qi, qi + 1) })}
+                      onDelete={() => updateSection(si, { questions: section.questions.filter((_, j) => j !== qi) })}
+                    />
+                  </SortableQuestion>
+                ))}
+              </div>
+            </SortableContext>
+          </DndContext>
 
           <Button type="button" variant="outline" size="sm"
             onClick={() => updateSection(si, { questions: [...section.questions, blankQuestion('shortAnswer')] })}>
@@ -263,6 +294,100 @@ function VocabEditor({
         <Plus className="h-4 w-4 mr-2" /> Add term
       </Button>
     </section>
+  )
+}
+
+function TeacherOverviewEditor({
+  overview, specPoints, onOverviewChange, onSpecPointsChange,
+}: {
+  overview: GeneratedWorksheet['teacherOverview']
+  specPoints: string[]
+  onOverviewChange: (o: GeneratedWorksheet['teacherOverview']) => void
+  onSpecPointsChange: (s: string[]) => void
+}) {
+  const set = (fields: Partial<GeneratedWorksheet['teacherOverview']>) =>
+    onOverviewChange({ ...overview, ...fields })
+  return (
+    <section className="space-y-4 rounded-lg border p-4">
+      <h3 className="text-sm font-semibold">Teacher overview</h3>
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1.5">
+          <Label htmlFor="ov-use">Intended use</Label>
+          <Input id="ov-use" value={overview.intendedUse} onChange={(e) => set({ intendedUse: e.target.value })} />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="ov-time">Time estimate</Label>
+          <Input id="ov-time" value={overview.timeEstimate} onChange={(e) => set({ timeEstimate: e.target.value })} />
+        </div>
+      </div>
+      <StringListEditor
+        label="Equipment needed"
+        values={overview.equipmentNeeded}
+        onChange={(equipmentNeeded) => set({ equipmentNeeded })}
+      />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1.5">
+          <Label htmlFor="ov-support">Differentiation — support</Label>
+          <Textarea id="ov-support" rows={2} value={overview.differentiationNotes.support}
+            onChange={(e) => set({ differentiationNotes: { ...overview.differentiationNotes, support: e.target.value } })} />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="ov-stretch">Differentiation — stretch</Label>
+          <Textarea id="ov-stretch" rows={2} value={overview.differentiationNotes.stretch}
+            onChange={(e) => set({ differentiationNotes: { ...overview.differentiationNotes, stretch: e.target.value } })} />
+        </div>
+      </div>
+      <StringListEditor
+        label="Common misconceptions"
+        values={overview.misconceptions}
+        onChange={(misconceptions) => set({ misconceptions })}
+      />
+      <StringListEditor
+        label="Assumed prior knowledge"
+        values={overview.assumptions}
+        onChange={(assumptions) => set({ assumptions })}
+      />
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div className="space-y-1.5">
+          <Label htmlFor="ov-chal">Optional challenge</Label>
+          <Textarea id="ov-chal" rows={2} value={overview.optionalChallenge}
+            onChange={(e) => set({ optionalChallenge: e.target.value })} />
+        </div>
+        <div className="space-y-1.5">
+          <Label htmlFor="ov-chal-a">Challenge answer</Label>
+          <Textarea id="ov-chal-a" rows={2} value={overview.challengeAnswer}
+            onChange={(e) => set({ challengeAnswer: e.target.value })} />
+        </div>
+      </div>
+      <StringListEditor
+        label="Spec points (exam-board references)"
+        values={specPoints}
+        onChange={onSpecPointsChange}
+      />
+    </section>
+  )
+}
+
+function SortableQuestion({ id, children }: { id: string; children: React.ReactNode }) {
+  const { attributes, listeners, setNodeRef, transform, transition, isDragging } = useSortable({ id })
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+    opacity: isDragging ? 0.6 : 1,
+  }
+  return (
+    <div ref={setNodeRef} style={style} className="flex items-start gap-2">
+      <button
+        type="button"
+        {...attributes}
+        {...listeners}
+        aria-label="Drag to reorder question"
+        className="mt-3 shrink-0 cursor-grab touch-none text-muted-foreground hover:text-foreground"
+      >
+        <GripVertical className="h-4 w-4" />
+      </button>
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
   )
 }
 
@@ -349,6 +474,12 @@ function QuestionEditor({
         placeholder="Answer / mark scheme"
         value={q.answer}
         onChange={(e) => onChange({ ...q, answer: e.target.value })}
+      />
+
+      <Input
+        placeholder="Hint (optional — shown to students)"
+        value={q.hint ?? ''}
+        onChange={(e) => onChange({ ...q, hint: e.target.value || undefined })}
       />
     </div>
   )

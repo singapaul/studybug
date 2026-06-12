@@ -3,13 +3,13 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import {
-  Plus, FileText, Search, Folder, FolderPlus, Inbox, Layers,
+  Plus, FileText, Search, Folder, FolderPlus, Inbox, Layers, Star,
   MoreHorizontal, Pencil, Trash2, Trash,
 } from 'lucide-react'
 import {
   useWorksheets, useDeleteWorksheet, useRenameWorksheet,
   useWorksheetFolders, useCreateFolder, useRenameFolder, useDeleteFolder,
-  useMoveWorksheet, useDuplicateWorksheet,
+  useMoveWorksheet, useDuplicateWorksheet, useToggleFavourite, useUpdateWorksheetTags,
 } from '@/hooks/use-worksheets'
 import { usePlan } from '@/hooks/use-plan'
 import { Button } from '@/components/ui/button'
@@ -57,6 +57,20 @@ function compareWorksheets(a: WorksheetSummary, b: WorksheetSummary, sort: SortK
   }
 }
 
+function FilterSelect({ label, value, onChange, options }: {
+  label: string; value: string; onChange: (v: string) => void; options: string[]
+}) {
+  return (
+    <Select value={value} onValueChange={onChange}>
+      <SelectTrigger className="h-9 w-auto min-w-[130px]"><SelectValue /></SelectTrigger>
+      <SelectContent>
+        <SelectItem value="all">{`All ${label}`}</SelectItem>
+        {options.map((o) => <SelectItem key={o} value={o}>{o}</SelectItem>)}
+      </SelectContent>
+    </Select>
+  )
+}
+
 export default function WorksheetsPage() {
   const { isPro } = usePlan()
   const [activeFolder, setActiveFolder] = useState<string | undefined>(undefined) // undefined=all, 'unfiled', or id
@@ -67,12 +81,21 @@ export default function WorksheetsPage() {
   const { mutateAsync: renameWorksheet } = useRenameWorksheet()
   const { mutate: duplicateWorksheet } = useDuplicateWorksheet()
   const { mutate: moveWorksheet } = useMoveWorksheet()
+  const { mutate: toggleFavourite } = useToggleFavourite()
+  const { mutateAsync: updateTags } = useUpdateWorksheetTags()
   const { mutateAsync: createFolder } = useCreateFolder()
   const { mutateAsync: renameFolder } = useRenameFolder()
   const { mutate: deleteFolder } = useDeleteFolder()
 
   const [search, setSearch] = useState('')
   const [sort, setSort] = useState<SortKey>('newest')
+  const [favouritesOnly, setFavouritesOnly] = useState(false)
+  const [subjectFilter, setSubjectFilter] = useState<string>('all')
+  const [yearFilter, setYearFilter] = useState<string>('all')
+  const [levelFilter, setLevelFilter] = useState<string>('all')
+  const [tagFilter, setTagFilter] = useState<string>('all')
+  const [tagsTarget, setTagsTarget] = useState<WorksheetSummary | null>(null)
+  const [tagsValue, setTagsValue] = useState('')
   const [selected, setSelected] = useState<Set<string>>(new Set())
   const [renameTarget, setRenameTarget] = useState<WorksheetSummary | null>(null)
   const [renameValue, setRenameValue] = useState('')
@@ -96,11 +119,25 @@ export default function WorksheetsPage() {
   }
 
   const worksheets = data ?? []
+
+  // Distinct filter options derived from the loaded worksheets.
+  const uniq = (vals: (string | null)[]) =>
+    Array.from(new Set(vals.filter((v): v is string => !!v))).sort()
+  const subjectOptions = uniq(worksheets.map((w) => w.subject))
+  const yearOptions = uniq(worksheets.map((w) => w.yearGroup))
+  const levelOptions = uniq(worksheets.map((w) => w.level))
+  const tagOptions = uniq(worksheets.flatMap((w) => w.tags))
+
   const filtered = worksheets
     .filter((w) =>
       w.title.toLowerCase().includes(search.toLowerCase()) ||
       w.topic.toLowerCase().includes(search.toLowerCase()),
     )
+    .filter((w) => !favouritesOnly || w.isFavourite)
+    .filter((w) => subjectFilter === 'all' || w.subject === subjectFilter)
+    .filter((w) => yearFilter === 'all' || w.yearGroup === yearFilter)
+    .filter((w) => levelFilter === 'all' || w.level === levelFilter)
+    .filter((w) => tagFilter === 'all' || w.tags.includes(tagFilter))
     .sort((a, b) => compareWorksheets(a, b, sort))
 
   function toggleSelect(id: string, checked: boolean) {
@@ -121,6 +158,20 @@ export default function WorksheetsPage() {
     } catch (err) {
       toast.error('Rename failed')
       console.error(err)
+    }
+  }
+
+  async function handleTagsSave() {
+    if (!tagsTarget) return
+    const tags = Array.from(
+      new Set(tagsValue.split(',').map((t) => t.trim()).filter(Boolean)),
+    ).slice(0, 20)
+    try {
+      await updateTags({ id: tagsTarget.id, tags })
+      toast.success('Tags updated')
+      setTagsTarget(null)
+    } catch {
+      toast.error('Could not update tags')
     }
   }
 
@@ -208,6 +259,16 @@ export default function WorksheetsPage() {
         <aside className="space-y-1">
           <FolderButton id={undefined} label="All worksheets" icon={<Layers className="h-4 w-4" />} />
           <FolderButton id="unfiled" label="Unfiled" icon={<Inbox className="h-4 w-4" />} />
+          <button
+            onClick={() => setFavouritesOnly((v) => !v)}
+            aria-pressed={favouritesOnly}
+            className={`flex w-full items-center gap-2 rounded-md px-3 py-2 text-sm text-left transition focus:outline-none focus-visible:ring-2 focus-visible:ring-primary ${
+              favouritesOnly ? 'bg-primary/10 text-primary font-medium' : 'hover:bg-accent'
+            }`}
+          >
+            <Star className={`h-4 w-4 ${favouritesOnly ? 'fill-yellow-400 text-yellow-400' : ''}`} />
+            <span className="truncate">Favourites</span>
+          </button>
           {folders.map((f) => (
             <div key={f.id} className="group flex items-center">
               <div className="flex-1 min-w-0">
@@ -269,6 +330,23 @@ export default function WorksheetsPage() {
                 </Select>
               </div>
 
+              {(subjectOptions.length > 0 || yearOptions.length > 0 || levelOptions.length > 0 || tagOptions.length > 0) && (
+                <div className="flex flex-wrap gap-2 mb-4">
+                  {subjectOptions.length > 0 && (
+                    <FilterSelect label="subjects" value={subjectFilter} onChange={setSubjectFilter} options={subjectOptions} />
+                  )}
+                  {yearOptions.length > 0 && (
+                    <FilterSelect label="years" value={yearFilter} onChange={setYearFilter} options={yearOptions} />
+                  )}
+                  {levelOptions.length > 0 && (
+                    <FilterSelect label="levels" value={levelFilter} onChange={setLevelFilter} options={levelOptions} />
+                  )}
+                  {tagOptions.length > 0 && (
+                    <FilterSelect label="tags" value={tagFilter} onChange={setTagFilter} options={tagOptions} />
+                  )}
+                </div>
+              )}
+
               {selected.size > 0 && (
                 <div className="flex items-center justify-between rounded-md border bg-muted/40 px-3 py-2 mb-4 text-sm">
                   <span>{selected.size} selected</span>
@@ -303,6 +381,8 @@ export default function WorksheetsPage() {
                         onSuccess: () => toast.success('Worksheet moved'),
                         onError: () => toast.error('Move failed'),
                       })}
+                      onToggleFavourite={() => toggleFavourite({ id: w.id, isFavourite: !w.isFavourite })}
+                      onEditTags={() => { setTagsTarget(w); setTagsValue(w.tags.join(', ')) }}
                     />
                   ))}
                 </div>
@@ -350,6 +430,24 @@ export default function WorksheetsPage() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setFolderRenameTarget(null)}>Cancel</Button>
             <Button onClick={handleFolderRename} disabled={!folderRenameValue.trim()}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      {/* Edit tags */}
+      <Dialog open={!!tagsTarget} onOpenChange={(open) => !open && setTagsTarget(null)}>
+        <DialogContent>
+          <DialogHeader><DialogTitle>Edit tags</DialogTitle></DialogHeader>
+          <Input
+            value={tagsValue}
+            onChange={(e) => setTagsValue(e.target.value)}
+            placeholder="Comma-separated, e.g. revision, homework, term 1"
+            onKeyDown={(e) => e.key === 'Enter' && handleTagsSave()}
+          />
+          <p className="text-xs text-muted-foreground">Separate tags with commas (max 20).</p>
+          <DialogFooter>
+            <Button variant="outline" onClick={() => setTagsTarget(null)}>Cancel</Button>
+            <Button onClick={handleTagsSave}>Save</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
