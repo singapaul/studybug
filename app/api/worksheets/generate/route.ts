@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { PDFParse } from 'pdf-parse'
+import { extractText, getDocumentProxy } from 'unpdf'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getAuthenticatedUser, isPro } from '@/lib/api-helpers'
@@ -113,12 +113,14 @@ async function postHandler(req: NextRequest) {
         )
       }
       try {
-        const buffer = Buffer.from(await file.arrayBuffer())
         if (contentType === 'application/pdf') {
-          const parser = new PDFParse({ data: buffer })
-          const data = await parser.getText()
-          sourceText = [sourceText, data.text].filter(Boolean).join('\n\n')
+          // unpdf ships a serverless pdfjs build (no DOMMatrix/canvas deps).
+          const data = new Uint8Array(await file.arrayBuffer())
+          const pdf = await getDocumentProxy(data)
+          const { text } = await extractText(pdf, { mergePages: true })
+          sourceText = [sourceText, text].filter(Boolean).join('\n\n')
         } else {
+          const buffer = Buffer.from(await file.arrayBuffer())
           sourceText = [sourceText, buffer.toString('utf-8')].filter(Boolean).join('\n\n')
         }
       } catch {
