@@ -61,6 +61,7 @@ export default function WorksheetEditPage({ params }: PageProps) {
       </div>
 
       <WorksheetEditor
+        worksheetId={id}
         initial={worksheet.content}
         isSaving={isPending}
         onSave={handleSave}

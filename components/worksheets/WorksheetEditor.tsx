@@ -1,7 +1,13 @@
 'use client'
 
-import { useState } from 'react'
-import { ArrowDown, ArrowUp, GripVertical, Plus, Trash2 } from 'lucide-react'
+import { useEffect, useState } from 'react'
+import { ArrowDown, ArrowUp, GripVertical, Loader2, Plus, Sparkles, Trash2 } from 'lucide-react'
+import { toast } from 'sonner'
+import {
+  DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import { useRegenerateQuestion, useAddQuestions } from '@/hooks/use-worksheets'
+import { useGenerationJob } from '@/hooks/use-generation-job'
 import {
   DndContext, closestCenter, PointerSensor, useSensor, useSensors, type DragEndEvent,
 } from '@dnd-kit/core'
@@ -25,11 +31,15 @@ import type {
 } from '@/types/worksheet'
 
 interface WorksheetEditorProps {
+  worksheetId: string
   initial: GeneratedWorksheet
   isSaving: boolean
   onSave: (content: GeneratedWorksheet) => void
   onCancel: () => void
 }
+
+// Which question/section a refinement job is currently acting on.
+type RefineTarget = { jobId: string; si: number; qi: number | null }
 
 /** Move an array item from one index to another, no-op if out of bounds. */
 function move<T>(arr: T[], from: number, to: number): T[] {
@@ -68,9 +78,70 @@ function changeType(q: Question, type: QuestionType): Question {
   return { ...fresh, id: q.id, text: q.text, marks: q.marks, answer: q.answer, difficulty: q.difficulty }
 }
 
-export function WorksheetEditor({ initial, isSaving, onSave, onCancel }: WorksheetEditorProps) {
+export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCancel }: WorksheetEditorProps) {
   const [content, setContent] = useState<GeneratedWorksheet>(initial)
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
+
+  const [refine, setRefine] = useState<RefineTarget | null>(null)
+  const { mutateAsync: regenerateQuestion } = useRegenerateQuestion()
+  const { mutateAsync: addQuestionsReq } = useAddQuestions()
+  const refineJob = useGenerationJob<Question | Question[]>(refine?.jobId ?? null)
+
+  // Merge a completed refinement into editor state (user still reviews + saves).
+  useEffect(() => {
+    if (!refine) return
+    const data = refineJob.data
+    if (data?.status === 'complete' && data.result) {
+      const target = refine
+      setContent((c) => ({
+        ...c,
+        sections: c.sections.map((s, i) => {
+          if (i !== target.si) return s
+          if (target.qi === null) {
+            const added = (data.result as Question[]).map((q) => ({ ...q, id: newId() }))
+            return { ...s, questions: [...s.questions, ...added] }
+          }
+          return {
+            ...s,
+            questions: s.questions.map((x, j) =>
+              j === target.qi ? { ...(data.result as Question), id: x.id } : x,
+            ),
+          }
+        }),
+      }))
+      toast.success(target.qi === null ? 'Questions added' : 'Question regenerated')
+      setRefine(null)
+    } else if (data?.status === 'failed') {
+      toast.error(data.error || 'Refinement failed')
+      setRefine(null)
+    } else if (refineJob.isError) {
+      toast.error('Lost connection during refinement')
+      setRefine(null)
+    }
+  }, [refine, refineJob.data, refineJob.isError])
+
+  async function regenerate(si: number, qi: number, instruction: string) {
+    if (refine) return
+    const question = content.sections[si].questions[qi]
+    try {
+      const jobId = await regenerateQuestion({ id: worksheetId, question, instruction })
+      setRefine({ jobId, si, qi })
+    } catch (err) {
+      toast.error((err as { message?: string }).message || 'Could not start refinement')
+    }
+  }
+
+  async function addQuestions(si: number) {
+    if (refine) return
+    const types = content.sections[si].questions.map((q) => q.type)
+    const questionTypes = types.length ? Array.from(new Set(types)) : (['shortAnswer'] as QuestionType[])
+    try {
+      const jobId = await addQuestionsReq({ id: worksheetId, count: 3, questionTypes })
+      setRefine({ jobId, si, qi: null })
+    } catch (err) {
+      toast.error((err as { message?: string }).message || 'Could not start refinement')
+    }
+  }
 
   function patch(fields: Partial<GeneratedWorksheet>) {
     setContent((c) => ({ ...c, ...fields }))
@@ -224,6 +295,9 @@ export function WorksheetEditor({ initial, isSaving, onSave, onCancel }: Workshe
                       onMoveUp={() => updateSection(si, { questions: move(section.questions, qi, qi - 1) })}
                       onMoveDown={() => updateSection(si, { questions: move(section.questions, qi, qi + 1) })}
                       onDelete={() => updateSection(si, { questions: section.questions.filter((_, j) => j !== qi) })}
+                      onRegenerate={(instruction) => regenerate(si, qi, instruction)}
+                      regenerating={refine?.si === si && refine?.qi === qi}
+                      refineDisabled={!!refine}
                     />
                   </SortableQuestion>
                 ))}
@@ -231,10 +305,19 @@ export function WorksheetEditor({ initial, isSaving, onSave, onCancel }: Workshe
             </SortableContext>
           </DndContext>
 
-          <Button type="button" variant="outline" size="sm"
-            onClick={() => updateSection(si, { questions: [...section.questions, blankQuestion('shortAnswer')] })}>
-            <Plus className="h-4 w-4 mr-2" /> Add question
-          </Button>
+          <div className="flex flex-wrap gap-2">
+            <Button type="button" variant="outline" size="sm"
+              onClick={() => updateSection(si, { questions: [...section.questions, blankQuestion('shortAnswer')] })}>
+              <Plus className="h-4 w-4 mr-2" /> Add question
+            </Button>
+            <Button type="button" variant="outline" size="sm" disabled={!!refine}
+              onClick={() => addQuestions(si)}>
+              {refine?.si === si && refine?.qi === null
+                ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                : <Sparkles className="h-4 w-4 mr-2" />}
+              Add 3 with AI
+            </Button>
+          </div>
         </section>
       ))}
 
@@ -392,7 +475,7 @@ function SortableQuestion({ id, children }: { id: string; children: React.ReactN
 }
 
 function QuestionEditor({
-  q, index, onChange, onMoveUp, onMoveDown, onDelete,
+  q, index, onChange, onMoveUp, onMoveDown, onDelete, onRegenerate, regenerating, refineDisabled,
 }: {
   q: Question
   index: number
@@ -400,6 +483,9 @@ function QuestionEditor({
   onMoveUp: () => void
   onMoveDown: () => void
   onDelete: () => void
+  onRegenerate: (instruction: string) => void
+  regenerating: boolean
+  refineDisabled: boolean
 }) {
   return (
     <div className="space-y-3 rounded-md border bg-muted/20 p-3">
@@ -428,6 +514,27 @@ function QuestionEditor({
         />
         <span className="text-xs text-muted-foreground">marks</span>
         <div className="ml-auto flex gap-1">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button type="button" variant="ghost" size="icon" aria-label="Regenerate question with AI" disabled={refineDisabled}>
+                {regenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+              <DropdownMenuItem onSelect={() => onRegenerate('Produce a fresh alternative of similar difficulty and marks.')}>
+                Fresh alternative
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => onRegenerate('Make this question harder and more demanding.')}>
+                Make harder
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => onRegenerate('Make this question easier and more accessible.')}>
+                Make easier
+              </DropdownMenuItem>
+              <DropdownMenuItem onSelect={() => onRegenerate('Reword this question for clarity, keeping the same content, marks and type.')}>
+                Reword
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
           <Button type="button" variant="ghost" size="icon" aria-label="Move question up" onClick={onMoveUp}>
             <ArrowUp className="h-4 w-4" />
           </Button>

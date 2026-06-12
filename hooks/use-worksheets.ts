@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { GeneratedWorksheet, SavedWorksheet, WorksheetSummary, WorksheetFolder, QuestionType, MarkingMode, DifferentiationMode, ExamBoard } from '@/types/worksheet'
+import type { GeneratedWorksheet, SavedWorksheet, WorksheetSummary, WorksheetFolder, Question, QuestionType, MarkingMode, DifferentiationMode, ExamBoard } from '@/types/worksheet'
 
 async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -255,6 +255,36 @@ export function useDeleteWorksheet() {
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['worksheets'] })
+    },
+  })
+}
+
+export function useRegenerateQuestion() {
+  return useMutation({
+    mutationFn: async (
+      { id, question, instruction, markingMode }:
+      { id: string; question: Question; instruction?: string; markingMode?: MarkingMode },
+    ) => {
+      const data = await apiFetch<{ jobId: string }>(`/api/worksheets/${id}/regenerate-question`, {
+        method: 'POST',
+        body: JSON.stringify({ question, instruction, markingMode }),
+      })
+      return data.jobId
+    },
+  })
+}
+
+export function useAddQuestions() {
+  return useMutation({
+    mutationFn: async (
+      { id, count, questionTypes, markingMode }:
+      { id: string; count: number; questionTypes: QuestionType[]; markingMode?: MarkingMode },
+    ) => {
+      const data = await apiFetch<{ jobId: string }>(`/api/worksheets/${id}/add-questions`, {
+        method: 'POST',
+        body: JSON.stringify({ count, questionTypes, markingMode }),
+      })
+      return data.jobId
     },
   })
 }

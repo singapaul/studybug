@@ -4,9 +4,10 @@
 // standalone Netlify Function (the `@/` tsconfig alias isn't resolved there).
 import Anthropic from '@anthropic-ai/sdk'
 import { jsonrepair } from 'jsonrepair'
+import { z } from 'zod'
 import { db } from './db'
 import { logEvent } from './logger'
-import { parseGeneratedWorksheet } from '../types/worksheet'
+import { parseGeneratedWorksheet, QuestionSchema } from '../types/worksheet'
 import { parseGeneratedContent } from './game-parse'
 
 const MODEL = 'claude-haiku-4-5-20251001'
@@ -14,10 +15,32 @@ const MAX_TOKENS = 8000
 
 type Stage = 'llm_call' | 'parse' | 'db'
 
+/** Parse one refined question; the model returns a single question object. */
+function parseOneQuestion(json: string) {
+  return QuestionSchema.parse(JSON.parse(json))
+}
+
+/** Parse a list of added questions; accepts a bare array or { questions: [...] }. */
+function parseQuestionList(json: string) {
+  const raw = JSON.parse(json)
+  const arr = Array.isArray(raw) ? raw : raw.questions
+  return z.array(QuestionSchema).parse(arr)
+}
+
+function parserForKind(kind: string): (json: string) => unknown {
+  switch (kind) {
+    case 'worksheet': return parseGeneratedWorksheet
+    case 'game': return parseGeneratedContent
+    case 'question-regen': return parseOneQuestion
+    case 'questions-add': return parseQuestionList
+    default: throw new Error(`Unknown job kind: ${kind}`)
+  }
+}
+
 function parseByKind(kind: string, raw: string) {
   const match = raw.match(/(\{[\s\S]*\}|\[[\s\S]*\])/)
   const json = match ? match[0].trim() : raw.trim()
-  const parse = kind === 'worksheet' ? parseGeneratedWorksheet : parseGeneratedContent
+  const parse = parserForKind(kind)
   try {
     return parse(json)
   } catch {

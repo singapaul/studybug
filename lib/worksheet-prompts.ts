@@ -33,6 +33,80 @@ const TYPE_RULES: Record<QuestionType, string> = {
   tableCompletion: '- tableCompletion: provide a "table" object { "headers": [...], "rows": [[...]] }; mark each cell the student must fill with the literal token "[blank]". The "answer" lists the missing cell values in order. Omit "options".',
 }
 
+function markingRuleFor(markingMode: MarkingMode): string {
+  return {
+    markSchemeWithPoints: 'The answer is a numbered list of creditable points, one per mark.',
+    answersOnly: 'The answer is a single concise sentence — no marking criteria.',
+    detailedExemplar: 'The answer is a model exemplar response showing what a full-marks answer looks like.',
+    none: 'The answer field MUST be the empty string "".',
+  }[markingMode]
+}
+
+function examBoardRuleFor(examBoard?: ExamBoard): string {
+  return examBoard && examBoard !== 'none'
+    ? `Align to the ${examBoard} specification and use ${examBoard} terminology and assessment style.`
+    : 'No specific exam board.'
+}
+
+const QUESTION_SHAPE = `{
+  "id": "string",
+  "type": "multipleChoice | shortAnswer | extendedResponse | trueFalse | fillInTheBlank | matching | ordering | tableCompletion",
+  "text": "string",
+  "marks": 1,
+  "answer": "string",
+  "difficulty": "support | core | stretch",
+  "options": ["string"],
+  "pairs": [{ "left": "string", "right": "string" }],
+  "items": ["string"],
+  "table": { "headers": ["string"], "rows": [["string"]] },
+  "hint": "string"
+}`
+
+const QUESTION_FIELD_RULES = `Set "options" only for multipleChoice; "pairs" only for matching; "items" only for ordering; "table" only for tableCompletion. Omit fields that do not apply.
+Use concrete, named subject content. Do not use judgement words: ${NO_JUDGEMENT_TERMS.map((t) => `"${t}"`).join(', ')}.`
+
+interface RefineCommonInput {
+  yearGroup: string
+  markingMode: MarkingMode
+  examBoard?: ExamBoard
+}
+
+/** System prompt for regenerating a single question. */
+export function buildQuestionRegenPrompt(input: RefineCommonInput): string {
+  return `You are refining ONE question on a UK-schools worksheet. Return ONLY a single JSON question object — no markdown, no commentary — in this exact shape:
+
+${QUESTION_SHAPE}
+
+Keep the same "id" as the question you are given unless asked otherwise. You may change "type" if the instruction requests it; otherwise keep it.
+
+Year-group depth: ${yearGroupDepthGuidance(input.yearGroup)}
+Marking style: ${markingRuleFor(input.markingMode)}
+Exam board: ${examBoardRuleFor(input.examBoard)}
+Type rules (apply to the resulting type):
+${Object.values(TYPE_RULES).join('\n')}
+${QUESTION_FIELD_RULES}`
+}
+
+/** System prompt for adding new questions to an existing worksheet. */
+export function buildAddQuestionsPrompt(
+  input: RefineCommonInput & { count: number; questionTypes: QuestionType[] },
+): string {
+  const typeRules = input.questionTypes.map((t) => TYPE_RULES[t]).join('\n')
+  return `You are adding ${input.count} NEW question(s) to a UK-schools worksheet. Return ONLY JSON in this exact shape — no markdown, no commentary:
+
+{ "questions": [ ${QUESTION_SHAPE} ] }
+
+Produce exactly ${input.count} question(s). Do NOT duplicate the existing questions you are shown — cover different points. Give each a unique "id".
+
+Use these question types: ${input.questionTypes.join(', ')}.
+Year-group depth: ${yearGroupDepthGuidance(input.yearGroup)}
+Marking style: ${markingRuleFor(input.markingMode)}
+Exam board: ${examBoardRuleFor(input.examBoard)}
+Type rules:
+${typeRules}
+${QUESTION_FIELD_RULES}`
+}
+
 interface BuildSystemPromptInput {
   questionTypes: QuestionType[]
   markingMode: MarkingMode

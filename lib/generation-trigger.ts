@@ -3,6 +3,11 @@ import { runGenerationJob } from './run-generation-job'
 
 export const DAILY_LIMIT = 10
 
+// AI refinements (regenerate-question, add-questions) are cheap, per-worksheet
+// polish actions — they get their own generous cap and never touch the 10/day.
+export const REFINE_DAILY_LIMIT = 50
+export const REFINE_KINDS = ['question-regen', 'questions-add'] as const
+
 /**
  * Today's usage = completed generations + currently in-flight jobs, so a burst
  * of rapid submits can't blow past the daily limit before any job completes.
@@ -19,6 +24,20 @@ export async function countUsedToday(userId: string, kind: string): Promise<numb
         status: { in: ['pending', 'running'] },
         createdAt: { gte: todayMidnight },
       },
+    }),
+  ])
+  return completed + inFlight
+}
+
+/** Today's refinement usage across both refine kinds (completed + in-flight). */
+export async function countRefinesToday(userId: string): Promise<number> {
+  const todayMidnight = new Date()
+  todayMidnight.setHours(0, 0, 0, 0)
+  const kind = { in: [...REFINE_KINDS] }
+  const [completed, inFlight] = await Promise.all([
+    db.generationLog.count({ where: { userId, kind, createdAt: { gte: todayMidnight } } }),
+    db.generationJob.count({
+      where: { userId, kind, status: { in: ['pending', 'running'] }, createdAt: { gte: todayMidnight } },
     }),
   ])
   return completed + inFlight
