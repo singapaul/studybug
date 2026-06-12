@@ -1,15 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
-import Anthropic from '@anthropic-ai/sdk'
 import { PDFParse } from 'pdf-parse'
-import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getAuthenticatedUser, isPro } from '@/lib/api-helpers'
 import { withLogging } from '@/lib/with-logging'
+import { DAILY_LIMIT, countUsedToday, dispatchGeneration } from '@/lib/generation-trigger'
 
 const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
 const MAX_TEXT_LENGTH = 50_000
-const DAILY_LIMIT = 10
-const MODEL = 'claude-haiku-4-5-20251001'
+const KIND = 'game'
 
 const ALL_GAME_TYPES = ['flashcards', 'pairs', 'multipleChoice', 'fillInTheBlank', 'speedRound'] as const
 type GameTypeKey = typeof ALL_GAME_TYPES[number]
@@ -63,128 +61,90 @@ async function postHandler(req: NextRequest) {
     return NextResponse.json({ error: 'Pro plan required', code: 'PRO_REQUIRED' }, { status: 403 })
   }
 
-  // Rate limit check — count today's generations for this user
-  const todayMidnight = new Date()
-  todayMidnight.setHours(0, 0, 0, 0)
-
-  const usedToday = await db.generationLog.count({
-    where: { userId, kind: 'game', createdAt: { gte: todayMidnight } },
-  })
-
-  if (usedToday >= DAILY_LIMIT) {
-    return NextResponse.json(
-      { error: 'Daily generation limit reached (10/day). Resets at midnight.', code: 'GENERATION_LIMIT_REACHED' },
-      { status: 429 }
-    )
-  }
-
-  // Parse multipart form
-  let file: File | null = null
-  let topic = ''
-  let selectedGameTypes: GameTypeKey[]
   try {
-    const form = await req.formData()
-    file = form.get('file') as File | null
-    topic = (form.get('topic') as string | null) ?? ''
-    const gameTypesParam = (form.get('gameTypes') as string | null) ?? ''
-    const requested = gameTypesParam
-      ? gameTypesParam.split(',').map(s => s.trim()).filter((s): s is GameTypeKey =>
-          (ALL_GAME_TYPES as readonly string[]).includes(s)
-        )
-      : [...ALL_GAME_TYPES]
-    selectedGameTypes = requested.length > 0 ? requested : [...ALL_GAME_TYPES]
-  } catch {
-    return NextResponse.json({ error: 'Invalid form data' }, { status: 400 })
-  }
-
-  if (!file) {
-    return NextResponse.json({ error: 'No file provided' }, { status: 400 })
-  }
-
-  const contentType = file.type
-  if (contentType !== 'application/pdf' && contentType !== 'text/plain') {
-    return NextResponse.json(
-      { error: 'Only PDF and plain text files are supported' },
-      { status: 400 }
-    )
-  }
-
-  if (file.size > MAX_FILE_SIZE) {
-    return NextResponse.json({ error: 'File exceeds 10MB limit' }, { status: 400 })
-  }
-
-  // Extract text
-  let extractedText: string
-  try {
-    const buffer = Buffer.from(await file.arrayBuffer())
-    if (contentType === 'application/pdf') {
-      const parser = new PDFParse({ data: buffer })
-      const data = await parser.getText()
-      extractedText = data.text
-    } else {
-      extractedText = buffer.toString('utf-8')
+    const usedToday = await countUsedToday(userId, KIND)
+    if (usedToday >= DAILY_LIMIT) {
+      return NextResponse.json(
+        { error: 'Daily generation limit reached (10/day). Resets at midnight.', code: 'GENERATION_LIMIT_REACHED' },
+        { status: 429 },
+      )
     }
-  } catch {
-    return NextResponse.json({ error: 'Failed to read file content' }, { status: 400 })
-  }
 
-  if (!extractedText.trim()) {
-    return NextResponse.json({ error: 'No readable text found in the file' }, { status: 400 })
-  }
+    // Parse multipart form
+    let file: File | null = null
+    let topic = ''
+    let selectedGameTypes: GameTypeKey[]
+    try {
+      const form = await req.formData()
+      file = form.get('file') as File | null
+      topic = (form.get('topic') as string | null) ?? ''
+      const gameTypesParam = (form.get('gameTypes') as string | null) ?? ''
+      const requested = gameTypesParam
+        ? gameTypesParam.split(',').map(s => s.trim()).filter((s): s is GameTypeKey =>
+            (ALL_GAME_TYPES as readonly string[]).includes(s)
+          )
+        : [...ALL_GAME_TYPES]
+      selectedGameTypes = requested.length > 0 ? requested : [...ALL_GAME_TYPES]
+    } catch {
+      return NextResponse.json({ error: 'Invalid form data' }, { status: 400 })
+    }
 
-  // Truncate
-  const textForPrompt = extractedText.slice(0, MAX_TEXT_LENGTH)
+    if (!file) {
+      return NextResponse.json({ error: 'No file provided' }, { status: 400 })
+    }
 
-  // Build user message
-  const userMessage = topic
-    ? `Topic focus: ${topic}\n\nTEXT:\n${textForPrompt}`
-    : `TEXT:\n${textForPrompt}`
+    const contentType = file.type
+    if (contentType !== 'application/pdf' && contentType !== 'text/plain') {
+      return NextResponse.json(
+        { error: 'Only PDF and plain text files are supported' },
+        { status: 400 },
+      )
+    }
 
-  // Call Claude Haiku
-  const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
-  const systemPrompt = buildSystemPrompt(selectedGameTypes)
-  console.log('[generate] Selected game types:', selectedGameTypes)
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json({ error: 'File exceeds 10MB limit' }, { status: 400 })
+    }
 
-  let generatedContent: string
-  try {
-    const message = await client.messages.create({
-      model: MODEL,
-      max_tokens: 8000,
-      system: systemPrompt,
-      messages: [{ role: 'user', content: userMessage }],
+    // Extract text
+    let extractedText: string
+    try {
+      const buffer = Buffer.from(await file.arrayBuffer())
+      if (contentType === 'application/pdf') {
+        const parser = new PDFParse({ data: buffer })
+        const data = await parser.getText()
+        extractedText = data.text
+      } else {
+        extractedText = buffer.toString('utf-8')
+      }
+    } catch {
+      return NextResponse.json({ error: 'Failed to read file content' }, { status: 400 })
+    }
+
+    if (!extractedText.trim()) {
+      return NextResponse.json({ error: 'No readable text found in the file' }, { status: 400 })
+    }
+
+    const textForPrompt = extractedText.slice(0, MAX_TEXT_LENGTH)
+    const userMessage = topic
+      ? `Topic focus: ${topic}\n\nTEXT:\n${textForPrompt}`
+      : `TEXT:\n${textForPrompt}`
+    const systemPrompt = buildSystemPrompt(selectedGameTypes)
+
+    // Enqueue: persist the built prompt and hand off to the background worker.
+    const job = await db.generationJob.create({
+      data: { userId, kind: KIND, systemPrompt, userMessage },
     })
-    const block = message.content[0]
-    if (block.type !== 'text') throw new Error('Unexpected response type')
-    generatedContent = block.text
-    console.log('[generate] Raw Claude response (first 300 chars):', generatedContent.slice(0, 300))
+    await dispatchGeneration(job.id)
+
+    return NextResponse.json({
+      jobId: job.id,
+      usedToday: usedToday + 1,
+      remainingToday: DAILY_LIMIT - (usedToday + 1),
+    })
   } catch (err) {
-    console.error('[generate] Claude API error:', err)
-    return NextResponse.json({ error: 'AI generation failed. Please try again.' }, { status: 500 })
+    console.error('[games/generate] enqueue failed:', err)
+    return NextResponse.json({ error: 'Could not start generation. Please try again.' }, { status: 500 })
   }
-
-  // Extract JSON — grabs the outermost {...} block, fence-agnostic
-  const jsonMatch = generatedContent.match(/(\{[\s\S]*\}|\[[\s\S]*\])/)
-  const json = jsonMatch ? jsonMatch[0].trim() : generatedContent.trim()
-  console.log('[generate] Extracted JSON string (first 300 chars):', json.slice(0, 300))
-
-  // Parse and validate with Zod
-  let parsed: ReturnType<typeof parseGeneratedContent>
-  try {
-    parsed = parseGeneratedContent(json)
-  } catch (err) {
-    console.error('[generate] JSON parse failed. Full raw response:', generatedContent)
-    console.error('[generate] Parse error:', err)
-    return NextResponse.json({ error: 'AI returned unexpected content. Please try again.' }, { status: 500 })
-  }
-
-  // Log the generation
-  await db.generationLog.create({ data: { userId, kind: 'game' } })
-
-  return NextResponse.json({
-    ...parsed,
-    usedToday: usedToday + 1,
-    remainingToday: DAILY_LIMIT - (usedToday + 1),
-  })
 }
 
 // GET — return today's usage count
@@ -202,96 +162,12 @@ async function getHandler(req: NextRequest) {
     return NextResponse.json({ usedToday: 0, remainingToday: 0, dailyLimit: DAILY_LIMIT })
   }
 
-  const todayMidnight = new Date()
-  todayMidnight.setHours(0, 0, 0, 0)
-  const usedToday = await db.generationLog.count({
-    where: { userId, kind: 'game', createdAt: { gte: todayMidnight } },
-  })
-
+  const usedToday = await countUsedToday(userId, KIND)
   return NextResponse.json({
     usedToday,
     remainingToday: Math.max(0, DAILY_LIMIT - usedToday),
     dailyLimit: DAILY_LIMIT,
   })
-}
-
-// ── Zod schemas ────────────────────────────────────────────────────────────────
-
-const FlashcardSchema = z.object({
-  id: z.string(),
-  front: z.string().min(1),
-  back: z.string().min(1),
-})
-
-const PairSchema = z.object({
-  id: z.string(),
-  leftText: z.string().min(1),
-  rightText: z.string().min(1),
-})
-
-const MultipleChoiceOptionSchema = z.object({
-  id: z.string(),
-  text: z.string().min(1),
-  isCorrect: z.boolean(),
-})
-
-const MultipleChoiceSchema = z.object({
-  id: z.string(),
-  question: z.string().min(1),
-  options: z.array(MultipleChoiceOptionSchema).length(4),
-})
-
-const FillInTheBlankSchema = z.object({
-  id: z.string(),
-  sentence: z.string().refine(s => s.includes('[blank]'), { message: 'Missing [blank]' }),
-  answer: z.string().min(1),
-})
-
-const SpeedRoundSchema = z.object({
-  id: z.string(),
-  question: z.string().min(1),
-  answer: z.string().min(1),
-})
-
-const GeneratedContentSchema = z.object({
-  flashcards: z.array(z.unknown()),
-  pairs: z.array(z.unknown()),
-  multipleChoice: z.array(z.unknown()),
-  fillInTheBlank: z.array(z.unknown()),
-  speedRound: z.array(z.unknown()),
-})
-
-// ── Parser ─────────────────────────────────────────────────────────────────────
-
-function parseItems<T>(items: unknown[], schema: z.ZodType<T>, label: string): T[] {
-  return items.flatMap((item, i) => {
-    const result = schema.safeParse(item)
-    if (!result.success) {
-      console.warn(`[generate] Skipping malformed ${label}[${i}]:`, result.error.issues)
-      return []
-    }
-    return [result.data]
-  })
-}
-
-function parseGeneratedContent(json: string) {
-  const raw = JSON.parse(json)
-
-  const topLevel = GeneratedContentSchema.parse({
-    flashcards: Array.isArray(raw.flashcards) ? raw.flashcards : [],
-    pairs: Array.isArray(raw.pairs) ? raw.pairs : [],
-    multipleChoice: Array.isArray(raw.multipleChoice) ? raw.multipleChoice : [],
-    fillInTheBlank: Array.isArray(raw.fillInTheBlank) ? raw.fillInTheBlank : [],
-    speedRound: Array.isArray(raw.speedRound) ? raw.speedRound : [],
-  })
-
-  return {
-    flashcards: parseItems(topLevel.flashcards, FlashcardSchema, 'flashcard'),
-    pairs: parseItems(topLevel.pairs, PairSchema, 'pair'),
-    multipleChoice: parseItems(topLevel.multipleChoice, MultipleChoiceSchema, 'multipleChoice'),
-    fillInTheBlank: parseItems(topLevel.fillInTheBlank, FillInTheBlankSchema, 'fillInTheBlank'),
-    speedRound: parseItems(topLevel.speedRound, SpeedRoundSchema, 'speedRound'),
-  }
 }
 
 export const POST = withLogging(postHandler, 'POST /api/games/generate')

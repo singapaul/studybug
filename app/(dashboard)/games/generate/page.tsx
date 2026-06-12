@@ -21,6 +21,7 @@ import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs'
 import { cn } from '@/lib/utils'
 import { toast } from 'sonner'
 import { useGenerateGames, useCreateGame, GeneratedGameData } from '@/hooks/use-games'
+import { useGenerationJob } from '@/hooks/use-generation-job'
 import { useLibrarySubjects } from '@/hooks/use-library'
 import {
   GameType,
@@ -94,10 +95,34 @@ export default function GeneratePage() {
   const [generated, setGenerated] = useState<GeneratedGameData | null>(null)
   const [saved, setSaved] = useState<Record<string, boolean>>({})
   const [resetKeys, setResetKeys] = useState<Record<string, number>>({})
+  const [jobId, setJobId] = useState<string | null>(null)
+  const [remainingToday, setRemainingToday] = useState<number | null>(null)
 
   const { mutate: generateGames } = useGenerateGames()
   const { mutateAsync: createGame } = useCreateGame()
   const { data: subjects = [] } = useLibrarySubjects()
+  const job = useGenerationJob<GeneratedGameData>(jobId)
+
+  // React to background-job status transitions.
+  useEffect(() => {
+    if (!jobId) return
+    const data = job.data
+    if (data?.status === 'complete' && data.result) {
+      setGenerated(data.result)
+      setSaved({})
+      setResetKeys({})
+      setPhase('review')
+      setJobId(null)
+    } else if (data?.status === 'failed') {
+      toast.error(data.error || 'Generation failed. Please try again.')
+      setPhase('upload') // page-level inputs (file/topic/subject) are preserved
+      setJobId(null)
+    } else if (job.isError) {
+      toast.error('Lost connection while generating. Please try again.')
+      setPhase('upload')
+      setJobId(null)
+    }
+  }, [jobId, job.data, job.isError])
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files?.[0] ?? null
@@ -126,11 +151,10 @@ export default function GeneratePage() {
     generateGames(
       { file, topic: topic.trim() || undefined, gameTypes: Array.from(selectedTypes) },
       {
-        onSuccess: (data) => {
-          setGenerated(data)
-          setSaved({})
-          setResetKeys({})
-          setPhase('review')
+        onSuccess: ({ jobId: newJobId, remainingToday: remaining }) => {
+          // Generation runs in the background worker; poll the job for the result.
+          setRemainingToday(remaining)
+          setJobId(newJobId)
         },
         onError: (err: unknown) => {
           const e = err as { message?: string; code?: string }
@@ -155,6 +179,8 @@ export default function GeneratePage() {
     setGenerated(null)
     setSaved({})
     setResetKeys({})
+    setJobId(null)
+    setRemainingToday(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
   }
 
@@ -382,7 +408,7 @@ export default function GeneratePage() {
             {savableSections.length} game type{savableSections.length !== 1 ? 's' : ''} generated
           </p>
           <Badge variant="outline" className="text-xs">
-            {generated.remainingToday} of 10 generations remaining today
+            {remainingToday ?? 0} of 10 generations remaining today
           </Badge>
         </div>
       </div>

@@ -37,7 +37,7 @@ export interface GenerateInput {
 }
 
 export interface GenerateResult {
-  worksheet: GeneratedWorksheet
+  jobId: string
   usedToday: number
   remainingToday: number
 }

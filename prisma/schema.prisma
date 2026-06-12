@@ -38,6 +38,7 @@ model user {
   games            Game[]
   gameAttempts     GameAttempt[]
   generationLogs   GenerationLog[]
+  generationJobs   GenerationJob[]
   worksheets       Worksheet[]
   worksheetFolders WorksheetFolder[]
 }
@@ -68,6 +69,24 @@ model GenerationLog {
 
   @@index([userId])
   @@index([userId, kind, createdAt])
+}
+
+model GenerationJob {
+  id           String   @id @default(cuid())
+  userId       String
+  user         user     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind         String // "worksheet" | "game"
+  status       String   @default("pending") // pending | running | complete | failed
+  systemPrompt String // built in the fast enqueue route, consumed by the worker
+  userMessage  String
+  result       Json? // parsed worksheet OR game data on success
+  error        String?
+  failureStage String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([userId])
+  @@index([userId, kind, status])
 }
 
 model Worksheet {

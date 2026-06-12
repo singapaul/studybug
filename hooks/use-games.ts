@@ -161,12 +161,18 @@ export function useDuplicateGame() {
   });
 }
 
+// The content produced by the worker and returned by the job poll.
 export interface GeneratedGameData {
   flashcards: FlashcardItem[]
   pairs: PairsItem[]
   multipleChoice: MultipleChoiceQuestion[]
   fillInTheBlank: FillInTheBlankItem[]
   speedRound: SpeedRoundItem[]
+}
+
+// The fast enqueue response — generation runs in the background worker.
+export interface GenerateGamesEnqueueResult {
+  jobId: string
   usedToday: number
   remainingToday: number
 }
@@ -235,7 +241,7 @@ export function useGenerateGames() {
           status: res.status,
         })
       }
-      return res.json() as Promise<GeneratedGameData>
+      return res.json() as Promise<GenerateGamesEnqueueResult>
     },
   })
 }
