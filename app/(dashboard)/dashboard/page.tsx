@@ -43,6 +43,40 @@ export default async function DashboardPage({
   const stats = await getDashboardStats(session.user.id);
   const nearLimit = !isPro && stats.totalGames >= FREE_GAME_LIMIT - 1;
 
+  const gettingStartedSteps = [
+    {
+      step: 1,
+      title: "Create a game",
+      desc: "Pick a game type and add your content.",
+      href: "/games/create",
+      done: stats.totalGames > 0,
+    },
+    {
+      step: 2,
+      title: "Play it",
+      desc: "Test yourself and track your score.",
+      href: "/games",
+      done: stats.totalAttempts > 0,
+    },
+    isPro
+      ? {
+          step: 3,
+          title: "Generate a worksheet",
+          desc: "Turn any topic into a printable worksheet.",
+          href: "/worksheets/new",
+          done: stats.totalWorksheets > 0,
+        }
+      : {
+          step: 3,
+          title: "Unlock Pro features",
+          desc: "Worksheets, progress tracking, and every game type.",
+          href: "/#pricing",
+          done: false,
+        },
+  ];
+  // Hide the Getting Started card once every step is complete.
+  const showGettingStarted = !gettingStartedSteps.every((s) => s.done);
+
   return (
     <div className="p-4 sm:p-8">
       {/* Email verification banner */}
@@ -219,70 +253,42 @@ export default async function DashboardPage({
           </CardContent>
         </Card>
 
-        <Card>
-          <CardHeader className="pb-3">
-            <div className="flex items-center gap-2 mb-1">
-              <Sparkles className="h-5 w-5 text-muted-foreground" />
-              <CardTitle className="text-base">Getting Started</CardTitle>
-            </div>
-            <CardDescription>Complete these steps to get the most out of StudyBug.</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              {[
-                {
-                  step: 1,
-                  title: "Create a game",
-                  desc: "Pick a game type and add your content.",
-                  href: "/games/create",
-                  done: stats.totalGames > 0,
-                },
-                {
-                  step: 2,
-                  title: "Play it",
-                  desc: "Test yourself and track your score.",
-                  href: "/games",
-                  done: stats.totalAttempts > 0,
-                },
-                isPro
-                  ? {
-                      step: 3,
-                      title: "Generate a worksheet",
-                      desc: "Turn any topic into a printable worksheet.",
-                      href: "/worksheets/new",
-                      done: stats.totalWorksheets > 0,
-                    }
-                  : {
-                      step: 3,
-                      title: "Unlock Pro features",
-                      desc: "Worksheets, progress tracking, and every game type.",
-                      href: "/#pricing",
-                      done: false,
-                    },
-              ].map(({ step, title, desc, href, done }) => (
-                <Link
-                  key={step}
-                  href={href}
-                  className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                >
-                  <div
-                    className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                      done
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-muted-foreground/20 text-muted-foreground"
-                    }`}
+        {showGettingStarted && (
+          <Card>
+            <CardHeader className="pb-3">
+              <div className="flex items-center gap-2 mb-1">
+                <Sparkles className="h-5 w-5 text-muted-foreground" />
+                <CardTitle className="text-base">Getting Started</CardTitle>
+              </div>
+              <CardDescription>Complete these steps to get the most out of StudyBug.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {gettingStartedSteps.map(({ step, title, desc, href, done }) => (
+                  <Link
+                    key={step}
+                    href={href}
+                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
                   >
-                    {step}
-                  </div>
-                  <div>
-                    <p className="text-sm font-medium">{title}</p>
-                    <p className="text-xs text-muted-foreground">{desc}</p>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </CardContent>
-        </Card>
+                    <div
+                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                        done
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-muted-foreground/20 text-muted-foreground"
+                      }`}
+                    >
+                      {step}
+                    </div>
+                    <div>
+                      <p className="text-sm font-medium">{title}</p>
+                      <p className="text-xs text-muted-foreground">{desc}</p>
+                    </div>
+                  </Link>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        )}
       </div>
     </div>
   );
