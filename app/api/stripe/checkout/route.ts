@@ -20,6 +20,19 @@ async function postHandler(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
+    // Existing callers POST with no body; keep parsing tolerant.
+    const { test } = await req.json().catch(() => ({}));
+
+    // Test-only: an email allowlist may force the trial off so a (heavily
+    // discounted) charge lands immediately on a live card. Remove the
+    // STRIPE_TEST_CHECKOUT_EMAILS env var to disable this path entirely.
+    const testEmails = (process.env.STRIPE_TEST_CHECKOUT_EMAILS ?? "")
+      .split(",")
+      .map((email) => email.trim().toLowerCase())
+      .filter(Boolean);
+    const isTestUser = testEmails.includes(user.email.toLowerCase());
+    const skipTrial = test === true && isTestUser;
+
     if (!process.env.STRIPE_PRO_PRICE_ID) {
       return NextResponse.json(
         { error: "Stripe price ID not configured" },
@@ -58,8 +71,12 @@ async function postHandler(req: NextRequest) {
       ],
       success_url: `${appUrl}/api/stripe/checkout/success?session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${appUrl}/dashboard?upgrade=cancelled`,
+      allow_promotion_codes: true,
       subscription_data: {
         metadata: { userId: user.id },
+        // Force the charge immediately for allowlisted test runs; real users
+        // keep whatever trial the price defines.
+        ...(skipTrial ? { trial_period_days: 0 } : {}),
       },
     });
 
