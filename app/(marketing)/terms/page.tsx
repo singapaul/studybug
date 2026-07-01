@@ -35,7 +35,7 @@ export default function TermsPage() {
         <section>
           <h2 className="text-2xl font-semibold mb-3">4. Subscriptions and Billing</h2>
           <ul className="list-disc pl-5 space-y-2 text-muted-foreground">
-            <li>Paid subscriptions are billed on a recurring basis (monthly or annually) via Stripe.</li>
+            <li>The Pro subscription is billed monthly on a recurring (rolling) basis at £5/month via Stripe.</li>
             <li>You may cancel your subscription at any time from the billing settings. Cancellation takes effect at the end of the current billing period.</li>
             <li>We do not offer refunds for partial billing periods, except where required by applicable law.</li>
             <li>We reserve the right to change subscription pricing with 30 days&apos; notice. Continued use after the notice period constitutes acceptance of the new pricing.</li>

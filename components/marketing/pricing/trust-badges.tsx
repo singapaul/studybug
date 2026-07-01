@@ -22,8 +22,8 @@ export function TrustBadges() {
     },
     {
       icon: ShieldCheck,
-      label: '14-Day Money-Back',
-      description: 'Full refund guarantee',
+      label: 'Cancel Anytime',
+      description: 'No contract, no lock-in',
       color: 'bg-warning',
       iconColor: 'text-white',
     },

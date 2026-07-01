@@ -8,7 +8,6 @@ export interface PlanDetails {
   description: string;
   subtitle: string;
   monthlyPrice: number;
-  annualPrice: number;
   features: string[];
   negativeFeatures?: string[];
   highlighted?: boolean;
@@ -56,7 +55,6 @@ export const PLANS: PlanDetails[] = [
     description: 'Get started with basic features',
     subtitle: 'Perfect for trying out',
     monthlyPrice: 0,
-    annualPrice: 0,
     features: ['3 game modes', '10 pre-built subjects', 'No account required to try'],
     negativeFeatures: ['No custom decks', 'No progress saving'],
     ctaText: 'Start Free',
@@ -68,7 +66,6 @@ export const PLANS: PlanDetails[] = [
     description: 'Perfect for individual learners',
     subtitle: 'Everything you need to master any subject',
     monthlyPrice: 5,
-    annualPrice: 45,
     features: [
       'All game modes unlocked',
       'Access all pre-built decks',
@@ -81,7 +78,7 @@ export const PLANS: PlanDetails[] = [
     highlighted: true,
     badge: 'Most Popular',
     badgeColor: 'primary',
-    ctaText: 'Start 14-Day Free Trial',
+    ctaText: 'Get Started',
     tier: 'pro',
   },
 ];

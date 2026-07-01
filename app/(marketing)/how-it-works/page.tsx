@@ -145,7 +145,7 @@ export default function HowItWorks() {
                 asChild
               >
                 <Link href="/sign-up">
-                  Start Free Trial
+                  Get Started
                   <ArrowRight className="w-4 h-4 ml-2" />
                 </Link>
               </Button>
@@ -165,7 +165,7 @@ export default function HowItWorks() {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              14-day free trial • Cancel anytime
+              £5/month • Cancel anytime
             </motion.p>
           </div>
         </div>
@@ -283,7 +283,7 @@ export default function HowItWorks() {
           <Sparkles className="w-12 h-12 text-white/60 mx-auto mb-6" />
           <h2 className="text-3xl md:text-4xl font-bold text-white mb-4">Ready to Try It?</h2>
           <p className="text-lg text-white/80 max-w-xl mx-auto mb-8">
-            Start your 14-day free trial and see how easy revision can be.
+            Get started for £5/month and see how easy revision can be.
           </p>
           <Button
             size="lg"
@@ -291,7 +291,7 @@ export default function HowItWorks() {
             asChild
           >
             <Link href="/sign-up">
-              Start Free Trial
+              Get Started
               <ArrowRight className="w-5 h-5 ml-2" />
             </Link>
           </Button>

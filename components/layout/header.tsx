@@ -108,7 +108,7 @@ export function Header() {
                 className="bg-primary text-white hover:bg-primary/90 font-semibold rounded-full shadow-md"
                 asChild
               >
-                <Link href="/sign-up">Start Free Trial</Link>
+                <Link href="/sign-up">Get Started</Link>
               </Button>
             </>
           )}
@@ -191,7 +191,7 @@ export function Header() {
                   </Button>
                   <Button className="bg-primary text-white font-semibold rounded-full" asChild>
                     <Link href="/sign-up" onClick={() => setMobileMenuOpen(false)}>
-                      Start Free Trial
+                      Get Started
                     </Link>
                   </Button>
                 </>

@@ -2,22 +2,16 @@
 
 import { Check, X, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { PlanDetails, BillingCycle } from '@/types/signup';
+import { PlanDetails } from '@/types/signup';
 import { motion } from 'framer-motion';
 
 interface PricingCardProps {
   plan: PlanDetails;
-  billingCycle: BillingCycle;
   onSelect: () => void;
 }
 
-export function PricingCard({ plan, billingCycle, onSelect }: PricingCardProps) {
+export function PricingCard({ plan, onSelect }: PricingCardProps) {
   const isFree = plan.id === 'free';
-
-  const monthlyPrice = plan.monthlyPrice;
-  const annualMonthly = Math.round((plan.annualPrice / 12) * 100) / 100;
-  const displayPrice = billingCycle === 'monthly' ? monthlyPrice : annualMonthly;
-  const annualTotal = plan.annualPrice;
 
   const formatPrice = (price: number) => `£${price % 1 === 0 ? price : price.toFixed(2)}`;
 
@@ -86,15 +80,13 @@ export function PricingCard({ plan, billingCycle, onSelect }: PricingCardProps) 
           <div className="flex flex-col">
             <div className="flex items-baseline gap-1">
               <span className="text-4xl font-bold text-foreground">
-                {formatPrice(displayPrice)}
+                {formatPrice(plan.monthlyPrice)}
               </span>
               <span className="text-muted-foreground">/month</span>
             </div>
-            {billingCycle === 'annual' && (
-              <span className="text-sm text-secondary mt-1 font-medium">
-                Billed annually as {formatPrice(annualTotal)}
-              </span>
-            )}
+            <span className="text-sm text-muted-foreground mt-1">
+              Billed monthly · Cancel anytime
+            </span>
           </div>
         )}
       </div>

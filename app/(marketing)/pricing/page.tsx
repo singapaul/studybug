@@ -1,27 +1,20 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { BillingToggle } from '@/components/marketing/pricing/billing-toggle';
 import { PricingCard } from '@/components/marketing/pricing/pricing-card';
 import { TrustBadges } from '@/components/marketing/pricing/trust-badges';
 import { FeatureComparison } from '@/components/marketing/pricing/feature-comparison';
 import { FAQSection } from '@/components/marketing/pricing/faq-section';
-import { PLANS, BillingCycle } from '@/types/signup';
+import { PLANS } from '@/types/signup';
 import { motion } from 'framer-motion';
 import { ArrowRight, Sparkles } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 export default function Pricing() {
   const router = useRouter();
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
 
   const handleSelectPlan = (planId: string) => {
-    if (planId === 'free') {
-      router.push('/sign-up?plan=free');
-    } else {
-      router.push(`/sign-up?plan=${planId}&billing=${billingCycle}`);
-    }
+    router.push(`/sign-up?plan=${planId}`);
   };
 
   return (
@@ -42,7 +35,7 @@ export default function Pricing() {
               className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white border border-border text-foreground text-sm font-medium mb-6 shadow-sm"
             >
               <Sparkles className="w-4 h-4 text-primary" />
-              14-day free trial on all paid plans
+              Just £5/month — cancel anytime
             </motion.div>
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -67,10 +60,6 @@ export default function Pricing() {
       {/* Pricing Section */}
       <section className="py-16 bg-white">
         <div className="container">
-          <div className="text-center mb-10">
-            <BillingToggle value={billingCycle} onChange={setBillingCycle} />
-          </div>
-
           <div className="grid sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
             {PLANS.map((plan, index) => (
               <motion.div
@@ -81,7 +70,6 @@ export default function Pricing() {
               >
                 <PricingCard
                   plan={plan}
-                  billingCycle={billingCycle}
                   onSelect={() => handleSelectPlan(plan.id)}
                 />
               </motion.div>
@@ -89,7 +77,7 @@ export default function Pricing() {
           </div>
 
           <p className="text-center text-sm text-muted-foreground mt-8">
-            14-day free trial • Cancel anytime
+            £5/month • Cancel anytime
           </p>
         </div>
       </section>
@@ -118,14 +106,14 @@ export default function Pricing() {
             Ready to Get Started?
           </h2>
           <p className="text-lg text-white/80 max-w-xl mx-auto mb-8">
-            Start your 14-day free trial today. Cancel anytime.
+            Get started today for £5/month. Cancel anytime.
           </p>
           <Button
             size="lg"
             className="bg-white text-primary hover:bg-white/90 rounded-full shadow-lg font-semibold"
             onClick={() => router.push('/sign-up')}
           >
-            Start Free Trial
+            Get Started
             <ArrowRight className="w-4 h-4 ml-2" />
           </Button>
         </div>

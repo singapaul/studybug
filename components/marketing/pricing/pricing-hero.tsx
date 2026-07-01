@@ -95,7 +95,7 @@ export function PricingHero({ onStartTrial, onLearnMore }: PricingHeroProps) {
                 onClick={() => router.push('/sign-up')}
                 className="bg-primary text-white hover:bg-primary/90 px-8 font-semibold rounded-full shadow-lg hover-lift text-base"
               >
-                Start 14-Day Free Trial
+                Get Started
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
               <Button
@@ -115,7 +115,7 @@ export function PricingHero({ onStartTrial, onLearnMore }: PricingHeroProps) {
               animate={{ opacity: 1 }}
               transition={{ duration: 0.6, delay: 0.6 }}
             >
-              14-day free trial • Cancel anytime
+              £5/month • Cancel anytime
             </motion.p>
           </motion.div>
 

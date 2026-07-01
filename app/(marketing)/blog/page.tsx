@@ -43,7 +43,7 @@ export default function Blog() {
               </Link>
             </Button>
             <Button size="lg" className="bg-primary text-white hover:bg-primary/90" asChild>
-              <Link href="/sign-up">Start Free Trial</Link>
+              <Link href="/sign-up">Get Started</Link>
             </Button>
           </div>
         </div>

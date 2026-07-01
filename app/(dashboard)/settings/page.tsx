@@ -290,7 +290,7 @@ function SettingsContent() {
                       </div>
                       <p className="text-sm text-muted-foreground mt-1">
                         {isPro
-                          ? "$29/month — renews automatically"
+                          ? "£5/month — renews automatically"
                           : "Free forever with limited features"}
                       </p>
                     </div>
@@ -329,12 +329,12 @@ function SettingsContent() {
                 <CardContent className="space-y-4">
                   <ul className="space-y-2">
                     {[
-                      "Unlimited projects",
-                      "Priority support",
-                      "50 GB storage",
-                      "Advanced analytics",
-                      "Team collaboration",
-                      "API access",
+                      "All game modes unlocked",
+                      "Access all pre-built decks",
+                      "Create unlimited custom decks",
+                      "Save progress & track performance",
+                      "Share decks with friends",
+                      "Export & import decks",
                     ].map((feature) => (
                       <li key={feature} className="flex items-center gap-2 text-sm">
                         <Check className="h-4 w-4 text-primary" />
@@ -346,7 +346,7 @@ function SettingsContent() {
                   <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                     <div>
                       <p className="font-semibold text-foreground">
-                        $29 / month
+                        £5 / month
                       </p>
                       <p className="text-xs text-muted-foreground">
                         Cancel anytime

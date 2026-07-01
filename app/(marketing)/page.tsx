@@ -1,12 +1,11 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { PricingHero } from '@/components/marketing/pricing/pricing-hero';
 import { StatsBar } from '@/components/marketing/pricing/stats-bar';
 import { HowItWorksHome } from '@/components/marketing/pricing/how-it-works-home';
 import { FeaturesGrid } from '@/components/marketing/pricing/features-grid';
-import { BillingToggle } from '@/components/marketing/pricing/billing-toggle';
 import { PricingCard } from '@/components/marketing/pricing/pricing-card';
 import { TrustBadges } from '@/components/marketing/pricing/trust-badges';
 import { FeatureComparison } from '@/components/marketing/pricing/feature-comparison';
@@ -14,22 +13,17 @@ import { Testimonials } from '@/components/marketing/pricing/testimonials';
 import { FAQSection } from '@/components/marketing/pricing/faq-section';
 import { InteractiveDemo } from '@/components/marketing/interactive-demo';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/scroll-reveal';
-import { PLANS, BillingCycle } from '@/types/signup';
+import { PLANS } from '@/types/signup';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 
 export default function Home() {
   const router = useRouter();
-  const [billingCycle, setBillingCycle] = useState<BillingCycle>('annual');
   const pricingRef = useRef<HTMLDivElement>(null);
   const howItWorksRef = useRef<HTMLDivElement>(null);
 
   const handleSelectPlan = (planId: string) => {
-    if (planId === 'free') {
-      router.push('/sign-up?plan=free');
-    } else {
-      router.push(`/sign-up?plan=${planId}&billing=${billingCycle}`);
-    }
+    router.push(`/sign-up?plan=${planId}`);
   };
 
   const scrollToPricing = () => {
@@ -67,11 +61,8 @@ export default function Home() {
               Simple, transparent pricing
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto mb-8">
-              Choose the plan that&apos;s right for you. All paid plans include a 14-day free trial.
+              Choose the plan that&apos;s right for you. Pro is just £5/month, billed monthly.
             </p>
-
-            {/* Toggle */}
-            <BillingToggle value={billingCycle} onChange={setBillingCycle} />
           </ScrollReveal>
 
           {/* Pricing Cards */}
@@ -83,7 +74,6 @@ export default function Home() {
               <StaggerItem key={plan.id}>
                 <PricingCard
                   plan={plan}
-                  billingCycle={billingCycle}
                   onSelect={() => handleSelectPlan(plan.id)}
                 />
               </StaggerItem>
@@ -93,7 +83,7 @@ export default function Home() {
           {/* Sub-pricing text */}
           <ScrollReveal delay={0.5}>
             <p className="text-center text-sm text-muted-foreground mt-6">
-              14-day free trial • Cancel anytime
+              £5/month • Cancel anytime
             </p>
           </ScrollReveal>
         </div>
@@ -146,7 +136,7 @@ export default function Home() {
                 className="bg-primary text-white hover:bg-primary/90 rounded-full shadow-lg font-semibold"
                 onClick={() => router.push('/sign-up')}
               >
-                Start 14-Day Free Trial
+                Get Started
                 <ArrowRight className="w-4 h-4 ml-2" />
               </Button>
               <Button
@@ -158,7 +148,7 @@ export default function Home() {
                 For Schools
               </Button>
             </div>
-            <p className="text-sm text-white/70 mt-4">14-day free trial • Cancel anytime</p>
+            <p className="text-sm text-white/70 mt-4">£5/month • Cancel anytime</p>
           </ScrollReveal>
         </div>
       </section>

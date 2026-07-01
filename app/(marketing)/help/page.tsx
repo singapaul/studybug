@@ -40,9 +40,9 @@ const popularQuestions = [
       'Yes! With a paid plan, you can share decks using a unique link. Recipients with a Studybug account can add your deck to their library.',
   },
   {
-    question: 'How does the free trial work?',
+    question: 'How does billing work?',
     answer:
-      "Your 14-day free trial gives you full access to all features of your chosen plan. You won't be charged until the trial ends. Cancel anytime during the trial with no charge.",
+      "Pro is £5/month, billed monthly on a rolling basis — no contract and no long-term commitment. You're charged one month at a time and can cancel anytime from your account settings.",
   },
   {
     question: 'What game modes are available?',
@@ -50,9 +50,9 @@ const popularQuestions = [
       'Studybug offers 20+ game modes including Flashcards, Flip & Match, Speed Round, Memory Challenge, Multiple Choice, True/False, and more. Each mode offers a different way to learn.',
   },
   {
-    question: 'How do I upgrade my plan?',
+    question: 'How do I upgrade to Pro?',
     answer:
-      "Go to Account Settings > Subscription and click \"Upgrade\". Changes take effect immediately and you'll only pay the difference for the current billing period.",
+      "Go to Account Settings > Billing and click \"Upgrade to Pro\". You'll be taken to our secure Stripe checkout to start your £5/month subscription, and Pro features unlock as soon as payment goes through.",
   },
 ];
 

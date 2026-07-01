@@ -10,14 +10,14 @@ import { ScrollReveal } from '@/components/ui/scroll-reveal';
 
 const faqs = [
   {
-    question: 'What happens after my free trial ends?',
+    question: 'How does billing work?',
     answer:
-      "Your trial gives you full access to your chosen plan for 14 days. If you don't cancel, you'll be automatically charged at the end of the trial period. You can cancel anytime during the trial with no charge.",
+      "Pro is £5/month, billed monthly on a rolling basis. There's no long-term contract — you're only ever charged one month at a time, and you can cancel anytime from your account settings.",
   },
   {
-    question: 'Can I switch plans later?',
+    question: 'Can I cancel anytime?',
     answer:
-      'Absolutely! You can upgrade, downgrade, or cancel your plan at any time from your account settings. Changes take effect at your next billing cycle.',
+      "Yes. You can cancel your Pro subscription at any time from your account settings. You'll keep Pro access until the end of the month you've already paid for, then drop back to the free plan.",
   },
   {
     question: 'What payment methods do you accept?',
