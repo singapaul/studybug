@@ -26,7 +26,7 @@ export const MARKING_MODES = [
 ] as const
 export type MarkingMode = (typeof MARKING_MODES)[number]
 
-export const DIFFERENTIATION_MODES = ['mixedAbility', 'threeTier'] as const
+export const DIFFERENTIATION_MODES = ['mixedAbility', 'higher', 'foundation'] as const
 export type DifferentiationMode = (typeof DIFFERENTIATION_MODES)[number]
 
 export const MatchingPairSchema = z.object({
@@ -196,6 +196,53 @@ export function parseGeneratedWorksheet(json: string): GeneratedWorksheet {
     examBoard: top.examBoard,
     specPoints: top.specPoints,
   }
+}
+
+/**
+ * A "blueprint" captures the STRUCTURE of an uploaded worksheet — its sections
+ * and, per question, the type, marks, difficulty and skill assessed — without
+ * any question text/answers. Produced by the remix extraction pass and used to
+ * drive a faithful parallel-version generation.
+ */
+export const BlueprintQuestionSchema = z.object({
+  type: z.enum(QUESTION_TYPES),
+  marks: z.number().int().min(0).max(20).catch(1),
+  difficulty: z.enum(DIFFICULTY_TIERS).catch('core'),
+  objective: z.string().default(''),
+})
+export type BlueprintQuestion = z.infer<typeof BlueprintQuestionSchema>
+
+export const BlueprintSectionSchema = z.object({
+  title: z.string().default(''),
+  instructions: z.string().default(''),
+  questions: z.array(BlueprintQuestionSchema).default([]),
+})
+
+export const BlueprintSchema = z.object({
+  subject: z.string().default(''),
+  topic: z.string().default(''),
+  yearGroup: z.string().default(''),
+  level: z.string().default(''),
+  examBoard: z.enum(EXAM_BOARDS).optional(),
+  markingMode: z.enum(MARKING_MODES).optional(),
+  sections: z.array(BlueprintSectionSchema).default([]),
+})
+export type Blueprint = z.infer<typeof BlueprintSchema>
+
+export function parseBlueprint(json: string): Blueprint {
+  return BlueprintSchema.parse(JSON.parse(json))
+}
+
+/** Total number of questions across all sections of a blueprint. */
+export function blueprintQuestionCount(bp: Blueprint): number {
+  return bp.sections.reduce((n, s) => n + s.questions.length, 0)
+}
+
+/** Distinct question types present in a blueprint (for prompt type-rules). */
+export function blueprintQuestionTypes(bp: Blueprint): QuestionType[] {
+  const set = new Set<QuestionType>()
+  bp.sections.forEach((s) => s.questions.forEach((q) => set.add(q.type)))
+  return Array.from(set)
 }
 
 export interface WorksheetSummary {

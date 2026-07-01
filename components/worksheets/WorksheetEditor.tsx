@@ -31,11 +31,17 @@ import type {
 } from '@/types/worksheet'
 
 interface WorksheetEditorProps {
-  worksheetId: string
+  /** Persisted worksheet id. When null/undefined (e.g. the pre-save review step),
+   *  AI-refine actions are hidden since their endpoints require a saved worksheet. */
+  worksheetId?: string | null
   initial: GeneratedWorksheet
-  isSaving: boolean
-  onSave: (content: GeneratedWorksheet) => void
-  onCancel: () => void
+  /** Embedded mode: hides the footer Save/Cancel and streams edits up via `onChange`.
+   *  Used on the review screen where the parent owns Save/Discard. */
+  embedded?: boolean
+  isSaving?: boolean
+  onSave?: (content: GeneratedWorksheet) => void
+  onCancel?: () => void
+  onChange?: (content: GeneratedWorksheet) => void
 }
 
 // Which question/section a refinement job is currently acting on.
@@ -78,9 +84,12 @@ function changeType(q: Question, type: QuestionType): Question {
   return { ...fresh, id: q.id, text: q.text, marks: q.marks, answer: q.answer, difficulty: q.difficulty }
 }
 
-export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCancel }: WorksheetEditorProps) {
+export function WorksheetEditor({
+  worksheetId, initial, embedded = false, isSaving = false, onSave, onCancel, onChange,
+}: WorksheetEditorProps) {
   const [content, setContent] = useState<GeneratedWorksheet>(initial)
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 5 } }))
+  const aiEnabled = !!worksheetId
 
   const [refine, setRefine] = useState<RefineTarget | null>(null)
   const { mutateAsync: regenerateQuestion } = useRegenerateQuestion()
@@ -121,7 +130,7 @@ export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCanc
   }, [refine, refineJob.data, refineJob.isError])
 
   async function regenerate(si: number, qi: number, instruction: string) {
-    if (refine) return
+    if (refine || !worksheetId) return
     const question = content.sections[si].questions[qi]
     try {
       const jobId = await regenerateQuestion({ id: worksheetId, question, instruction })
@@ -132,7 +141,7 @@ export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCanc
   }
 
   async function addQuestions(si: number) {
-    if (refine) return
+    if (refine || !worksheetId) return
     const types = content.sections[si].questions.map((q) => q.type)
     const questionTypes = types.length ? Array.from(new Set(types)) : (['shortAnswer'] as QuestionType[])
     try {
@@ -177,6 +186,12 @@ export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCanc
     (sum, s) => sum + s.questions.reduce((a, q) => a + (Number(q.marks) || 0), 0),
     0,
   )
+
+  // Embedded mode: stream edits (with recomputed totalMarks) up to the parent.
+  useEffect(() => {
+    if (embedded) onChange?.({ ...content, totalMarks })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [content, totalMarks, embedded])
 
   return (
     <div className="space-y-6">
@@ -298,6 +313,7 @@ export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCanc
                       onRegenerate={(instruction) => regenerate(si, qi, instruction)}
                       regenerating={refine?.si === si && refine?.qi === qi}
                       refineDisabled={!!refine}
+                      aiEnabled={aiEnabled}
                     />
                   </SortableQuestion>
                 ))}
@@ -310,13 +326,15 @@ export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCanc
               onClick={() => updateSection(si, { questions: [...section.questions, blankQuestion('shortAnswer')] })}>
               <Plus className="h-4 w-4 mr-2" /> Add question
             </Button>
-            <Button type="button" variant="outline" size="sm" disabled={!!refine}
-              onClick={() => addQuestions(si)}>
-              {refine?.si === si && refine?.qi === null
-                ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                : <Sparkles className="h-4 w-4 mr-2" />}
-              Add 3 with AI
-            </Button>
+            {aiEnabled && (
+              <Button type="button" variant="outline" size="sm" disabled={!!refine}
+                onClick={() => addQuestions(si)}>
+                {refine?.si === si && refine?.qi === null
+                  ? <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  : <Sparkles className="h-4 w-4 mr-2" />}
+                Add 3 with AI
+              </Button>
+            )}
           </div>
         </section>
       ))}
@@ -337,12 +355,14 @@ export function WorksheetEditor({ worksheetId, initial, isSaving, onSave, onCanc
         />
       </div>
 
-      <div className="flex gap-2 justify-end">
-        <Button type="button" variant="ghost" onClick={onCancel} disabled={isSaving}>Cancel</Button>
-        <Button type="button" onClick={() => onSave({ ...content, totalMarks })} disabled={isSaving}>
-          {isSaving ? 'Saving…' : 'Save changes'}
-        </Button>
-      </div>
+      {!embedded && (
+        <div className="flex gap-2 justify-end">
+          <Button type="button" variant="ghost" onClick={onCancel} disabled={isSaving}>Cancel</Button>
+          <Button type="button" onClick={() => onSave?.({ ...content, totalMarks })} disabled={isSaving}>
+            {isSaving ? 'Saving…' : 'Save changes'}
+          </Button>
+        </div>
+      )}
     </div>
   )
 }
@@ -475,7 +495,7 @@ function SortableQuestion({ id, children }: { id: string; children: React.ReactN
 }
 
 function QuestionEditor({
-  q, index, onChange, onMoveUp, onMoveDown, onDelete, onRegenerate, regenerating, refineDisabled,
+  q, index, onChange, onMoveUp, onMoveDown, onDelete, onRegenerate, regenerating, refineDisabled, aiEnabled,
 }: {
   q: Question
   index: number
@@ -486,6 +506,7 @@ function QuestionEditor({
   onRegenerate: (instruction: string) => void
   regenerating: boolean
   refineDisabled: boolean
+  aiEnabled: boolean
 }) {
   return (
     <div className="space-y-3 rounded-md border bg-muted/20 p-3">
@@ -514,27 +535,29 @@ function QuestionEditor({
         />
         <span className="text-xs text-muted-foreground">marks</span>
         <div className="ml-auto flex gap-1">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button type="button" variant="ghost" size="icon" aria-label="Regenerate question with AI" disabled={refineDisabled}>
-                {regenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuItem onSelect={() => onRegenerate('Produce a fresh alternative of similar difficulty and marks.')}>
-                Fresh alternative
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onRegenerate('Make this question harder and more demanding.')}>
-                Make harder
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onRegenerate('Make this question easier and more accessible.')}>
-                Make easier
-              </DropdownMenuItem>
-              <DropdownMenuItem onSelect={() => onRegenerate('Reword this question for clarity, keeping the same content, marks and type.')}>
-                Reword
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          {aiEnabled && (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button type="button" variant="ghost" size="icon" aria-label="Regenerate question with AI" disabled={refineDisabled}>
+                  {regenerating ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />}
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onSelect={() => onRegenerate('Produce a fresh alternative of similar difficulty and marks.')}>
+                  Fresh alternative
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => onRegenerate('Make this question harder and more demanding.')}>
+                  Make harder
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => onRegenerate('Make this question easier and more accessible.')}>
+                  Make easier
+                </DropdownMenuItem>
+                <DropdownMenuItem onSelect={() => onRegenerate('Reword this question for clarity, keeping the same content, marks and type.')}>
+                  Reword
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
           <Button type="button" variant="ghost" size="icon" aria-label="Move question up" onClick={onMoveUp}>
             <ArrowUp className="h-4 w-4" />
           </Button>

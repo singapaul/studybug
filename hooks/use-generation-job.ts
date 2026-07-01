@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 export type GenerationStatus = 'pending' | 'running' | 'complete' | 'failed'
 
 export interface GenerationJobState<T> {
-  kind: 'worksheet' | 'game'
+  kind: 'worksheet' | 'game' | 'remix-extract' | 'question-regen' | 'questions-add'
   status: GenerationStatus
   result?: T
   error?: string

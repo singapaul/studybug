@@ -7,7 +7,7 @@ import { jsonrepair } from 'jsonrepair'
 import { z } from 'zod'
 import { db } from './db'
 import { logEvent } from './logger'
-import { parseGeneratedWorksheet, QuestionSchema } from '../types/worksheet'
+import { parseGeneratedWorksheet, parseBlueprint, QuestionSchema } from '../types/worksheet'
 import { parseGeneratedContent } from './game-parse'
 
 const MODEL = 'claude-haiku-4-5-20251001'
@@ -30,6 +30,7 @@ function parseQuestionList(json: string) {
 function parserForKind(kind: string): (json: string) => unknown {
   switch (kind) {
     case 'worksheet': return parseGeneratedWorksheet
+    case 'remix-extract': return parseBlueprint
     case 'game': return parseGeneratedContent
     case 'question-regen': return parseOneQuestion
     case 'questions-add': return parseQuestionList

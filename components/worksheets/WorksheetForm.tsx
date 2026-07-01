@@ -14,27 +14,45 @@ import { toast } from 'sonner'
 import {
   YEAR_GROUPS, KEY_STAGES, QUESTION_TYPE_OPTIONS, MARKING_MODE_OPTIONS, DIFFERENTIATION_OPTIONS, EXAM_BOARD_OPTIONS,
 } from '@/lib/worksheet-options'
+import { UPLOAD_ACCEPT_ATTR } from '@/lib/extract-source'
 import type { QuestionType, MarkingMode, DifferentiationMode, ExamBoard } from '@/types/worksheet'
 import type { GenerateInput } from '@/hooks/use-worksheets'
+
+export interface WorksheetFormInitialValues {
+  topic?: string
+  subject?: string
+  yearGroup?: string
+  level?: string
+  numQuestions?: number
+  questionTypes?: QuestionType[]
+  markingMode?: MarkingMode
+  differentiation?: DifferentiationMode
+  examBoard?: ExamBoard
+  pastedText?: string
+}
 
 interface WorksheetFormProps {
   isGenerating: boolean
   onSubmit: (input: GenerateInput) => void
-  initialValues?: { topic?: string; subject?: string; pastedText?: string }
+  initialValues?: WorksheetFormInitialValues
+  /** Remix mode: question count/types come from the blueprint, so lock them and
+   *  hide the source-material inputs. */
+  lockStructure?: boolean
+  submitLabel?: string
 }
 
-export function WorksheetForm({ isGenerating, onSubmit, initialValues }: WorksheetFormProps) {
+export function WorksheetForm({ isGenerating, onSubmit, initialValues, lockStructure = false, submitLabel }: WorksheetFormProps) {
   const [topic, setTopic] = useState(initialValues?.topic ?? '')
   const [subject, setSubject] = useState(initialValues?.subject ?? '')
-  const [yearGroup, setYearGroup] = useState<string>('Year 8')
-  const [level, setLevel] = useState<string>('KS3')
+  const [yearGroup, setYearGroup] = useState<string>(initialValues?.yearGroup ?? 'Year 8')
+  const [level, setLevel] = useState<string>(initialValues?.level ?? 'KS3')
   const [learningObjectives, setLearningObjectives] = useState('')
   const [priorKnowledge, setPriorKnowledge] = useState('')
-  const [numQuestions, setNumQuestions] = useState(8)
-  const [questionTypes, setQuestionTypes] = useState<QuestionType[]>(['shortAnswer'])
-  const [markingMode, setMarkingMode] = useState<MarkingMode>('markSchemeWithPoints')
-  const [differentiation, setDifferentiation] = useState<DifferentiationMode>('mixedAbility')
-  const [examBoard, setExamBoard] = useState<ExamBoard>('none')
+  const [numQuestions, setNumQuestions] = useState(initialValues?.numQuestions ?? 8)
+  const [questionTypes, setQuestionTypes] = useState<QuestionType[]>(initialValues?.questionTypes ?? ['shortAnswer'])
+  const [markingMode, setMarkingMode] = useState<MarkingMode>(initialValues?.markingMode ?? 'markSchemeWithPoints')
+  const [differentiation, setDifferentiation] = useState<DifferentiationMode>(initialValues?.differentiation ?? 'mixedAbility')
+  const [examBoard, setExamBoard] = useState<ExamBoard>(initialValues?.examBoard ?? 'none')
   const [pastedText, setPastedText] = useState(initialValues?.pastedText ?? '')
   const [file, setFile] = useState<File | null>(null)
 
@@ -149,13 +167,21 @@ export function WorksheetForm({ isGenerating, onSubmit, initialValues }: Workshe
 
       <fieldset className="space-y-2">
         <legend className="text-sm font-semibold">Question types <span className="text-destructive">*</span></legend>
+        {lockStructure && (
+          <p className="text-xs text-muted-foreground">
+            Locked to match the uploaded worksheet — the remix keeps the same question styles and marks.
+          </p>
+        )}
         <div className="grid gap-2 sm:grid-cols-2">
           {QUESTION_TYPE_OPTIONS.map((opt) => (
-            <label key={opt.value} className="flex items-start gap-2 rounded-md border p-3 cursor-pointer hover:bg-accent">
+            <label
+              key={opt.value}
+              className={`flex items-start gap-2 rounded-md border p-3 ${lockStructure ? 'opacity-60' : 'cursor-pointer hover:bg-accent'}`}
+            >
               <Checkbox
                 checked={questionTypes.includes(opt.value)}
                 onCheckedChange={() => toggleType(opt.value)}
-                disabled={isGenerating}
+                disabled={isGenerating || lockStructure}
               />
               <div>
                 <div className="text-sm font-medium">{opt.label}</div>
@@ -176,7 +202,7 @@ export function WorksheetForm({ isGenerating, onSubmit, initialValues }: Workshe
             max={20}
             value={numQuestions}
             onChange={(e) => setNumQuestions(parseInt(e.target.value, 10) || 8)}
-            disabled={isGenerating}
+            disabled={isGenerating || lockStructure}
           />
         </div>
         <div className="space-y-1.5">
@@ -214,49 +240,51 @@ export function WorksheetForm({ isGenerating, onSubmit, initialValues }: Workshe
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor="paste">Source material (optional)</Label>
-        <Textarea
-          id="paste"
-          value={pastedText}
-          onChange={(e) => setPastedText(e.target.value)}
-          placeholder="Paste lesson notes, textbook extract, or scheme of work. The AI will only use this content."
-          rows={4}
-          disabled={isGenerating}
-          maxLength={50000}
-        />
-        <div className="flex flex-wrap items-center gap-2">
-          <input
-            id="file"
-            type="file"
-            accept="application/pdf,text/plain"
-            className="hidden"
+      {!lockStructure && (
+        <div className="space-y-2">
+          <Label htmlFor="paste">Source material (optional)</Label>
+          <Textarea
+            id="paste"
+            value={pastedText}
+            onChange={(e) => setPastedText(e.target.value)}
+            placeholder="Paste lesson notes, textbook extract, or scheme of work. The AI will only use this content."
+            rows={4}
             disabled={isGenerating}
-            onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            maxLength={50000}
           />
-          <Button type="button" variant="outline" size="sm" asChild>
-            <label htmlFor="file" className="cursor-pointer">
-              <Upload className="h-4 w-4 mr-2" />
-              Attach PDF or .txt
-            </label>
-          </Button>
-          {file && (
-            <div className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
-              <span className="truncate max-w-[14rem]">{file.name}</span>
-              <button type="button" onClick={() => setFile(null)} aria-label="Remove file" className="shrink-0">
-                <X className="h-4 w-4" />
-              </button>
-            </div>
-          )}
+          <div className="flex flex-wrap items-center gap-2">
+            <input
+              id="file"
+              type="file"
+              accept={UPLOAD_ACCEPT_ATTR}
+              className="hidden"
+              disabled={isGenerating}
+              onChange={(e) => setFile(e.target.files?.[0] ?? null)}
+            />
+            <Button type="button" variant="outline" size="sm" asChild>
+              <label htmlFor="file" className="cursor-pointer">
+                <Upload className="h-4 w-4 mr-2" />
+                Attach PDF, Word or .txt
+              </label>
+            </Button>
+            {file && (
+              <div className="flex min-w-0 items-center gap-2 text-sm text-muted-foreground">
+                <span className="truncate max-w-[14rem]">{file.name}</span>
+                <button type="button" onClick={() => setFile(null)} aria-label="Remove file" className="shrink-0">
+                  <X className="h-4 w-4" />
+                </button>
+              </div>
+            )}
+          </div>
         </div>
-      </div>
+      )}
 
       <div className="flex">
         <Button type="submit" disabled={isGenerating} className="w-full sm:ml-auto sm:w-auto">
           {isGenerating ? (
             <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Generating...</>
           ) : (
-            'Generate worksheet'
+            submitLabel ?? 'Generate worksheet'
           )}
         </Button>
       </div>

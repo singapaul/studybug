@@ -1,7 +1,7 @@
 'use client'
 
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import type { GeneratedWorksheet, SavedWorksheet, WorksheetSummary, WorksheetFolder, Question, QuestionType, MarkingMode, DifferentiationMode, ExamBoard } from '@/types/worksheet'
+import type { GeneratedWorksheet, SavedWorksheet, WorksheetSummary, WorksheetFolder, Question, QuestionType, MarkingMode, DifferentiationMode, ExamBoard, Blueprint } from '@/types/worksheet'
 
 async function apiFetch<T>(url: string, options?: RequestInit): Promise<T> {
   const res = await fetch(url, {
@@ -34,6 +34,8 @@ export interface GenerateInput {
   examBoard?: ExamBoard
   pastedText?: string
   file?: File | null
+  /** Remix mode: mirror this blueprint's structure with new questions. */
+  blueprint?: Blueprint
 }
 
 export interface GenerateResult {
@@ -59,6 +61,7 @@ export function useGenerateWorksheet() {
       if (input.examBoard) form.append('examBoard', input.examBoard)
       if (input.pastedText) form.append('pastedText', input.pastedText)
       if (input.file) form.append('file', input.file)
+      if (input.blueprint) form.append('blueprint', JSON.stringify(input.blueprint))
 
       const res = await fetch('/api/worksheets/generate', {
         method: 'POST',
@@ -68,6 +71,36 @@ export function useGenerateWorksheet() {
       if (!res.ok) {
         const body = await res.json().catch(() => ({}))
         throw Object.assign(new Error(body.error ?? 'Generation failed'), {
+          status: res.status,
+          code: body.code,
+        })
+      }
+      return res.json()
+    },
+  })
+}
+
+export interface RemixExtractInput {
+  file?: File | null
+  pastedText?: string
+}
+
+/** Remix pass 1: upload a worksheet and enqueue blueprint extraction. */
+export function useRemixExtract() {
+  return useMutation<{ jobId: string }, Error & { code?: string; status?: number }, RemixExtractInput>({
+    mutationFn: async (input) => {
+      const form = new FormData()
+      if (input.file) form.append('file', input.file)
+      if (input.pastedText) form.append('pastedText', input.pastedText)
+
+      const res = await fetch('/api/worksheets/remix/extract', {
+        method: 'POST',
+        body: form,
+        credentials: 'include',
+      })
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}))
+        throw Object.assign(new Error(body.error ?? 'Could not analyse the upload'), {
           status: res.status,
           code: body.code,
         })
