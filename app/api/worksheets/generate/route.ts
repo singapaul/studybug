@@ -1,24 +1,24 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { extractText, getDocumentProxy } from 'unpdf'
 import { z } from 'zod'
 import { db } from '@/lib/db'
 import { getAuthenticatedUser, isPro } from '@/lib/api-helpers'
 import { withLogging } from '@/lib/with-logging'
-import { buildSystemPrompt } from '@/lib/worksheet-prompts'
+import { buildSystemPrompt, buildRemixSystemPrompt } from '@/lib/worksheet-prompts'
 import { DAILY_LIMIT, countUsedToday, dispatchGeneration } from '@/lib/generation-trigger'
+import { extractSourceText, MAX_TEXT_LENGTH } from '@/lib/extract-source'
 import {
   QUESTION_TYPES,
   MARKING_MODES,
   DIFFERENTIATION_MODES,
   EXAM_BOARDS,
+  BlueprintSchema,
+  blueprintQuestionTypes,
   type QuestionType,
   type MarkingMode,
   type DifferentiationMode,
   type ExamBoard,
 } from '@/types/worksheet'
 
-const MAX_FILE_SIZE = 10 * 1024 * 1024 // 10MB
-const MAX_TEXT_LENGTH = 50_000
 const KIND = 'worksheet'
 
 const RequestSchema = z.object({
@@ -34,6 +34,8 @@ const RequestSchema = z.object({
   differentiation: z.enum(DIFFERENTIATION_MODES).default('mixedAbility'),
   examBoard: z.enum(EXAM_BOARDS).optional().default('none'),
   pastedText: z.string().max(MAX_TEXT_LENGTH).optional().default(''),
+  // Remix mode: JSON-encoded blueprint whose structure the new worksheet mirrors.
+  blueprint: z.string().max(MAX_TEXT_LENGTH).optional().default(''),
 })
 
 async function postHandler(req: NextRequest) {
@@ -83,6 +85,7 @@ async function postHandler(req: NextRequest) {
       differentiation: field('differentiation'),
       examBoard: field('examBoard'),
       pastedText: field('pastedText'),
+      blueprint: field('blueprint'),
       questionTypes: questionTypesRaw
         .split(',')
         .map((s) => s.trim())
@@ -98,60 +101,67 @@ async function postHandler(req: NextRequest) {
     }
     const body = parsedReq.data
 
-    // Optional file extraction
-    let sourceText = body.pastedText.trim()
-    const file = form.get('file')
-    if (file instanceof File && file.size > 0) {
-      if (file.size > MAX_FILE_SIZE) {
-        return NextResponse.json({ error: 'File exceeds 10MB limit' }, { status: 400 })
+    // Remix mode: a valid blueprint drives the structure (per-question type /
+    // marks / difficulty / objective); the form fields override topic / year /
+    // differentiation / marking / exam board.
+    const remixBlueprint = body.blueprint
+      ? BlueprintSchema.safeParse((() => { try { return JSON.parse(body.blueprint) } catch { return null } })())
+      : null
+    const blueprint = remixBlueprint?.success ? remixBlueprint.data : null
+
+    let systemPrompt: string
+    let userMessage: string
+
+    if (blueprint) {
+      const questionTypes = blueprintQuestionTypes(blueprint)
+      systemPrompt = buildRemixSystemPrompt({
+        questionTypes: questionTypes.length ? questionTypes : (body.questionTypes as QuestionType[]),
+        markingMode: body.markingMode as MarkingMode,
+        differentiation: body.differentiation as DifferentiationMode,
+        yearGroup: body.yearGroup,
+        examBoard: body.examBoard as ExamBoard,
+      })
+      userMessage = [
+        `Topic: ${body.topic}`,
+        body.subject && `Subject: ${body.subject}`,
+        `Year group: ${body.yearGroup}`,
+        `Level: ${body.level}`,
+        body.learningObjectives && `Learning objectives:\n${body.learningObjectives}`,
+        `\nBLUEPRINT (mirror this structure exactly; write brand-new questions):\n${JSON.stringify(blueprint, null, 2)}`,
+      ]
+        .filter(Boolean)
+        .join('\n\n')
+    } else {
+      // Optional file / pasted-text source extraction (PDF / DOCX / text).
+      const extracted = await extractSourceText(form.get('file'), body.pastedText)
+      if ('error' in extracted) {
+        return NextResponse.json({ error: extracted.error }, { status: extracted.status })
       }
-      const contentType = file.type
-      if (contentType !== 'application/pdf' && contentType !== 'text/plain') {
-        return NextResponse.json(
-          { error: 'Only PDF and plain text files are supported' },
-          { status: 400 },
-        )
-      }
-      try {
-        if (contentType === 'application/pdf') {
-          // unpdf ships a serverless pdfjs build (no DOMMatrix/canvas deps).
-          const data = new Uint8Array(await file.arrayBuffer())
-          const pdf = await getDocumentProxy(data)
-          const { text } = await extractText(pdf, { mergePages: true })
-          sourceText = [sourceText, text].filter(Boolean).join('\n\n')
-        } else {
-          const buffer = Buffer.from(await file.arrayBuffer())
-          sourceText = [sourceText, buffer.toString('utf-8')].filter(Boolean).join('\n\n')
-        }
-      } catch {
-        return NextResponse.json({ error: 'Failed to read file content' }, { status: 400 })
-      }
+      const truncatedSource = extracted.text
+      const hasSource = truncatedSource.trim().length > 0
+
+      systemPrompt = buildSystemPrompt({
+        questionTypes: body.questionTypes as QuestionType[],
+        markingMode: body.markingMode as MarkingMode,
+        differentiation: body.differentiation as DifferentiationMode,
+        yearGroup: body.yearGroup,
+        hasSource,
+        examBoard: body.examBoard as ExamBoard,
+      })
+
+      userMessage = [
+        `Topic: ${body.topic}`,
+        body.subject && `Subject: ${body.subject}`,
+        `Year group: ${body.yearGroup}`,
+        `Level: ${body.level}`,
+        body.learningObjectives && `Learning objectives:\n${body.learningObjectives}`,
+        body.priorKnowledge && `Prior knowledge assumed:\n${body.priorKnowledge}`,
+        `Aim for around ${body.numQuestions} questions in total.`,
+        hasSource && `\nSOURCE MATERIAL:\n${truncatedSource}`,
+      ]
+        .filter(Boolean)
+        .join('\n\n')
     }
-
-    const truncatedSource = sourceText.slice(0, MAX_TEXT_LENGTH)
-    const hasSource = truncatedSource.trim().length > 0
-
-    const systemPrompt = buildSystemPrompt({
-      questionTypes: body.questionTypes as QuestionType[],
-      markingMode: body.markingMode as MarkingMode,
-      differentiation: body.differentiation as DifferentiationMode,
-      yearGroup: body.yearGroup,
-      hasSource,
-      examBoard: body.examBoard as ExamBoard,
-    })
-
-    const userMessage = [
-      `Topic: ${body.topic}`,
-      body.subject && `Subject: ${body.subject}`,
-      `Year group: ${body.yearGroup}`,
-      `Level: ${body.level}`,
-      body.learningObjectives && `Learning objectives:\n${body.learningObjectives}`,
-      body.priorKnowledge && `Prior knowledge assumed:\n${body.priorKnowledge}`,
-      `Aim for around ${body.numQuestions} questions in total.`,
-      hasSource && `\nSOURCE MATERIAL:\n${truncatedSource}`,
-    ]
-      .filter(Boolean)
-      .join('\n\n')
 
     // Enqueue: persist the built prompt and hand off to the background worker.
     // Generation itself runs there (up to 15 min), beyond the 10s function cap.

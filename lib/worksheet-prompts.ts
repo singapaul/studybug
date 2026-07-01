@@ -114,6 +114,8 @@ interface BuildSystemPromptInput {
   yearGroup: string
   hasSource: boolean
   examBoard?: ExamBoard
+  /** Remix mode: mirror a supplied blueprint's structure with brand-new questions. */
+  remix?: boolean
 }
 
 export function buildSystemPrompt(input: BuildSystemPromptInput): string {
@@ -123,14 +125,20 @@ export function buildSystemPrompt(input: BuildSystemPromptInput): string {
     input.examBoard && input.examBoard !== 'none'
       ? `Align questions to the ${input.examBoard} specification. Set "examBoard" to "${input.examBoard}" and populate "specPoints" with the specific spec reference points covered (e.g. "3.1.2 Photosynthesis"). Use ${input.examBoard} terminology and assessment style.`
       : 'No specific exam board. Omit "examBoard" and "specPoints".'
-  const groundingRule = input.hasSource
-    ? 'You have been supplied with source material. Generate ONLY from that material — never invent facts beyond it. If the source does not cover something, omit it.'
-    : 'No source material has been supplied. Generate only low-stakes recall / define questions on commonly-taught curriculum content. Keep total marks ≤12.'
+  const groundingRule = input.remix
+    ? 'You are producing a PARALLEL VERSION from the blueprint supplied in the user message. Generate brand-new, curriculum-appropriate questions on the given topic that fit the blueprint\'s structure. Total marks should match the blueprint — ignore any general marks cap.'
+    : input.hasSource
+      ? 'You have been supplied with source material. Generate ONLY from that material — never invent facts beyond it. If the source does not cover something, omit it.'
+      : 'No source material has been supplied. Generate only low-stakes recall / define questions on commonly-taught curriculum content. Keep total marks ≤12.'
 
-  const differentiationRule =
-    input.differentiation === 'threeTier'
-      ? 'Each section must include support, core, and stretch difficulty questions — use the `difficulty` field.'
-      : 'Set `difficulty` to "core" on all questions.'
+  const differentiationRule = {
+    mixedAbility:
+      'This worksheet is for a mixed-ability class. Each section must include support, core, and stretch difficulty questions — use the `difficulty` field so every learner is catered for.',
+    higher:
+      'Pitch the ENTIRE worksheet at the higher/more-demanding band. Use higher-tier command words (explain, analyse, evaluate, justify), harder numerical values, multi-step problems and case studies. Set every question\'s `difficulty` to "core" or "stretch" only — never "support".',
+    foundation:
+      'Pitch the ENTIRE worksheet at the foundation/accessible band. Use plain language, scaffolding, concrete examples and shorter steps; break demanding tasks down. Set every question\'s `difficulty` to "support" or "core" only — never "stretch".',
+  }[input.differentiation]
 
   const markingRule = {
     markSchemeWithPoints: 'For each question, the answer is a numbered list of creditable points, one per mark.',
@@ -139,7 +147,7 @@ export function buildSystemPrompt(input: BuildSystemPromptInput): string {
     none: 'Each answer field MUST be the empty string "".',
   }[input.markingMode]
 
-  return `You are a worksheet generator for UK schools. Produce a structured JSON worksheet for tutors to print and use with their students.
+  const prompt = `You are a worksheet generator for UK schools. Produce a structured JSON worksheet for tutors to print and use with their students.
 
 Return ONLY valid JSON — no markdown, no commentary. Use this exact shape:
 
@@ -214,4 +222,51 @@ totalMarks MUST equal the sum of all question marks across sections.
 Question ids are simple strings like "q1", "q2".
 Set "options" only for multipleChoice questions; "pairs" only for matching; "items" only for ordering; "table" only for tableCompletion. Omit fields that do not apply to a question's type.
 Set "hint" only when it materially helps a struggling student; otherwise omit.`
+
+  return input.remix ? `${prompt}\n\n${REMIX_DIRECTIVE}` : prompt
+}
+
+const REMIX_DIRECTIVE = `REMIX MODE — PARALLEL VERSION:
+The user message contains a BLUEPRINT describing an existing worksheet's structure: its sections and, for each question, the type, marks, difficulty and the skill/assessment objective it targets. Produce a NEW worksheet that mirrors this blueprint:
+- Same number of sections, in the same order.
+- Same number of questions per section; each new question keeps the SAME type, marks and difficulty as its corresponding blueprint slot.
+- Each new question must assess the SAME objective/skill as its blueprint slot, but be a genuinely NEW question — do NOT reuse the original's wording, numbers or examples.
+- Only deviate from a slot's difficulty if the differentiation band above forbids it, in which case pick the nearest allowed difficulty.`
+
+/** System prompt for the remix extraction pass: read an uploaded worksheet, emit its blueprint. */
+export function buildBlueprintExtractionPrompt(): string {
+  return `You are analysing an existing UK-schools worksheet or test to capture its STRUCTURE (a "blueprint") — NOT its content. Return ONLY valid JSON — no markdown, no commentary — in this exact shape:
+
+{
+  "subject": "string",
+  "topic": "string",
+  "yearGroup": "string",
+  "level": "string",
+  "examBoard": "AQA | Edexcel | OCR | WJEC",
+  "markingMode": "markSchemeWithPoints | answersOnly | detailedExemplar | none",
+  "sections": [{
+    "title": "string",
+    "instructions": "string",
+    "questions": [{
+      "type": "multipleChoice | shortAnswer | extendedResponse | trueFalse | fillInTheBlank | matching | ordering | tableCompletion",
+      "marks": 1,
+      "difficulty": "support | core | stretch",
+      "objective": "string"
+    }]
+  }]
+}
+
+Rules:
+- One blueprint question entry per source question, IN ORDER, grouped into the same sections. If the source has no clear sections, use a single section.
+- Classify EVERY source question into the NEAREST of the eight supported types. Map unsupported formats: a calculation → shortAnswer (or extendedResponse if working must be shown); an essay / long-answer → extendedResponse; label-a-diagram or define → shortAnswer; choose-the-answer → multipleChoice.
+- "marks": the marks shown for the question; if none shown, estimate from demand (1 recall, 2–3 short, 4+ extended).
+- "difficulty": infer from command words and marks — recall/define = support, describe/apply = core, explain/analyse/evaluate = stretch.
+- "objective": one concise phrase naming the skill/knowledge assessed (e.g. "balance a chemical equation", "explain causes of WW1"). Do NOT copy the question wording.
+- Infer subject/topic/yearGroup/level from the content; use "" if genuinely unknown. Omit examBoard/markingMode if unclear.
+- Do NOT include question text, options or answers — only the structure above.`
+}
+
+/** System prompt for the remix generation pass: mirror a blueprint with new questions. */
+export function buildRemixSystemPrompt(input: Omit<BuildSystemPromptInput, 'remix' | 'hasSource'>): string {
+  return buildSystemPrompt({ ...input, hasSource: false, remix: true })
 }

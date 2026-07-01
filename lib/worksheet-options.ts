@@ -65,6 +65,7 @@ interface DifferentiationOption {
 }
 
 export const DIFFERENTIATION_OPTIONS: DifferentiationOption[] = [
-  { value: 'mixedAbility', label: 'Mixed Ability', description: 'Single difficulty tier.' },
-  { value: 'threeTier', label: '3-Tier (Support / Core / Stretch)', description: 'Each section has tiered questions.' },
+  { value: 'mixedAbility', label: 'Mixed Ability', description: 'Tiered support / core / stretch questions for a mixed class.' },
+  { value: 'higher', label: 'Higher', description: 'Whole worksheet pitched at the more demanding band.' },
+  { value: 'foundation', label: 'Foundation', description: 'Whole worksheet accessible and scaffolded.' },
 ]

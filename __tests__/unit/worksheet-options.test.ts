@@ -37,7 +37,12 @@ describe('worksheet-options', () => {
     expect(MARKING_MODE_OPTIONS).toHaveLength(4)
   })
 
-  it('exposes 2 differentiation modes', () => {
-    expect(DIFFERENTIATION_OPTIONS).toHaveLength(2)
+  it('exposes 3 differentiation modes (mixed / higher / foundation)', () => {
+    expect(DIFFERENTIATION_OPTIONS).toHaveLength(3)
+    expect(DIFFERENTIATION_OPTIONS.map((o) => o.value)).toEqual([
+      'mixedAbility',
+      'higher',
+      'foundation',
+    ])
   })
 })
