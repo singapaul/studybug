@@ -15,6 +15,7 @@ import Link from "next/link";
 import { ArrowRight, ArrowUpRight, BookOpen, Gamepad2, TrendingUp, Sparkles } from "lucide-react";
 import { Suspense } from "react";
 import { UpgradeBanner } from "./upgrade-banner";
+import { UpgradeToProButton, UpgradeTrigger } from "@/components/upgrade/upgrade-cta";
 import { getDashboardStats } from "@/lib/dashboard-stats";
 import { getTemplateName } from "@/lib/game-templates";
 import { GameType } from "@/types/game";
@@ -50,6 +51,7 @@ export default async function DashboardPage({
       desc: "Pick a game type and add your content.",
       href: "/games/create",
       done: stats.totalGames > 0,
+      upgrade: false,
     },
     {
       step: 2,
@@ -57,6 +59,7 @@ export default async function DashboardPage({
       desc: "Test yourself and track your score.",
       href: "/games",
       done: stats.totalAttempts > 0,
+      upgrade: false,
     },
     isPro
       ? {
@@ -65,13 +68,15 @@ export default async function DashboardPage({
           desc: "Turn any topic into a printable worksheet.",
           href: "/worksheets/new",
           done: stats.totalWorksheets > 0,
+          upgrade: false,
         }
       : {
           step: 3,
           title: "Unlock Pro features",
           desc: "Worksheets, progress tracking, and every game type.",
-          href: "/#pricing",
+          href: "#",
           done: false,
+          upgrade: true,
         },
   ];
   // Hide the Getting Started card once every step is complete.
@@ -118,10 +123,21 @@ export default async function DashboardPage({
               <p className="text-2xl font-bold">{stats.totalAttempts}</p>
               <p className="text-xs text-white/80">Attempts</p>
             </div>
-            <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-center min-w-[80px]">
-              <p className="text-2xl font-bold capitalize">{plan}</p>
-              <p className="text-xs text-white/80">Plan</p>
-            </div>
+            {isPro ? (
+              <div className="bg-white/10 backdrop-blur-sm rounded-lg px-4 py-2 text-center min-w-[80px]">
+                <p className="text-2xl font-bold capitalize">{plan}</p>
+                <p className="text-xs text-white/80">Plan</p>
+              </div>
+            ) : (
+              <UpgradeTrigger
+                feature="Pro"
+                aria-label="Upgrade to Pro"
+                className="bg-white/10 hover:bg-white/20 backdrop-blur-sm rounded-lg px-4 py-2 text-center min-w-[80px] transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+              >
+                <p className="text-sm font-bold leading-tight">Upgrade</p>
+                <p className="text-xs text-white/80">Free · Go Pro →</p>
+              </UpgradeTrigger>
+            )}
           </div>
         </div>
       </div>
@@ -139,9 +155,9 @@ export default async function DashboardPage({
               Upgrade to Pro for unlimited games and all game types.
             </p>
           </div>
-          <Button asChild size="sm" variant="default">
-            <Link href="/#pricing">Upgrade</Link>
-          </Button>
+          <UpgradeToProButton feature="Unlimited games" size="sm">
+            Upgrade
+          </UpgradeToProButton>
         </div>
       )}
 
@@ -264,27 +280,36 @@ export default async function DashboardPage({
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {gettingStartedSteps.map(({ step, title, desc, href, done }) => (
-                  <Link
-                    key={step}
-                    href={href}
-                    className="flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors"
-                  >
-                    <div
-                      className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
-                        done
-                          ? "bg-primary text-primary-foreground"
-                          : "bg-muted-foreground/20 text-muted-foreground"
-                      }`}
-                    >
-                      {step}
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium">{title}</p>
-                      <p className="text-xs text-muted-foreground">{desc}</p>
-                    </div>
-                  </Link>
-                ))}
+                {gettingStartedSteps.map(({ step, title, desc, href, done, upgrade }) => {
+                  const rowClass =
+                    "flex items-start gap-3 p-3 rounded-lg hover:bg-muted transition-colors w-full text-left";
+                  const rowInner = (
+                    <>
+                      <div
+                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-full text-xs font-bold ${
+                          done
+                            ? "bg-primary text-primary-foreground"
+                            : "bg-muted-foreground/20 text-muted-foreground"
+                        }`}
+                      >
+                        {step}
+                      </div>
+                      <div>
+                        <p className="text-sm font-medium">{title}</p>
+                        <p className="text-xs text-muted-foreground">{desc}</p>
+                      </div>
+                    </>
+                  );
+                  return upgrade ? (
+                    <UpgradeTrigger key={step} feature="Pro features" className={rowClass}>
+                      {rowInner}
+                    </UpgradeTrigger>
+                  ) : (
+                    <Link key={step} href={href} className={rowClass}>
+                      {rowInner}
+                    </Link>
+                  );
+                })}
               </div>
             </CardContent>
           </Card>

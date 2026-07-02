@@ -1,31 +1,23 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import Link from 'next/link'
 import { Lock, BookOpen, Search } from 'lucide-react'
 import { SubjectIcon } from '@/components/library/SubjectIcon'
 import { useLibrarySubjects } from '@/hooks/use-library'
 import { usePlan } from '@/hooks/use-plan'
+import { useUpgradeModal } from '@/components/upgrade/upgrade-modal-provider'
 import { Badge } from '@/components/ui/badge'
 import { Input } from '@/components/ui/input'
 import { CardGridSkeleton } from '@/components/skeletons'
 import { filterLibrarySubjects, type AccessFilter } from '@/lib/library-filter'
 import { cn } from '@/lib/utils'
 import { useState } from 'react'
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-  DialogDescription,
-} from '@/components/ui/dialog'
-import { Button } from '@/components/ui/button'
 
 export default function LibraryPage() {
   const { data: subjects, isLoading, isError } = useLibrarySubjects()
   const { isPro } = usePlan()
+  const { openUpgrade } = useUpgradeModal()
   const router = useRouter()
-  const [upgradeOpen, setUpgradeOpen] = useState(false)
   const [query, setQuery] = useState('')
   const [access, setAccess] = useState<AccessFilter>('all')
 
@@ -52,21 +44,10 @@ export default function LibraryPage() {
 
   const handleSubjectClick = (subject: { slug: string; isFree: boolean }) => {
     if (!subject.isFree && !isPro) {
-      setUpgradeOpen(true)
+      openUpgrade('the full library')
       return
     }
     router.push(`/library/${subject.slug}`)
-  }
-
-  const handleUpgrade = async () => {
-    try {
-      const res = await fetch('/api/stripe/checkout', { method: 'POST' })
-      if (!res.ok) throw new Error()
-      const data = (await res.json()) as { url?: string }
-      if (data.url) window.location.href = data.url
-    } catch {
-      // ignore
-    }
   }
 
   return (
@@ -165,26 +146,6 @@ export default function LibraryPage() {
           )}
         </>
       )}
-
-      {/* Upgrade modal for locked subjects */}
-      <Dialog open={upgradeOpen} onOpenChange={setUpgradeOpen}>
-        <DialogContent className="sm:max-w-md">
-          <DialogHeader>
-            <DialogTitle>Unlock Pro subjects</DialogTitle>
-            <DialogDescription>
-              Upgrade to Pro to access all subjects in the revision library.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="flex flex-col gap-2 mt-2">
-            <Button onClick={handleUpgrade} className="w-full">
-              Upgrade to Pro
-            </Button>
-            <Button variant="ghost" onClick={() => setUpgradeOpen(false)} className="w-full">
-              Maybe later
-            </Button>
-          </div>
-        </DialogContent>
-      </Dialog>
     </div>
   )
 }

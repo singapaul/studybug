@@ -7,6 +7,7 @@ import { ArrowLeft, Trophy, Target, TrendingUp, Clock, Lock } from 'lucide-react
 import { useGame, useGameAttempts } from '@/hooks/use-games'
 import { usePlan } from '@/hooks/use-plan'
 import { Button } from '@/components/ui/button'
+import { UpgradeToProButton } from '@/components/upgrade/upgrade-cta'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { EmptyState } from '@/components/ui/empty-state'
 import { CardGridSkeleton } from '@/components/skeletons'
@@ -38,7 +39,7 @@ export default function GameStatsPage({ params }: { params: Promise<{ id: string
           icon={Lock}
           title="Game stats are a Pro feature"
           description="Upgrade to Pro to see your performance over time for each game."
-          action={<Button asChild><Link href="/#pricing">Upgrade to Pro</Link></Button>}
+          action={<UpgradeToProButton feature="Game stats" />}
         />
       </div>
     )
