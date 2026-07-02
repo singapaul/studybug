@@ -39,7 +39,9 @@ export default function PairsCard({ id, content, image, isFlipped, isMatched, on
         <div
           className={cn(
             'absolute inset-0 rounded-xl shadow-md flex flex-col items-center justify-center p-3 border-4',
-            isMatched ? 'border-green-400 bg-green-50' : 'border-purple-200 bg-white'
+            isMatched
+              ? 'border-green-400 dark:border-green-500/50 bg-green-50 dark:bg-green-950 text-green-900 dark:text-green-100'
+              : 'border-purple-200 dark:border-purple-500/40 bg-white dark:bg-slate-800 text-slate-900 dark:text-slate-100'
           )}
           style={{ backfaceVisibility: 'hidden', WebkitBackfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}
         >

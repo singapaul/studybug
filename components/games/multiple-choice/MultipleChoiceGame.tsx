@@ -90,9 +90,9 @@ export default function MultipleChoiceGame({ gameData, gameName, onComplete, onE
                     className={cn(
                       'w-full text-left p-4 rounded-xl border-2 font-medium transition-all',
                       !hasAnswered && 'hover:border-primary/50 hover:bg-accent',
-                      isSelected && isCorrect && 'border-green-400 bg-green-50 text-green-800',
-                      isSelected && !isCorrect && 'border-red-400 bg-red-50 text-red-800',
-                      !isSelected && showFeedback && isCorrect && 'border-green-400 bg-green-50 text-green-800',
+                      isSelected && isCorrect && 'border-green-400 bg-green-50 text-green-800 dark:bg-green-950/50 dark:text-green-200',
+                      isSelected && !isCorrect && 'border-red-400 bg-red-50 text-red-800 dark:bg-red-950/50 dark:text-red-200',
+                      !isSelected && showFeedback && isCorrect && 'border-green-400 bg-green-50 text-green-800 dark:bg-green-950/50 dark:text-green-200',
                       !isSelected && !showFeedback && 'border-border bg-background',
                     )}
                   >

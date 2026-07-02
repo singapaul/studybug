@@ -82,8 +82,8 @@ export default function FillInTheBlankGame({ gameData, gameName, onComplete, onE
         <motion.div key={currentIndex} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
           <Card className={cn(
             'p-6 mb-4 transition-colors',
-            feedback === 'correct' && 'border-green-400 bg-green-50',
-            feedback === 'wrong' && 'border-red-400 bg-red-50',
+            feedback === 'correct' && 'border-green-400 bg-green-50 dark:bg-green-950/50',
+            feedback === 'wrong' && 'border-red-400 bg-red-50 dark:bg-red-950/50',
           )}>
             <p className="text-sm text-muted-foreground mb-4">Fill in the blank</p>
 

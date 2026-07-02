@@ -47,7 +47,7 @@ function QuestionView({ q, index }: { q: Question; index: number }) {
     q.difficulty === 'stretch' ? 'Stretch' : null
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 print:break-inside-avoid">
       <div className="flex items-baseline justify-between gap-3">
         <p className="text-sm">
           <span className="font-semibold mr-2">{index + 1}.</span>
@@ -125,7 +125,10 @@ export function WorksheetPreview({ worksheet }: WorksheetPreviewProps) {
           <TabsTrigger value="answers">Answers</TabsTrigger>
         </TabsList>
 
-        <TabsContent value="worksheet" className="space-y-6 print:block print:space-y-6">
+        <TabsContent
+          value="worksheet"
+          className="space-y-6 rounded-lg border bg-card p-6 shadow-sm sm:p-8 print:block print:space-y-6 print:rounded-none print:border-0 print:p-0 print:shadow-none"
+        >
           <div className="print:block print:mb-4 hidden">
             <h1 className="text-2xl font-bold">{worksheet.title}</h1>
             <p className="text-sm">{[worksheet.subject, worksheet.yearGroup, worksheet.level].filter(Boolean).join(' · ')}</p>
@@ -147,7 +150,7 @@ export function WorksheetPreview({ worksheet }: WorksheetPreviewProps) {
           )}
 
           {worksheet.sections.map((section, si) => (
-            <section key={si} className="space-y-3">
+            <section key={si} className="space-y-3 print:break-inside-avoid">
               <header>
                 <h3 className="font-semibold">{section.title}</h3>
                 {section.instructions && (

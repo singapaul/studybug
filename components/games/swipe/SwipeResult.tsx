@@ -42,18 +42,18 @@ export default function SwipeResult({ records, items, onPlayAgain, onExit }: Swi
             </div>
 
             <div className="grid grid-cols-2 gap-3">
-              <Card className="bg-green-50 border-green-200">
+              <Card className="bg-green-50 dark:bg-green-950/40 border-green-200 dark:border-green-500/30">
                 <CardContent className="pt-4 text-center">
                   <CheckCircle2 className="h-5 w-5 text-green-500 mx-auto mb-1" />
-                  <div className="text-xl font-bold text-green-700">{correctCount}</div>
-                  <div className="text-xs text-green-600">Correct</div>
+                  <div className="text-xl font-bold text-green-700 dark:text-green-300">{correctCount}</div>
+                  <div className="text-xs text-green-600 dark:text-green-400">Correct</div>
                 </CardContent>
               </Card>
-              <Card className="bg-red-50 border-red-200">
+              <Card className="bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-500/30">
                 <CardContent className="pt-4 text-center">
                   <XCircle className="h-5 w-5 text-red-500 mx-auto mb-1" />
-                  <div className="text-xl font-bold text-red-700">{records.length - correctCount}</div>
-                  <div className="text-xs text-red-600">Wrong</div>
+                  <div className="text-xl font-bold text-red-700 dark:text-red-300">{records.length - correctCount}</div>
+                  <div className="text-xs text-red-600 dark:text-red-400">Wrong</div>
                 </CardContent>
               </Card>
             </div>
@@ -64,7 +64,7 @@ export default function SwipeResult({ records, items, onPlayAgain, onExit }: Swi
                 {mistakes.map((m) => {
                   const item = items.find((i) => i.id === m.itemId)
                   return item ? (
-                    <Card key={m.itemId} className="bg-red-50 border-red-200 p-3">
+                    <Card key={m.itemId} className="bg-red-50 dark:bg-red-950/40 border-red-200 dark:border-red-500/30 p-3">
                       <p className="text-sm font-medium">{item.statement}</p>
                       <p className="text-xs text-muted-foreground mt-1">
                         Correct answer: {item.isCorrect ? 'Right (swipe right)' : 'Wrong (swipe left)'}

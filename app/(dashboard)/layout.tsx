@@ -26,7 +26,7 @@ export default async function DashboardLayout({
   };
 
   return (
-    <div className="flex flex-col md:flex-row h-screen overflow-hidden bg-background">
+    <div data-app-shell className="flex flex-col md:flex-row h-screen overflow-hidden bg-background">
       <MobileHeader user={user} />
       <Sidebar user={user} />
       <main className="flex-1 overflow-y-auto">

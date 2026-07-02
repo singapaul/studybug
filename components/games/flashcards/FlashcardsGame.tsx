@@ -147,11 +147,11 @@ export default function FlashcardsGame({ gameData, gameName, onComplete, onExit 
       <AnimatePresence>
         {isFlipped && progress[currentIndex]?.known === null && (
           <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} className="flex gap-4 mt-6">
-            <Button onClick={() => handleAssessment(false)} variant="outline" size="lg" className="flex-1 border-red-200 hover:bg-red-50">
+            <Button onClick={() => handleAssessment(false)} variant="outline" size="lg" className="flex-1 border-red-200 hover:bg-red-50 dark:border-red-500/30 dark:hover:bg-red-950/40">
               <XCircle className="mr-2 h-5 w-5 text-red-600" />
               Didn&apos;t know
             </Button>
-            <Button onClick={() => handleAssessment(true)} variant="outline" size="lg" className="flex-1 border-green-200 hover:bg-green-50">
+            <Button onClick={() => handleAssessment(true)} variant="outline" size="lg" className="flex-1 border-green-200 hover:bg-green-50 dark:border-green-500/30 dark:hover:bg-green-950/40">
               <CheckCircle2 className="mr-2 h-5 w-5 text-green-600" />
               Knew it
             </Button>
@@ -171,7 +171,7 @@ export default function FlashcardsGame({ gameData, gameName, onComplete, onExit 
               p.known === true && 'bg-green-500',
               p.known === false && 'bg-red-500',
               p.known === null && p.viewed && 'bg-blue-300',
-              p.known === null && !p.viewed && 'bg-gray-300'
+              p.known === null && !p.viewed && 'bg-gray-300 dark:bg-slate-600'
             )} />
           ))}
         </div>

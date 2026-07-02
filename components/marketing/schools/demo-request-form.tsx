@@ -83,29 +83,15 @@ export function DemoRequestForm() {
     setIsSubmitting(true);
 
     try {
-      // Build a readable message from all the form fields
-      const preferredTimes = [
-        formData.preferredMorning ? 'Morning (9am-12pm)' : null,
-        formData.preferredAfternoon ? 'Afternoon (12pm-5pm)' : null,
-      ]
-        .filter(Boolean)
-        .join(', ');
-
-      const messageLines = [
-        `School: ${formData.schoolName}`,
-        `Role: ${formData.contactRole}`,
-        `Phone: ${formData.phone}`,
-        `Students: ${formData.numberOfStudents}`,
-        `Teachers: ${formData.numberOfTeachers}`,
-        preferredTimes ? `Preferred contact time: ${preferredTimes}` : null,
-        formData.specificDate ? `Specific date: ${formData.specificDate}` : null,
-        formData.additionalNotes ? `\nNotes: ${formData.additionalNotes}` : null,
-      ]
-        .filter(Boolean)
-        .join('\n');
-
-      // Mock: demo request form submission
-      console.log('Demo request submitted:', { name: formData.contactName, email: formData.email, message: messageLines });
+      const res = await fetch('/api/schools/demo', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(formData),
+      });
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        throw new Error(data.error ?? 'Request failed');
+      }
       router.push('/schools/demo/success');
     } catch (err) {
       console.error('Demo request form error:', err);

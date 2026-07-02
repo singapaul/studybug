@@ -92,13 +92,13 @@ export default function SwipeGame({ gameData, gameName, onComplete, onExit }: Sw
       </AnimatePresence>
 
       <div className="flex items-center justify-between mt-6">
-        <Button variant="outline" size="lg" onClick={() => handleSwipe('left')} className="flex-1 mr-2 border-red-200 hover:bg-red-50">
+        <Button variant="outline" size="lg" onClick={() => handleSwipe('left')} className="flex-1 mr-2 border-red-200 hover:bg-red-50 dark:border-red-500/30 dark:hover:bg-red-950/40">
           <XCircle className="mr-2 h-5 w-5 text-red-600" />Wrong
         </Button>
         <Button variant="ghost" onClick={handleUndo} disabled={records.length === 0}>
           <Undo2 className="h-4 w-4" />
         </Button>
-        <Button variant="outline" size="lg" onClick={() => handleSwipe('right')} className="flex-1 ml-2 border-green-200 hover:bg-green-50">
+        <Button variant="outline" size="lg" onClick={() => handleSwipe('right')} className="flex-1 ml-2 border-green-200 hover:bg-green-50 dark:border-green-500/30 dark:hover:bg-green-950/40">
           <CheckCircle2 className="mr-2 h-5 w-5 text-green-600" />Correct
         </Button>
       </div>

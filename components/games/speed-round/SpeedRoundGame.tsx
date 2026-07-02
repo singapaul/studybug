@@ -113,9 +113,9 @@ export default function SpeedRoundGame({ gameData, gameName, onComplete, onExit 
                     className={cn(
                       'p-4 rounded-xl border-2 font-medium text-left transition-all',
                       !selectedOption && 'hover:border-primary/50 hover:bg-accent border-border bg-background',
-                      isSelected && isCorrect && 'border-green-400 bg-green-50 text-green-800',
-                      isSelected && !isCorrect && 'border-red-400 bg-red-50 text-red-800',
-                      !isSelected && showFeedback && isCorrect && 'border-green-400 bg-green-50 text-green-800',
+                      isSelected && isCorrect && 'border-green-400 bg-green-50 text-green-800 dark:bg-green-950/50 dark:text-green-200',
+                      isSelected && !isCorrect && 'border-red-400 bg-red-50 text-red-800 dark:bg-red-950/50 dark:text-red-200',
+                      !isSelected && showFeedback && isCorrect && 'border-green-400 bg-green-50 text-green-800 dark:bg-green-950/50 dark:text-green-200',
                       !isSelected && showFeedback && !isCorrect && 'border-border bg-background opacity-50',
                     )}
                   >

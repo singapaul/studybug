@@ -31,7 +31,7 @@ export default function SwipeCard({ statement, onSwipe }: SwipeCardProps) {
         className="absolute w-full max-w-sm cursor-grab active:cursor-grabbing"
         whileDrag={{ scale: 1.05 }}
       >
-        <div className="relative rounded-2xl border-4 border-pink-200 bg-white shadow-xl p-8 text-center min-h-[220px] flex flex-col items-center justify-center">
+        <div className="relative rounded-2xl border-4 border-pink-200 dark:border-pink-500/40 bg-white dark:bg-slate-800 shadow-xl p-8 text-center min-h-[220px] flex flex-col items-center justify-center">
           {/* Right indicator */}
           <motion.div style={{ opacity: rightOpacity }} className="absolute top-4 right-4 flex items-center gap-1 text-green-600">
             <CheckCircle2 className="h-6 w-6" />
@@ -44,7 +44,7 @@ export default function SwipeCard({ statement, onSwipe }: SwipeCardProps) {
             <XCircle className="h-6 w-6" />
           </motion.div>
 
-          <h2 className="text-xl font-bold text-gray-800 leading-snug">{statement}</h2>
+          <h2 className="text-xl font-bold text-slate-900 dark:text-slate-100 leading-snug">{statement}</h2>
         </div>
       </motion.div>
     </div>
