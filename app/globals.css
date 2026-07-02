@@ -274,4 +274,12 @@
   aside, .print\:hidden { display: none !important; }
   main, body { padding: 0 !important; }
   body { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+  /* The dashboard shell is a fixed-height (h-screen) scroll container, which
+     clips print output to a single viewport-sized page. Release those
+     constraints so the full document flows across as many pages as needed. */
+  html, body { height: auto !important; overflow: visible !important; }
+  [data-app-shell] { display: block !important; height: auto !important; overflow: visible !important; }
+  [data-app-shell] > main { height: auto !important; overflow: visible !important; }
+  [data-app-shell] > main > div { height: auto !important; }
 }

@@ -110,8 +110,8 @@ export default function AnagramGame({ gameData, gameName, onComplete, onExit }: 
         <motion.div key={currentIndex} initial={{ opacity: 0, x: 30 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -30 }}>
           <Card className={cn(
             'p-6 mb-4 transition-colors',
-            feedback === 'correct' && 'border-green-400 bg-green-50',
-            feedback === 'wrong' && 'border-red-400 bg-red-50',
+            feedback === 'correct' && 'border-green-400 bg-green-50 dark:bg-green-950/50',
+            feedback === 'wrong' && 'border-red-400 bg-red-50 dark:bg-red-950/50',
           )}>
             {currentItem.hint && (
               <p className="text-sm text-muted-foreground mb-4 text-center italic">Hint: {currentItem.hint}</p>
@@ -157,12 +157,12 @@ export default function AnagramGame({ gameData, gameName, onComplete, onExit }: 
             </div>
 
             {feedback === 'wrong' && (
-              <p className="text-sm text-red-700 font-medium text-center">
+              <p className="text-sm text-red-700 dark:text-red-300 font-medium text-center">
                 Answer: <span className="font-bold">{currentItem.word}</span>
               </p>
             )}
             {feedback === 'correct' && (
-              <p className="text-sm text-green-700 font-medium text-center">Correct!</p>
+              <p className="text-sm text-green-700 dark:text-green-300 font-medium text-center">Correct!</p>
             )}
           </Card>
         </motion.div>
