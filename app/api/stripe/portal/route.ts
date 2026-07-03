@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { stripe } from "@/lib/stripe";
+import { stripe, stripeCustomerExists } from "@/lib/stripe";
 import { db } from "@/lib/db";
 import { withLogging } from "@/lib/with-logging";
 
@@ -20,7 +20,10 @@ async function postHandler(req: NextRequest) {
       return NextResponse.json({ error: "User not found" }, { status: 404 });
     }
 
-    if (!user.stripeCustomerId) {
+    // A stored id created under a different Stripe mode (e.g. test-mode ids
+    // left over after switching to live keys) no longer resolves, which means
+    // there is no live subscription to manage. Treat it the same as no account.
+    if (!user.stripeCustomerId || !(await stripeCustomerExists(user.stripeCustomerId))) {
       return NextResponse.json(
         { error: "No billing account found. Please subscribe first." },
         { status: 400 }
