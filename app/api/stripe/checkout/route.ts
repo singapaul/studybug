@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@/lib/auth";
-import { stripe } from "@/lib/stripe";
+import { stripe, stripeCustomerExists } from "@/lib/stripe";
 import { db } from "@/lib/db";
 import { withLogging } from "@/lib/with-logging";
 
@@ -31,7 +31,10 @@ async function postHandler(req: NextRequest) {
 
     let stripeCustomerId = user.stripeCustomerId;
 
-    if (!stripeCustomerId) {
+    // Recreate the customer when there is none, or when the stored id no longer
+    // resolves under the current Stripe key (e.g. a test-mode id left over
+    // after switching to live keys). Reusing an invalid id would fail checkout.
+    if (!stripeCustomerId || !(await stripeCustomerExists(stripeCustomerId))) {
       const customer = await stripe.customers.create({
         email: user.email,
         name: user.name ?? undefined,
