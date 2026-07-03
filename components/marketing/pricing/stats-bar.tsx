@@ -1,29 +1,29 @@
 'use client';
 
-import { Building2, Users, TrendingUp } from 'lucide-react';
+import { Gamepad2, GraduationCap, Sparkles } from 'lucide-react';
 import { StaggerContainer, StaggerItem } from '@/components/ui/scroll-reveal';
 import { motion } from 'framer-motion';
 
 export function StatsBar() {
   const stats = [
     {
-      icon: Building2,
-      value: '500+',
-      label: 'UK Schools',
+      icon: Gamepad2,
+      value: '8',
+      label: 'Game modes',
       color: 'bg-accent',
       iconColor: 'text-white',
     },
     {
-      icon: Users,
-      value: '50,000+',
-      label: 'Students',
+      icon: GraduationCap,
+      value: 'GCSE',
+      label: 'Aligned decks',
       color: 'bg-secondary',
       iconColor: 'text-white',
     },
     {
-      icon: TrendingUp,
-      value: '92%',
-      label: 'Improvement',
+      icon: Sparkles,
+      value: 'AI',
+      label: 'Deck generation',
       color: 'bg-coral',
       iconColor: 'text-white',
     },

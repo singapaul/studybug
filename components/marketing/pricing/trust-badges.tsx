@@ -41,9 +41,8 @@ export function TrustBadges() {
       {/* Trust message */}
       <ScrollReveal>
         <p className="text-center text-muted-foreground font-medium">
-          Trusted by{' '}
-          <span className="text-secondary font-semibold">1,000+ students and teachers</span>{' '}
-          across the UK
+          Built in the UK for{' '}
+          <span className="text-secondary font-semibold">GCSE revision</span>
         </p>
       </ScrollReveal>
 

@@ -9,7 +9,6 @@ import { FeaturesGrid } from '@/components/marketing/pricing/features-grid';
 import { PricingCard } from '@/components/marketing/pricing/pricing-card';
 import { TrustBadges } from '@/components/marketing/pricing/trust-badges';
 import { FeatureComparison } from '@/components/marketing/pricing/feature-comparison';
-import { Testimonials } from '@/components/marketing/pricing/testimonials';
 import { FAQSection } from '@/components/marketing/pricing/faq-section';
 import { InteractiveDemo } from '@/components/marketing/interactive-demo';
 import { ScrollReveal, StaggerContainer, StaggerItem } from '@/components/ui/scroll-reveal';
@@ -103,9 +102,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Testimonials */}
-      <Testimonials />
-
       {/* Final CTA */}
       <section className="py-20 bg-secondary relative overflow-hidden">
         {/* Decorative shapes */}
@@ -128,7 +124,7 @@ export default function Home() {
               Start Learning Smarter Today
             </h2>
             <p className="text-lg text-white/80 max-w-xl mx-auto mb-8">
-              Join thousands of students and teachers who are making revision fun and effective.
+              Make revision fun and effective — start today.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Button
