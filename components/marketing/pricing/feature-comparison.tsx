@@ -8,14 +8,14 @@ const features = [
   {
     name: 'Number of game modes',
     free: '3 modes',
-    pro: 'All modes',
+    pro: 'All 8 modes',
     tooltip: 'Interactive revision games like memory matching, flashcards, and quizzes',
   },
   {
     name: 'Pre-built subjects',
-    free: '10 subjects',
-    pro: 'All subjects',
-    tooltip: 'Ready-made revision decks covering popular exam topics',
+    free: '2 subjects',
+    pro: 'All 8 subjects',
+    tooltip: 'Ready-made revision decks covering core GCSE subjects',
   },
   {
     name: 'Custom deck creation',
@@ -42,16 +42,10 @@ const features = [
     tooltip: 'Access the community library of shared decks',
   },
   {
-    name: 'Export/import decks',
+    name: 'Export decks',
     free: false,
     pro: true,
-    tooltip: 'Export decks to CSV or import from other platforms',
-  },
-  {
-    name: 'Offline mode',
-    free: false,
-    pro: true,
-    tooltip: 'Download decks and study without an internet connection',
+    tooltip: 'Export decks to CSV, PDF, and printable worksheets',
   },
 ];
 

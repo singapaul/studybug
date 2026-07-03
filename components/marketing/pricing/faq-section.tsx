@@ -27,12 +27,7 @@ const faqs = [
   {
     question: 'Is my data secure?',
     answer:
-      "Yes. We're fully GDPR compliant and use bank-level encryption to protect all user data. Student information is never shared with third parties. Read our privacy policy for more details.",
-  },
-  {
-    question: 'Can I use Studybug offline?',
-    answer:
-      "Paid plans include offline mode - download your decks and play without an internet connection. Your progress will automatically sync when you're back online.",
+      "Yes. We're fully GDPR compliant and use industry-standard encryption to protect all user data. Student information is never sold to third parties. Read our privacy policy for more details.",
   },
 ];
 

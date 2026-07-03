@@ -7,16 +7,22 @@ import {
   FlashcardStackIllustration,
   LibraryIllustration,
   ProgressChartIllustration,
+  UploadIllustration,
   TeamIllustration,
-  TrophyIllustration,
 } from '@/components/ui/animated-illustrations';
 
 const features = [
   {
     illustration: GameControllerIllustration,
-    title: '20+ Interactive Game Modes',
+    title: '8 Interactive Game Modes',
     description:
       'From flashcards to memory matches, speed rounds to quizzes - find the perfect way to learn.',
+  },
+  {
+    illustration: UploadIllustration,
+    title: 'AI-Powered Deck Generation',
+    description:
+      'Paste a topic or upload a PDF and let AI build a ready-to-play deck in seconds.',
   },
   {
     illustration: FlashcardStackIllustration,
@@ -26,26 +32,21 @@ const features = [
   },
   {
     illustration: LibraryIllustration,
-    title: '400+ Prebuilt Revision Games',
+    title: '40+ Prebuilt Revision Decks',
     description:
-      'Access our library of curriculum-aligned content created by teachers across the UK.',
+      'A growing library of curriculum-aligned decks across core GCSE subjects.',
   },
   {
     illustration: ProgressChartIllustration,
     title: 'Save & Track Your Progress',
     description:
-      'See your improvement over time with detailed stats, streaks, and performance insights.',
+      'See your improvement over time with detailed stats and performance insights.',
   },
   {
     illustration: TeamIllustration,
-    title: 'Classroom Management',
+    title: 'Export & Share',
     description:
-      'Teachers can track student progress, assign decks, and see who needs extra support.',
-  },
-  {
-    illustration: TrophyIllustration,
-    title: 'Achievement System',
-    description: 'Earn badges, unlock achievements, and compete on leaderboards to stay motivated.',
+      'Export decks to PDF, CSV, or printable worksheets, and share any deck with a link.',
   },
 ];
 
@@ -71,7 +72,7 @@ export function FeaturesGrid() {
             Everything you need to ace your exams
           </h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            Powerful features designed for students, teachers, and schools
+            Powerful features designed for students and teachers
           </p>
         </ScrollReveal>
 

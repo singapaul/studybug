@@ -23,15 +23,15 @@ const steps = [
     heading: 'Choose your preferred game modes',
     description:
       'Play your way - from flashcards and quizzes to speed games and memory matches. Studybug adapts to how you learn best.',
-    smallText: '20+ learning games and counting',
+    smallText: '8 game modes and counting',
     color: 'bg-accent',
   },
   {
     Illustration: AnalyticsIllustration,
     heading: 'Track your results and improvements',
     description:
-      'Every game feeds into your personal dashboard. See your strongest topics, identify gaps, and celebrate your learning streaks.',
-    smallText: 'Work towards achievements & milestones',
+      'Every game feeds into your personal dashboard. See your strongest topics, identify gaps, and track your improvement over time.',
+    smallText: 'See your strongest and weakest topics',
     color: 'bg-warning',
   },
 ];
