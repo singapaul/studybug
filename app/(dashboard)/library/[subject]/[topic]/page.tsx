@@ -7,6 +7,7 @@ import { Loader2, Play, BookOpen, Copy, Check, FileText } from 'lucide-react'
 import { useLibraryTopic, useCloneLibraryDeck, LibraryItem } from '@/hooks/use-library'
 import { libraryDeckToSeed, stashWorksheetSeed } from '@/lib/worksheet-seed'
 import { usePlan } from '@/hooks/use-plan'
+import { UpgradeTrigger } from '@/components/upgrade/upgrade-cta'
 import { GameCompleteModal } from '@/components/games/GameCompleteModal'
 import { availableGameTypes, toFlashcardsData, toPairsData, toMultipleChoiceData, toSpeedRoundData, toAnagramData, toFillInTheBlankData } from '@/lib/library-utils'
 import {
@@ -216,9 +217,12 @@ export default function LibraryTopicPage() {
 
             {!isPro && (
               <p className="text-xs text-muted-foreground">
-                <Link href="/pricing" className="underline hover:text-foreground">
+                <UpgradeTrigger
+                  feature="Saving to your library"
+                  className="underline hover:text-foreground"
+                >
                   Upgrade to Pro
-                </Link>{' '}
+                </UpgradeTrigger>{' '}
                 to save decks to your library.
               </p>
             )}

@@ -2,8 +2,9 @@
 
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library, BookOpen, FileText } from "lucide-react";
+import { LayoutDashboard, Settings, LogOut, ChevronDown, Gamepad2, TrendingUp, Lock, Library, BookOpen, FileText, Zap } from "lucide-react";
 import { signOut } from "@/lib/auth-client";
+import { useUpgradeModal } from "@/components/upgrade/upgrade-modal-provider";
 import { Badge } from "@/components/ui/badge";
 import {
   DropdownMenu,
@@ -75,6 +76,8 @@ const navItems = [
 export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { openUpgrade } = useUpgradeModal();
+  const isFree = user.plan !== "pro";
 
   const initials = user.name
     ? user.name
@@ -126,6 +129,25 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
         })}
       </nav>
 
+      {/* Persistent upgrade CTA for free users */}
+      {isFree && (
+        <div className="p-4 pt-0 shrink-0">
+          <button
+            type="button"
+            onClick={() => openUpgrade()}
+            className="w-full rounded-xl bg-gradient-to-br from-secondary to-primary p-3 text-left text-white shadow-sm transition-opacity hover:opacity-95 focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+          >
+            <div className="flex items-center gap-2">
+              <Zap className="h-4 w-4 shrink-0" />
+              <span className="text-sm font-semibold">Upgrade to Pro</span>
+            </div>
+            <p className="mt-1 text-xs text-white/85">
+              Unlock worksheets, the full library &amp; progress tracking.
+            </p>
+          </button>
+        </div>
+      )}
+
       {/* User section */}
       <div className="border-t p-4 shrink-0">
         <DropdownMenu>
@@ -163,6 +185,20 @@ export function SidebarNav({ user, onNavigate }: SidebarNavProps) {
               </div>
             </DropdownMenuLabel>
             <DropdownMenuSeparator />
+            {isFree && (
+              <DropdownMenuItem
+                className="cursor-pointer text-primary focus:text-primary"
+                onSelect={() => {
+                  onNavigate?.();
+                  // Defer so the menu (and mobile sheet) finish closing before
+                  // the dialog opens — avoids a Radix focus/pointer-events race.
+                  setTimeout(() => openUpgrade(), 0);
+                }}
+              >
+                <Zap className="mr-2 h-4 w-4" />
+                Upgrade to Pro
+              </DropdownMenuItem>
+            )}
             <DropdownMenuItem asChild>
               <Link href="/settings" className="cursor-pointer" onClick={onNavigate}>
                 <Settings className="mr-2 h-4 w-4" />

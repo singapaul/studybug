@@ -13,6 +13,7 @@ import {
 } from '@/hooks/use-worksheets'
 import { usePlan } from '@/hooks/use-plan'
 import { Button } from '@/components/ui/button'
+import { UpgradeToProButton } from '@/components/upgrade/upgrade-cta'
 import { Input } from '@/components/ui/input'
 import {
   Select, SelectContent, SelectItem, SelectTrigger, SelectValue,
@@ -115,7 +116,7 @@ export default function WorksheetsPage() {
         <div className="rounded-xl border border-dashed bg-muted/30 p-6 text-center">
           <h2 className="font-semibold mb-1">Worksheet generation is a Pro feature</h2>
           <p className="text-sm text-muted-foreground mb-4">Upgrade to generate, save, and share worksheets.</p>
-          <Button asChild><Link href="/settings">Upgrade to Pro</Link></Button>
+          <UpgradeToProButton feature="Worksheets" />
         </div>
       </div>
     )

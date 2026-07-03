@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Lock, Trophy, TrendingUp, Clock, Target, Lightbulb, Download, BookOpen, Gamepad2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { UpgradeToProButton } from "@/components/upgrade/upgrade-cta";
 import { getTemplateName } from "@/lib/game-templates";
 import { GameType } from "@/types/game";
 import { cn } from "@/lib/utils";
@@ -72,9 +73,7 @@ export default async function ProgressPage({
             attempt history across all your games.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Button asChild>
-              <Link href="/#pricing">Upgrade to Pro</Link>
-            </Button>
+            <UpgradeToProButton feature="Progress tracking" />
             <Button asChild variant="outline">
               <Link href="/games">Back to Games</Link>
             </Button>
